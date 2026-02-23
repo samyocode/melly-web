@@ -376,7 +376,7 @@ export default function LandingPage() {
       {/* --- FOOTER --- */}
       <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
         <p className="mb-2 text-gray-500">
-          © 2024 Matchmaker App. All rights reserved.
+          © 2026 Melly App. All rights reserved.
         </p>
         <a
           href="mailto:hello@meetmelly.com"

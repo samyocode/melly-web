@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #fdf2f8;
+}
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #e91e63;
+  --color-primaryDark: #c2185b;
+  --color-softPinkBg: #fdf2f8;
+  --color-softPinkBorder: #fce7f3;
+  --color-lightPurpleBg: #fef7ff;
+  --color-aiAccent: #e9e7fc;
+  --color-orb1: #f9a8d4;
+  --color-orb2: #db2777;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #fdf2f8;
+}

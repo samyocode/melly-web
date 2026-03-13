@@ -1,3 +1,5 @@
+// app/page.tsx
+
 import Script from "next/script";
 import Image from "next/image";
 import Orb from "@/components/Orb";
@@ -378,13 +380,21 @@ export default function LandingPage() {
         <p className="mb-2 text-gray-500">
           © 2026 Melly App. All rights reserved.
         </p>
-        <a
-          href="mailto:hello@meetmelly.com"
-          className="text-sm text-primary
-          hover:text-primaryDark transition"
-        >
-          hello@meetmelly.com
-        </a>
+        <div className="flex items-center justify-center gap-4 text-sm">
+          <a
+            href="/privacy"
+            className="text-primary hover:text-primaryDark transition font-medium"
+          >
+            Privacy Policy
+          </a>
+          <span className="text-gray-300">·</span>
+          <a
+            href="mailto:hello@meetmelly.com"
+            className="text-primary hover:text-primaryDark transition"
+          >
+            hello@meetmelly.com
+          </a>
+        </div>
       </footer>
     </div>
   );

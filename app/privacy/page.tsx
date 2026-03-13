@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 const LAST_UPDATED = "March 13, 2026";
+const EFFECTIVE_DATE = "March 13, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -56,239 +57,702 @@ export default function PrivacyPage() {
           <h1 className="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-6xl">
             Privacy Policy
           </h1>
-          <p className="text-lg text-gray-500">Last updated: {LAST_UPDATED}</p>
+          <p className="text-lg text-gray-500">
+            Effective: {EFFECTIVE_DATE} · Last updated: {LAST_UPDATED}
+          </p>
         </div>
       </header>
 
       {/* --- CONTENT --- */}
       <main className="py-20">
         <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
+          {/* ---- INTRODUCTION ---- */}
           <p>
-            Welcome to Melly (&quot;we,&quot; &quot;us,&quot; or
-            &quot;our&quot;). We are committed to protecting your privacy and
-            being transparent about how we handle your personal information.
-            This Privacy Policy explains what data we collect, why we collect
-            it, how we use and protect it, and your rights regarding that data.
+            Melly App, Inc. (&quot;Melly,&quot; &quot;we,&quot; &quot;us,&quot;
+            or &quot;our&quot;) operates the Melly mobile application and
+            website located at{" "}
+            <a href="https://www.meetmelly.com">www.meetmelly.com</a>{" "}
+            (collectively, the &quot;Service&quot;). This Privacy Policy
+            describes how we collect, use, disclose, retain, and protect your
+            personal information when you access or use the Service. It also
+            explains the rights and choices available to you regarding your
+            data.
           </p>
           <p>
-            By using Melly, you agree to the practices described in this policy.
-            If you do not agree, please do not use our services.
+            By creating an account or using any part of the Service, you
+            acknowledge that you have read and understood this Privacy Policy.
+            If you do not agree with the practices described herein, you must
+            discontinue use of the Service immediately.
+          </p>
+          <p>
+            For the purposes of the EU General Data Protection Regulation
+            (&quot;GDPR&quot;), Melly App, Inc. is the data controller. For
+            questions about this policy or our data practices, contact our Data
+            Protection Officer at{" "}
+            <a href="mailto:dpo@meetmelly.com">dpo@meetmelly.com</a>.
           </p>
 
-          <h2>1. Information We Collect</h2>
-
-          <h3>1.1 Information You Provide</h3>
+          {/* ---- 1. DEFINITIONS ---- */}
+          <h2>1. Definitions</h2>
           <p>
-            When you create an account or use Melly, you may provide us with:
+            <strong>&quot;Personal Data&quot;</strong> means any information
+            relating to an identified or identifiable natural person, as defined
+            under applicable law including the GDPR and the California Consumer
+            Privacy Act (&quot;CCPA&quot;).
+          </p>
+          <p>
+            <strong>&quot;Sensitive Personal Data&quot;</strong> means Personal
+            Data that reveals racial or ethnic origin, religious or
+            philosophical beliefs, sexual orientation, gender identity, or
+            health information. Given the nature of a dating application, Melly
+            may process certain categories of Sensitive Personal Data as
+            described below.
+          </p>
+          <p>
+            <strong>&quot;Processing&quot;</strong> means any operation
+            performed on Personal Data, including collection, storage, use,
+            disclosure, and deletion.
+          </p>
+
+          {/* ---- 2. INFORMATION WE COLLECT ---- */}
+          <h2>2. Information We Collect</h2>
+
+          <h3>2.1 Information You Provide Directly</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Examples</th>
+                <th>Legal Basis (GDPR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Account &amp; identity</td>
+                <td>
+                  Name, email address, phone number, date of birth, gender,
+                  profile photographs
+                </td>
+                <td>Performance of contract; legitimate interest</td>
+              </tr>
+              <tr>
+                <td>Profile &amp; preference</td>
+                <td>
+                  Quiz responses, bio text, relationship preferences, lifestyle
+                  information, interests
+                </td>
+                <td>Performance of contract; consent for sensitive data</td>
+              </tr>
+              <tr>
+                <td>User-generated content</td>
+                <td>
+                  Messages sent to other users, photos and media shared in
+                  conversations
+                </td>
+                <td>Performance of contract</td>
+              </tr>
+              <tr>
+                <td>Payment &amp; transaction</td>
+                <td>
+                  Purchase history, subscription tier. Full payment card details
+                  are processed by our PCI-DSS-compliant payment processor and
+                  are never stored on our servers.
+                </td>
+                <td>Performance of contract; legal obligation</td>
+              </tr>
+              <tr>
+                <td>Support &amp; correspondence</td>
+                <td>
+                  Emails, in-app support tickets, feedback, and any attachments
+                  you provide
+                </td>
+                <td>Legitimate interest; performance of contract</td>
+              </tr>
+              <tr>
+                <td>Verification</td>
+                <td>
+                  Government-issued ID or selfie photos submitted for identity
+                  or age verification, if applicable
+                </td>
+                <td>Legal obligation; consent</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>2.2 Information Collected Automatically</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Examples</th>
+                <th>Legal Basis (GDPR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Device &amp; technical</td>
+                <td>
+                  Device model, operating system and version, unique device
+                  identifiers (e.g., IDFA, GAID), app version, browser type and
+                  version, IP address, mobile carrier
+                </td>
+                <td>Legitimate interest</td>
+              </tr>
+              <tr>
+                <td>Usage &amp; behavioral</td>
+                <td>
+                  Features accessed, screens viewed, tap and scroll
+                  interactions, session duration, referral source, crash logs
+                </td>
+                <td>Legitimate interest</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td>
+                  Approximate location derived from IP address. Precise GPS
+                  location is collected only with your explicit, revocable
+                  consent via your device&apos;s operating system permission
+                  prompt.
+                </td>
+                <td>Consent (precise); legitimate interest (approximate)</td>
+              </tr>
+              <tr>
+                <td>Cookies &amp; tracking technologies</td>
+                <td>
+                  Cookies, pixel tags, web beacons, local storage, and SDKs used
+                  on our website and within the app
+                </td>
+                <td>Consent (where required); legitimate interest</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>2.3 Information from Third Parties</h3>
+          <p>
+            If you register or log in using a third-party authentication service
+            (e.g., Apple Sign-In, Google Sign-In), we receive your name, email
+            address, and profile picture as authorized by you and permitted by
+            that provider&apos;s policies. We may also receive information from
+            analytics partners, advertising networks, and fraud-prevention
+            services to improve the Service and protect users.
+          </p>
+
+          <h3>2.4 Sensitive Personal Data</h3>
+          <p>
+            Because Melly is a dating application, certain information you
+            choose to provide — such as sexual orientation, gender identity,
+            religious beliefs, or ethnicity — may constitute Sensitive Personal
+            Data under applicable law. We process this data solely to provide
+            our matching and compatibility features, and only with your explicit
+            consent. You may withdraw consent at any time by deleting the
+            relevant information from your profile or by contacting us at{" "}
+            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            Withdrawal of consent does not affect the lawfulness of processing
+            carried out prior to withdrawal.
+          </p>
+
+          {/* ---- 3. HOW WE USE YOUR INFORMATION ---- */}
+          <h2>3. How We Use Your Information</h2>
+          <p>We process your Personal Data for the following purposes:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Purpose</th>
+                <th>Legal Basis (GDPR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Providing and operating the Service, including account
+                  creation, profile display, messaging, and quiz-based
+                  compatibility matching
+                </td>
+                <td>Performance of contract</td>
+              </tr>
+              <tr>
+                <td>
+                  Generating compatibility scores and match recommendations
+                  based on quiz responses and profile data
+                </td>
+                <td>Performance of contract; consent for sensitive data</td>
+              </tr>
+              <tr>
+                <td>
+                  Personalizing your experience, including content
+                  recommendations and feature suggestions
+                </td>
+                <td>Legitimate interest</td>
+              </tr>
+              <tr>
+                <td>
+                  Communicating with you regarding account activity, service
+                  updates, and responding to support requests
+                </td>
+                <td>Performance of contract; legitimate interest</td>
+              </tr>
+              <tr>
+                <td>
+                  Sending promotional and marketing communications (only with
+                  your opt-in consent where required by law)
+                </td>
+                <td>Consent</td>
+              </tr>
+              <tr>
+                <td>
+                  Safety, security, and fraud prevention — including detecting
+                  fake accounts, preventing harassment, and enforcing our Terms
+                  of Service and Community Guidelines
+                </td>
+                <td>Legitimate interest; legal obligation</td>
+              </tr>
+              <tr>
+                <td>
+                  Analytics and product improvement — understanding usage
+                  patterns, diagnosing technical issues, and improving our
+                  features
+                </td>
+                <td>Legitimate interest</td>
+              </tr>
+              <tr>
+                <td>
+                  Complying with applicable laws, regulations, legal processes,
+                  and enforceable governmental requests
+                </td>
+                <td>Legal obligation</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* ---- 4. HOW WE SHARE YOUR INFORMATION ---- */}
+          <h2>4. How We Share Your Information</h2>
+          <p>
+            <strong>We do not sell your Personal Data.</strong> For the purposes
+            of the CCPA, we do not &quot;sell&quot; or &quot;share&quot; (as
+            those terms are defined under Cal. Civ. Code § 1798.140) your
+            Personal Data to third parties for monetary or other valuable
+            consideration, nor do we share it for cross-context behavioral
+            advertising.
+          </p>
+          <p>
+            We may disclose your data to the following categories of recipients:
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Recipient</th>
+                <th>Purpose</th>
+                <th>Safeguards</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Other Melly users</td>
+                <td>
+                  Your profile information, quiz results, compatibility scores,
+                  and messages are visible to other users as part of the core
+                  Service functionality
+                </td>
+                <td>
+                  You control what you share on your profile; messaging content
+                  is only visible to conversation participants
+                </td>
+              </tr>
+              <tr>
+                <td>Service providers &amp; processors</td>
+                <td>
+                  Cloud hosting (e.g., AWS, GCP), analytics, payment processing,
+                  push notification delivery, customer support tooling, content
+                  moderation
+                </td>
+                <td>
+                  Data Processing Agreements (DPAs) with each vendor; access
+                  limited to what is necessary to perform their service
+                </td>
+              </tr>
+              <tr>
+                <td>Safety &amp; moderation partners</td>
+                <td>
+                  Detecting and preventing fraud, spam, harassment, and illegal
+                  activity
+                </td>
+                <td>DPAs; processing limited to safety purposes</td>
+              </tr>
+              <tr>
+                <td>Law enforcement &amp; legal authorities</td>
+                <td>
+                  Responding to valid legal process including subpoenas, court
+                  orders, or requests where disclosure is necessary to protect
+                  the safety of any person
+                </td>
+                <td>
+                  We review each request for legal validity and narrow scope
+                  before disclosing
+                </td>
+              </tr>
+              <tr>
+                <td>Corporate transaction parties</td>
+                <td>
+                  In connection with a merger, acquisition, financing,
+                  reorganization, bankruptcy, or sale of assets
+                </td>
+                <td>
+                  Acquiring entity bound by this Privacy Policy or equivalent
+                  protections; users notified in advance
+                </td>
+              </tr>
+              <tr>
+                <td>With your consent</td>
+                <td>
+                  Any additional sharing not described above requires your
+                  explicit, informed consent
+                </td>
+                <td>Consent is freely given, specific, and revocable</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* ---- 5. DATA RETENTION ---- */}
+          <h2>5. Data Retention</h2>
+          <p>
+            We retain your Personal Data only as long as reasonably necessary
+            for the purposes outlined in this policy. Specific retention periods
+            are as follows:
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Data Category</th>
+                <th>Retention Period</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Active account data</td>
+                <td>
+                  Duration of your account plus 30 days following deletion
+                  request (grace period for account recovery)
+                </td>
+              </tr>
+              <tr>
+                <td>Messages</td>
+                <td>
+                  Deleted within 90 days after both participants have deleted
+                  their accounts, unless retention is required for an active
+                  safety investigation or legal obligation
+                </td>
+              </tr>
+              <tr>
+                <td>Verification data (ID, selfies)</td>
+                <td>
+                  Deleted within 30 days after verification is complete, unless
+                  required for dispute resolution
+                </td>
+              </tr>
+              <tr>
+                <td>Payment records</td>
+                <td>
+                  Retained for 7 years as required by applicable tax and
+                  financial regulations
+                </td>
+              </tr>
+              <tr>
+                <td>Usage &amp; analytics logs</td>
+                <td>Aggregated or anonymized within 24 months</td>
+              </tr>
+              <tr>
+                <td>Safety &amp; moderation records</td>
+                <td>
+                  Up to 3 years following the incident, or as required by law
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            When data is no longer needed, it is irreversibly deleted or
+            anonymized so that it can no longer be associated with you.
+          </p>
+
+          {/* ---- 6. DATA SECURITY ---- */}
+          <h2>6. Data Security</h2>
+          <p>
+            We implement technical and organizational measures designed to
+            protect your data against unauthorized access, alteration,
+            disclosure, or destruction. These measures include, but are not
+            limited to:
           </p>
           <ul>
             <li>
-              <strong>Account information</strong> — your name, email address,
-              date of birth, gender, and profile photos.
+              Encryption of data in transit (TLS 1.2+) and at rest (AES-256).
             </li>
             <li>
-              <strong>Profile content</strong> — quiz responses, bio text,
-              preferences, and any other content you choose to share on your
-              profile.
+              Role-based access controls ensuring employees access only the data
+              necessary for their function.
             </li>
             <li>
-              <strong>Communications</strong> — messages you send to other users
-              through the app, as well as any correspondence with our support
-              team.
+              Regular penetration testing and vulnerability assessments by
+              independent third parties.
             </li>
             <li>
-              <strong>Payment information</strong> — if you purchase a
-              subscription or other paid feature, our payment processor collects
-              billing details on our behalf. We do not store full payment card
-              numbers.
+              Incident response procedures with notification to affected users
+              and relevant authorities within timeframes required by applicable
+              law (e.g., 72 hours under the GDPR).
             </li>
           </ul>
-
-          <h3>1.2 Information Collected Automatically</h3>
-          <p>When you use Melly, we automatically collect:</p>
-          <ul>
-            <li>
-              <strong>Device &amp; usage data</strong> — device type, operating
-              system, app version, browser type, IP address, and usage patterns
-              such as features accessed and session duration.
-            </li>
-            <li>
-              <strong>Location data</strong> — approximate location based on
-              your IP address. We will only access precise GPS location with
-              your explicit consent.
-            </li>
-            <li>
-              <strong>Cookies &amp; similar technologies</strong> — we use
-              cookies, pixel tags, and local storage on our website to improve
-              your experience and understand usage trends.
-            </li>
-          </ul>
-
-          <h3>1.3 Information from Third Parties</h3>
           <p>
-            If you sign up using a third-party service (e.g., Apple Sign-In or
-            Google), we may receive your name, email, and profile picture as
-            permitted by that service and your privacy settings.
+            No system is completely secure. While we strive to protect your
+            data, we cannot guarantee absolute security. You are responsible for
+            maintaining the confidentiality of your account credentials.
           </p>
 
-          <h2>2. How We Use Your Information</h2>
-          <p>We use the information we collect to:</p>
-          <ul>
-            <li>
-              Provide, operate, and improve Melly&apos;s features and services.
-            </li>
-            <li>
-              Generate compatibility insights by analyzing quiz responses and
-              profile data.
-            </li>
-            <li>
-              Personalize your experience, including match recommendations.
-            </li>
-            <li>
-              Communicate with you about updates, promotions, and support
-              inquiries.
-            </li>
-            <li>
-              Ensure safety and integrity by detecting, investigating, and
-              preventing fraud, abuse, and policy violations.
-            </li>
-            <li>
-              Comply with legal obligations and enforce our Terms of Service.
-            </li>
-          </ul>
+          {/* ---- 7. YOUR RIGHTS ---- */}
+          <h2>7. Your Rights</h2>
 
-          <h2>3. How We Share Your Information</h2>
+          <h3>7.1 Rights Under the GDPR (EEA, UK, and Switzerland)</h3>
           <p>
-            We do not sell your personal information. We may share your data in
-            the following circumstances:
+            If you are located in the European Economic Area, the United
+            Kingdom, or Switzerland, you have the following rights under the
+            GDPR (and equivalent local legislation):
           </p>
           <ul>
             <li>
-              <strong>With other users</strong> — your profile information, quiz
-              results, and compatibility scores are visible to other Melly users
-              as part of the core service.
+              <strong>Right of access</strong> (Art. 15) — obtain confirmation
+              of whether we process your data and request a copy of it.
             </li>
             <li>
-              <strong>Service providers</strong> — we work with trusted
-              third-party vendors for hosting, analytics, payment processing,
-              customer support, and push notifications. These providers only
-              access the data needed to perform their services.
+              <strong>Right to rectification</strong> (Art. 16) — correct
+              inaccurate or incomplete data.
             </li>
             <li>
-              <strong>Legal requirements</strong> — we may disclose information
-              if required by law, regulation, legal process, or governmental
-              request.
+              <strong>Right to erasure</strong> (Art. 17) — request deletion of
+              your data where it is no longer necessary, you withdraw consent,
+              or processing is unlawful.
             </li>
             <li>
-              <strong>Business transfers</strong> — in the event of a merger,
-              acquisition, or sale of assets, your information may be
-              transferred as part of that transaction.
+              <strong>Right to restriction of processing</strong> (Art. 18) —
+              request that we limit processing in certain circumstances.
             </li>
             <li>
-              <strong>With your consent</strong> — we may share data for
-              purposes not described here with your explicit permission.
+              <strong>Right to data portability</strong> (Art. 20) — receive
+              your data in a structured, commonly used, machine-readable format.
+            </li>
+            <li>
+              <strong>Right to object</strong> (Art. 21) — object to processing
+              based on legitimate interest, including profiling.
+            </li>
+            <li>
+              <strong>Right to withdraw consent</strong> (Art. 7) — withdraw
+              consent at any time where processing is consent-based, without
+              affecting prior lawful processing.
+            </li>
+            <li>
+              <strong>Right to lodge a complaint</strong> — file a complaint
+              with your local supervisory authority.
             </li>
           </ul>
 
-          <h2>4. Data Retention</h2>
+          <h3>7.2 Rights Under the CCPA / CPRA (California Residents)</h3>
           <p>
-            We retain your personal information for as long as your account is
-            active or as needed to provide services to you. If you delete your
-            account, we will delete or anonymize your data within 90 days,
-            except where retention is required by law or for legitimate business
-            purposes (e.g., resolving disputes or enforcing our agreements).
+            If you are a California resident, you have the following rights
+            under the California Consumer Privacy Act, as amended by the
+            California Privacy Rights Act:
           </p>
-
-          <h2>5. Data Security</h2>
-          <p>
-            We implement industry-standard technical and organizational measures
-            to protect your data, including encryption in transit and at rest,
-            access controls, and regular security assessments. However, no
-            method of transmission or storage is 100% secure, and we cannot
-            guarantee absolute security.
-          </p>
-
-          <h2>6. Your Rights &amp; Choices</h2>
-          <p>Depending on your jurisdiction, you may have the right to:</p>
           <ul>
             <li>
-              <strong>Access</strong> — request a copy of the personal data we
-              hold about you.
+              <strong>Right to know</strong> — request disclosure of the
+              categories and specific pieces of Personal Data we have collected,
+              the sources, the business purposes, and the categories of third
+              parties with whom we share it.
             </li>
             <li>
-              <strong>Correction</strong> — update or correct inaccurate
-              information.
+              <strong>Right to delete</strong> — request deletion of your
+              Personal Data, subject to statutory exceptions.
             </li>
             <li>
-              <strong>Deletion</strong> — request deletion of your personal
-              data, subject to legal obligations.
+              <strong>Right to correct</strong> — request correction of
+              inaccurate Personal Data.
             </li>
             <li>
-              <strong>Portability</strong> — receive your data in a structured,
-              commonly used format.
+              <strong>Right to opt out of sale or sharing</strong> — as stated
+              above, we do not sell or share your Personal Data. Should this
+              change, we will provide a conspicuous &quot;Do Not Sell or Share
+              My Personal Information&quot; link.
             </li>
             <li>
-              <strong>Opt-out</strong> — unsubscribe from marketing
-              communications at any time via in-app settings or the unsubscribe
-              link in our emails.
+              <strong>Right to limit use of sensitive Personal Data</strong> —
+              you may direct us to limit use of sensitive categories to what is
+              necessary to provide the Service.
             </li>
             <li>
-              <strong>Withdraw consent</strong> — where processing is based on
-              consent, you may withdraw it at any time.
+              <strong>Right to non-discrimination</strong> — we will not
+              discriminate against you for exercising any of these rights.
             </li>
           </ul>
           <p>
-            To exercise any of these rights, contact us at{" "}
+            To exercise any right under this Section 7, contact us at{" "}
+            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a> or
+            through the in-app Settings &gt; Privacy menu. We will verify your
+            identity before processing your request and respond within 30 days
+            (GDPR) or 45 days (CCPA), with extensions as permitted by law.
+          </p>
+
+          {/* ---- 8. INTERNATIONAL TRANSFERS ---- */}
+          <h2>8. International Data Transfers</h2>
+          <p>
+            Your data may be transferred to and processed in countries other
+            than your country of residence, including the United States. When we
+            transfer data outside the EEA, UK, or Switzerland, we rely on one or
+            more of the following safeguards:
+          </p>
+          <ul>
+            <li>
+              Standard Contractual Clauses (SCCs) approved by the European
+              Commission.
+            </li>
+            <li>
+              The UK International Data Transfer Agreement or Addendum, as
+              applicable.
+            </li>
+            <li>
+              An adequacy decision by the European Commission or UK Secretary of
+              State recognizing the recipient country&apos;s data protection
+              standards.
+            </li>
+            <li>Your explicit consent, where applicable.</li>
+          </ul>
+          <p>
+            You may request a copy of the relevant transfer mechanism by
+            contacting <a href="mailto:dpo@meetmelly.com">dpo@meetmelly.com</a>.
+          </p>
+
+          {/* ---- 9. CHILDREN ---- */}
+          <h2>9. Children&apos;s Privacy</h2>
+          <p>
+            The Service is not directed to, and we do not knowingly collect
+            Personal Data from, anyone under the age of 18 (or the age of
+            majority in your jurisdiction, if higher). We implement
+            age-screening measures during account creation. If we become aware
+            that we have collected data from a person under the applicable
+            minimum age, we will promptly delete that data and terminate the
+            associated account. If you believe a minor has provided us with
+            Personal Data, please contact us immediately at{" "}
             <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
           </p>
 
-          <h2>7. Children&apos;s Privacy</h2>
+          {/* ---- 10. AUTOMATED DECISION-MAKING ---- */}
+          <h2>10. Automated Decision-Making &amp; Profiling</h2>
           <p>
-            Melly is not intended for anyone under the age of 18. We do not
-            knowingly collect personal information from children. If we learn
-            that we have collected data from a child under 18, we will delete it
-            promptly. If you believe a child has provided us with personal
-            information, please contact us.
+            Melly uses algorithmic processing to generate compatibility scores
+            and match recommendations based on your quiz responses and profile
+            data. This processing constitutes profiling under the GDPR. You have
+            the right to request human review of any automated decision that
+            significantly affects you, to express your point of view, and to
+            contest the decision by contacting us at{" "}
+            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
           </p>
 
-          <h2>8. International Data Transfers</h2>
+          {/* ---- 11. COOKIES ---- */}
+          <h2>11. Cookies &amp; Tracking Technologies</h2>
           <p>
-            Your information may be transferred to and processed in countries
-            other than your own. We ensure appropriate safeguards are in place,
-            including standard contractual clauses approved by relevant
-            authorities, to protect your data during such transfers.
-          </p>
-
-          <h2>9. Third-Party Links</h2>
-          <p>
-            Melly may contain links to third-party websites or services. We are
-            not responsible for their privacy practices. We encourage you to
-            review the privacy policies of any third-party services you visit.
-          </p>
-
-          <h2>10. Changes to This Policy</h2>
-          <p>
-            We may update this Privacy Policy from time to time. When we make
-            material changes, we will notify you through the app or by email.
-            Your continued use of Melly after such changes constitutes
-            acceptance of the updated policy.
-          </p>
-
-          <h2>11. Contact Us</h2>
-          <p>
-            If you have any questions, concerns, or requests regarding this
-            Privacy Policy or our data practices, please reach out:
+            Our website uses cookies and similar technologies for the following
+            purposes:
           </p>
           <ul>
             <li>
-              <strong>Email:</strong>{" "}
-              <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>
+              <strong>Strictly necessary cookies</strong> — required for the
+              website to function (e.g., session management, security). These
+              cannot be disabled.
             </li>
             <li>
-              <strong>General inquiries:</strong>{" "}
-              <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
+              <strong>Functional cookies</strong> — remember your preferences
+              and settings.
+            </li>
+            <li>
+              <strong>Analytics cookies</strong> — help us understand how
+              visitors interact with our website (e.g., Google Analytics). These
+              are set only with your consent where required.
             </li>
           </ul>
+          <p>
+            We do not use advertising or behavioral tracking cookies. You may
+            manage cookie preferences through our cookie banner or your browser
+            settings. Disabling certain cookies may affect website
+            functionality.
+          </p>
+
+          {/* ---- 12. THIRD-PARTY LINKS ---- */}
+          <h2>12. Third-Party Links &amp; Services</h2>
+          <p>
+            The Service may contain links to websites or services operated by
+            third parties. We are not responsible for the privacy practices or
+            content of those services. We encourage you to review their privacy
+            policies before providing them with any personal information.
+          </p>
+
+          {/* ---- 13. CHANGES ---- */}
+          <h2>13. Changes to This Privacy Policy</h2>
+          <p>
+            We may update this Privacy Policy from time to time to reflect
+            changes in our practices, legal requirements, or for other
+            operational reasons. When we make material changes, we will provide
+            prominent notice through the app (e.g., an in-app notification or
+            banner) and, where required by law, obtain your consent before the
+            changes take effect. The &quot;Last updated&quot; date at the top of
+            this page indicates when the most recent revisions were published.
+            Your continued use of the Service after the effective date of any
+            changes constitutes your acceptance of the revised policy.
+          </p>
+
+          {/* ---- 14. CONTACT ---- */}
+          <h2>14. Contact Us</h2>
+          <p>
+            If you have questions, concerns, or requests regarding this Privacy
+            Policy or our data practices, you may contact us through the
+            following channels:
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Contact</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Data Protection Officer</td>
+                <td>
+                  <a href="mailto:dpo@meetmelly.com">dpo@meetmelly.com</a>
+                </td>
+              </tr>
+              <tr>
+                <td>Privacy inquiries &amp; rights requests</td>
+                <td>
+                  <a href="mailto:privacy@meetmelly.com">
+                    privacy@meetmelly.com
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>General inquiries</td>
+                <td>
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
+                </td>
+              </tr>
+              <tr>
+                <td>Mailing address</td>
+                <td>
+                  Melly App, Inc.
+                  <br />
+                  [Your registered business address]
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            If you are located in the EEA and are unsatisfied with our response,
+            you have the right to lodge a complaint with your local data
+            protection supervisory authority.
+          </p>
         </article>
       </main>
 

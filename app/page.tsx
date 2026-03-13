@@ -389,6 +389,13 @@ export default function LandingPage() {
           </a>
           <span className="text-gray-300">·</span>
           <a
+            href="/terms"
+            className="text-primary hover:text-primaryDark transition font-medium"
+          >
+            Terms of Service
+          </a>
+          <span className="text-gray-300">·</span>
+          <a
             href="mailto:hello@meetmelly.com"
             className="text-primary hover:text-primaryDark transition"
           >

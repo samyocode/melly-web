@@ -472,6 +472,13 @@ export default function PrivacyPage() {
             When data is no longer needed, it is irreversibly deleted or
             anonymized so that it can no longer be associated with you.
           </p>
+          <p>
+            To request deletion of your account and all associated data, visit
+            our <a href="/delete-account">Account Deletion Request</a> page, use
+            the in-app Settings &gt; Account &gt; Delete Account option, or
+            email us at{" "}
+            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+          </p>
 
           {/* ---- 6. DATA SECURITY ---- */}
           <h2>6. Data Security</h2>
@@ -591,9 +598,12 @@ export default function PrivacyPage() {
           <p>
             To exercise any right under this Section 7, contact us at{" "}
             <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a> or
-            through the in-app Settings &gt; Privacy menu. We will verify your
-            identity before processing your request and respond within 30 days
-            (GDPR) or 45 days (CCPA), with extensions as permitted by law.
+            through the in-app Settings &gt; Privacy menu. To request account
+            and data deletion specifically, you may also use our{" "}
+            <a href="/delete-account">Account Deletion Request</a> page. We will
+            verify your identity before processing your request and respond
+            within 30 days (GDPR) or 45 days (CCPA), with extensions as
+            permitted by law.
           </p>
 
           {/* ---- 8. INTERNATIONAL TRANSFERS ---- */}
@@ -767,13 +777,6 @@ export default function PrivacyPage() {
             className="text-primary hover:text-primaryDark transition font-medium"
           >
             Privacy Policy
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="/terms"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Terms of Service
           </a>
           <span className="text-gray-300">·</span>
           <a

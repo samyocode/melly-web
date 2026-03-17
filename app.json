@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "c73c833f-2e2c-4b94-8ed0-bacba2fb920f"
+      }
+    },
+    "android": {
+      "package": "com.samyoshon.mellyweb"
+    }
+  }
+}

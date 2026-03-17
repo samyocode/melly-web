@@ -70,7 +70,7 @@ export default function TermsPage() {
           <p>
             Welcome to Melly. These Terms of Service (&quot;Terms&quot;)
             constitute a legally binding agreement between you (&quot;you,&quot;
-            &quot;your,&quot; or &quot;User&quot;) and Melly App, Inc.
+            &quot;your,&quot; or &quot;User&quot;) and Escondido Development LLC
             (&quot;Melly,&quot; &quot;we,&quot; &quot;us,&quot; or
             &quot;our&quot;), governing your access to and use of the Melly
             mobile application, the website located at{" "}
@@ -151,8 +151,8 @@ export default function TermsPage() {
             </li>
             <li>
               Immediately notify us at{" "}
-              <a href="mailto:support@meetmelly.com">support@meetmelly.com</a>{" "}
-              of any unauthorized use of your account or any other breach of
+              <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a> of
+              any unauthorized use of your account or any other breach of
               security.
             </li>
           </ul>
@@ -371,7 +371,7 @@ export default function TermsPage() {
             Play Store, refund requests are governed by the respective
             platform&apos;s refund policies. For any billing disputes or errors,
             contact us at{" "}
-            <a href="mailto:billing@meetmelly.com">billing@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           <h3>6.5 Free Trials &amp; Promotions</h3>
@@ -429,11 +429,11 @@ export default function TermsPage() {
           <ul>
             <li>
               <strong>Email:</strong>{" "}
-              <a href="mailto:dmca@meetmelly.com">dmca@meetmelly.com</a>
+              <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
             </li>
             <li>
-              <strong>Mail:</strong> Melly App, Inc., Attn: DMCA Agent, [Your
-              registered business address]
+              <strong>Mail:</strong> Escondido Development LLC, Attn: DMCA
+              Agent, hello@meetmelly.com
             </li>
           </ul>
           <p>Your notice must include:</p>
@@ -521,7 +521,7 @@ export default function TermsPage() {
             exercise them are provided in our{" "}
             <a href="/privacy">Privacy Policy</a>. You may also exercise your
             rights by contacting us at{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           <h3>9.5 Data Retention &amp; Account Deletion</h3>
@@ -541,7 +541,7 @@ export default function TermsPage() {
             <a href="/delete-account">Account Deletion Request</a> page, using
             the in-app Settings &gt; Account &gt; Delete Account option, or
             emailing{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           <h3>9.6 Data Security Obligations</h3>
@@ -578,7 +578,7 @@ export default function TermsPage() {
             that a minor has created an account, we will promptly terminate the
             account and delete all associated data. If you believe a minor is
             using the Service, please report it to{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           <h3>9.9 Third-Party Services &amp; SDKs</h3>
@@ -713,7 +713,7 @@ export default function TermsPage() {
           <p>
             Before initiating any formal dispute resolution proceeding, you
             agree to first contact us at{" "}
-            <a href="mailto:legal@meetmelly.com">legal@meetmelly.com</a> and
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a> and
             attempt to resolve the dispute informally for at least 30 days.
           </p>
 
@@ -723,9 +723,7 @@ export default function TermsPage() {
             that any dispute, claim, or controversy arising out of or relating
             to these Terms or the Service shall be resolved by binding
             arbitration administered by the American Arbitration Association
-            (&quot;AAA&quot;) under its Consumer Arbitration Rules. The
-            arbitration shall be conducted in [Your State/City], unless both
-            parties agree to a different location or virtual proceedings.
+            (&quot;AAA&quot;) under its Consumer Arbitration Rules.
           </p>
           <p>
             The arbitrator&apos;s decision shall be final and binding and may be
@@ -761,12 +759,11 @@ export default function TermsPage() {
           <p>
             You may opt out of the arbitration and class action waiver
             provisions by sending written notice to{" "}
-            <a href="mailto:legal@meetmelly.com">legal@meetmelly.com</a> within
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a> within
             30 days of first accepting these Terms. Your notice must include
             your name, account email, and a clear statement that you wish to opt
             out of binding arbitration. If you opt out, disputes will be
-            resolved in the state or federal courts located in [Your
-            State/County].
+            resolved in the state or federal courts located in Sheridan County.
           </p>
 
           {/* ---- 14. TERMINATION ---- */}
@@ -778,7 +775,7 @@ export default function TermsPage() {
             menu, by submitting a request on our{" "}
             <a href="/delete-account">Account Deletion Request</a> page, or by
             contacting us at{" "}
-            <a href="mailto:support@meetmelly.com">support@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
             Account deletion is subject to the data retention periods described
             in our <a href="/privacy">Privacy Policy</a>.
           </p>
@@ -813,11 +810,11 @@ export default function TermsPage() {
           <h2>15. Governing Law</h2>
           <p>
             These Terms shall be governed by and construed in accordance with
-            the laws of the State of [Your State], without regard to its
-            conflict of law provisions. To the extent that any lawsuit or court
-            proceeding is permitted hereunder, you and Melly agree to submit to
-            the exclusive personal jurisdiction of the state and federal courts
-            located in [Your County], [Your State].
+            the laws of the State of Wyoming, without regard to its conflict of
+            law provisions. To the extent that any lawsuit or court proceeding
+            is permitted hereunder, you and Melly agree to submit to the
+            exclusive personal jurisdiction of the state and federal courts
+            located in Sheridan County, Wyoming.
           </p>
 
           {/* ---- 16. GENERAL PROVISIONS ---- */}
@@ -868,7 +865,7 @@ export default function TermsPage() {
           <h3>16.6 Notices</h3>
           <p>
             All notices to Melly under these Terms must be sent to{" "}
-            <a href="mailto:legal@meetmelly.com">legal@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
             Notices to you may be sent to the email address associated with your
             account or delivered through the Service. Notice is deemed received
             upon delivery.
@@ -888,37 +885,25 @@ export default function TermsPage() {
               <tr>
                 <td>Legal inquiries</td>
                 <td>
-                  <a href="mailto:legal@meetmelly.com">legal@meetmelly.com</a>
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
                 </td>
               </tr>
               <tr>
                 <td>Billing &amp; subscription</td>
                 <td>
-                  <a href="mailto:billing@meetmelly.com">
-                    billing@meetmelly.com
-                  </a>
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
                 </td>
               </tr>
               <tr>
                 <td>General support</td>
                 <td>
-                  <a href="mailto:support@meetmelly.com">
-                    support@meetmelly.com
-                  </a>
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
                 </td>
               </tr>
               <tr>
                 <td>DMCA &amp; copyright</td>
                 <td>
-                  <a href="mailto:dmca@meetmelly.com">dmca@meetmelly.com</a>
-                </td>
-              </tr>
-              <tr>
-                <td>Mailing address</td>
-                <td>
-                  Melly App, Inc.
-                  <br />
-                  [Your registered business address]
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
                 </td>
               </tr>
             </tbody>
@@ -928,9 +913,7 @@ export default function TermsPage() {
 
       {/* --- FOOTER --- */}
       <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">
-          © 2026 Melly App. All rights reserved.
-        </p>
+        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
         <div className="flex items-center justify-center gap-4 text-sm">
           <a
             href="/privacy"

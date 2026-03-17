@@ -68,9 +68,9 @@ export default function PrivacyPage() {
         <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
           {/* ---- INTRODUCTION ---- */}
           <p>
-            Melly App, Inc. (&quot;Melly,&quot; &quot;we,&quot; &quot;us,&quot;
-            or &quot;our&quot;) operates the Melly mobile application and
-            website located at{" "}
+            Escondido Development LLC. (&quot;Melly,&quot; &quot;we,&quot;
+            &quot;us,&quot; or &quot;our&quot;) operates the Melly mobile
+            application and website located at{" "}
             <a href="https://www.meetmelly.com">www.meetmelly.com</a>{" "}
             (collectively, the &quot;Service&quot;). This Privacy Policy
             describes how we collect, use, disclose, retain, and protect your
@@ -86,10 +86,10 @@ export default function PrivacyPage() {
           </p>
           <p>
             For the purposes of the EU General Data Protection Regulation
-            (&quot;GDPR&quot;), Melly App, Inc. is the data controller. For
-            questions about this policy or our data practices, contact our Data
-            Protection Officer at{" "}
-            <a href="mailto:dpo@meetmelly.com">dpo@meetmelly.com</a>.
+            (&quot;GDPR&quot;), Escondido Development LLC is the data
+            controller. For questions about this policy or our data practices,
+            contact our Data Protection Officer at{" "}
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           {/* ---- 1. DEFINITIONS ---- */}
@@ -246,7 +246,7 @@ export default function PrivacyPage() {
             our matching and compatibility features, and only with your explicit
             consent. You may withdraw consent at any time by deleting the
             relevant information from your profile or by contacting us at{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
             Withdrawal of consent does not affect the lawfulness of processing
             carried out prior to withdrawal.
           </p>
@@ -477,7 +477,7 @@ export default function PrivacyPage() {
             our <a href="/delete-account">Account Deletion Request</a> page, use
             the in-app Settings &gt; Account &gt; Delete Account option, or
             email us at{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           {/* ---- 6. DATA SECURITY ---- */}
@@ -597,7 +597,7 @@ export default function PrivacyPage() {
           </ul>
           <p>
             To exercise any right under this Section 7, contact us at{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a> or
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a> or
             through the in-app Settings &gt; Privacy menu. To request account
             and data deletion specifically, you may also use our{" "}
             <a href="/delete-account">Account Deletion Request</a> page. We will
@@ -632,7 +632,8 @@ export default function PrivacyPage() {
           </ul>
           <p>
             You may request a copy of the relevant transfer mechanism by
-            contacting <a href="mailto:dpo@meetmelly.com">dpo@meetmelly.com</a>.
+            contacting{" "}
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           {/* ---- 9. CHILDREN ---- */}
@@ -646,7 +647,7 @@ export default function PrivacyPage() {
             minimum age, we will promptly delete that data and terminate the
             associated account. If you believe a minor has provided us with
             Personal Data, please contact us immediately at{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           {/* ---- 10. AUTOMATED DECISION-MAKING ---- */}
@@ -658,7 +659,7 @@ export default function PrivacyPage() {
             the right to request human review of any automated decision that
             significantly affects you, to express your point of view, and to
             contest the decision by contacting us at{" "}
-            <a href="mailto:privacy@meetmelly.com">privacy@meetmelly.com</a>.
+            <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
           {/* ---- 11. COOKIES ---- */}
@@ -731,29 +732,19 @@ export default function PrivacyPage() {
               <tr>
                 <td>Data Protection Officer</td>
                 <td>
-                  <a href="mailto:dpo@meetmelly.com">dpo@meetmelly.com</a>
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
                 </td>
               </tr>
               <tr>
                 <td>Privacy inquiries &amp; rights requests</td>
                 <td>
-                  <a href="mailto:privacy@meetmelly.com">
-                    privacy@meetmelly.com
-                  </a>
+                  <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
                 </td>
               </tr>
               <tr>
                 <td>General inquiries</td>
                 <td>
                   <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>
-                </td>
-              </tr>
-              <tr>
-                <td>Mailing address</td>
-                <td>
-                  Melly App, Inc.
-                  <br />
-                  [Your registered business address]
                 </td>
               </tr>
             </tbody>
@@ -768,9 +759,7 @@ export default function PrivacyPage() {
 
       {/* --- FOOTER --- */}
       <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">
-          © 2026 Melly App. All rights reserved.
-        </p>
+        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
         <div className="flex items-center justify-center gap-4 text-sm">
           <a
             href="/privacy"

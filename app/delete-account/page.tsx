@@ -63,7 +63,7 @@ export default function DeleteAccountPage() {
       {/* --- CONTENT --- */}
       <main className="py-20">
         <div className="max-w-2xl px-6 mx-auto">
-          {/* --- INFO SECTION --- */}
+          {/* --- WHAT HAPPENS --- */}
           <div className="mb-12 space-y-6">
             <h2 className="text-2xl font-bold text-gray-900">
               What happens when you delete your account
@@ -130,174 +130,101 @@ export default function DeleteAccountPage() {
           {/* --- DIVIDER --- */}
           <hr className="mb-12 border-gray-100" />
 
-          {/* --- DELETION FORM --- */}
-          <div>
-            <h2 className="mb-2 text-2xl font-bold text-gray-900">
-              Submit a deletion request
+          {/* --- HOW TO DELETE --- */}
+          <div className="mb-12">
+            <h2 className="mb-6 text-2xl font-bold text-gray-900">
+              How to delete your account
             </h2>
-            <p className="mb-8 text-base text-gray-500">
-              Enter the email address associated with your Melly account. We
-              will send you a verification email to confirm your identity before
-              processing the request.
-            </p>
 
-            {/*
-              NOTE: This form uses a standard HTML action. Replace the action
-              URL with your actual API endpoint or server action that handles
-              deletion requests (e.g., /api/delete-account). For a Next.js
-              Server Action, convert this to a form with the `action` prop
-              pointing to your server action function.
-            */}
-            <form
-              action="/api/delete-account"
-              method="POST"
-              className="space-y-6"
-            >
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-semibold text-gray-700"
-                >
-                  Account email address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-3 text-base text-gray-900 bg-gray-50 border border-gray-200 rounded-xl outline-none transition placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                />
+            {/* Method 1: In-app */}
+            <div className="mb-6 p-6 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="flex items-start gap-4">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm shrink-0">
+                  1
+                </div>
+                <div>
+                  <h3 className="mb-2 text-base font-bold text-gray-900">
+                    In the Melly app (recommended)
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Open the Melly app and go to{" "}
+                    <strong>Settings → Account → Delete Account</strong>. Follow
+                    the on-screen prompts to confirm. Your account will be
+                    deactivated immediately and permanently deleted after the
+                    30-day grace period.
+                  </p>
+                </div>
               </div>
+            </div>
 
-              {/* Reason (optional) */}
-              <div>
-                <label
-                  htmlFor="reason"
-                  className="block mb-2 text-sm font-semibold text-gray-700"
-                >
-                  Reason for leaving{" "}
-                  <span className="font-normal text-gray-400">(optional)</span>
-                </label>
-                <select
-                  id="reason"
-                  name="reason"
-                  className="w-full px-4 py-3 text-base text-gray-900 bg-gray-50 border border-gray-200 rounded-xl outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 appearance-none"
-                >
-                  <option value="">Select a reason…</option>
-                  <option value="found_someone">I found someone</option>
-                  <option value="not_useful">
-                    The app isn&apos;t useful for me
-                  </option>
-                  <option value="privacy_concerns">
-                    Privacy or data concerns
-                  </option>
-                  <option value="too_many_notifications">
-                    Too many notifications
-                  </option>
-                  <option value="bad_experience">I had a bad experience</option>
-                  <option value="other">Other</option>
-                </select>
+            {/* Method 2: Email */}
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="flex items-start gap-4">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm shrink-0">
+                  2
+                </div>
+                <div>
+                  <h3 className="mb-2 text-base font-bold text-gray-900">
+                    By email
+                  </h3>
+                  <p className="mb-4 text-sm text-gray-600 leading-relaxed">
+                    Send an email from the address associated with your Melly
+                    account to{" "}
+                    <a
+                      href="mailto:hello@meetmelly.com?subject=Account%20Deletion%20Request"
+                      className="text-primary hover:underline font-medium"
+                    >
+                      hello@meetmelly.com
+                    </a>{" "}
+                    with the subject line{" "}
+                    <strong>&quot;Account Deletion Request.&quot;</strong> We
+                    will verify your identity and process your request within 30
+                    days.
+                  </p>
+                  <a
+                    href="mailto:hello@meetmelly.com?subject=Account%20Deletion%20Request"
+                    className="inline-flex px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20"
+                  >
+                    Send Deletion Request
+                  </a>
+                </div>
               </div>
-
-              {/* Additional comments */}
-              <div>
-                <label
-                  htmlFor="comments"
-                  className="block mb-2 text-sm font-semibold text-gray-700"
-                >
-                  Additional comments{" "}
-                  <span className="font-normal text-gray-400">(optional)</span>
-                </label>
-                <textarea
-                  id="comments"
-                  name="comments"
-                  rows={3}
-                  placeholder="Anything else you'd like us to know…"
-                  className="w-full px-4 py-3 text-base text-gray-900 bg-gray-50 border border-gray-200 rounded-xl outline-none transition resize-none placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                ></textarea>
-              </div>
-
-              {/* Confirmation checkbox */}
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  id="confirm"
-                  name="confirm"
-                  required
-                  className="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
-                />
-                <label
-                  htmlFor="confirm"
-                  className="text-sm text-gray-600 leading-relaxed cursor-pointer"
-                >
-                  I understand that this action is{" "}
-                  <strong>permanent and irreversible</strong> after the 30-day
-                  grace period. My profile, quiz data, matches, and messages
-                  will be permanently deleted. Any active subscription will not
-                  be refunded for the remaining period.
-                </label>
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full px-6 py-4 text-base font-bold text-white transition rounded-xl bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500/20 shadow-lg shadow-red-600/20"
-              >
-                Request Account Deletion
-              </button>
-
-              <p className="text-center text-sm text-gray-400">
-                We will send a confirmation email to verify your identity. Your
-                account will not be deleted until you confirm via that email.
-              </p>
-            </form>
+            </div>
           </div>
 
-          {/* --- ALTERNATIVE METHODS --- */}
-          <div className="mt-16 p-6 rounded-2xl bg-gray-50 border border-gray-100">
-            <h3 className="mb-3 text-base font-bold text-gray-900">
-              Other ways to delete your account
+          {/* --- NOTE --- */}
+          <div className="p-6 rounded-2xl bg-amber-50 border border-amber-100">
+            <h3 className="mb-2 text-base font-bold text-gray-900">
+              Before you go
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>
-                <strong>In the app:</strong> Go to Settings &gt; Account &gt;
-                Delete Account and follow the prompts.
-              </li>
-              <li>
-                <strong>By email:</strong> Send a request from your registered
-                email to{" "}
-                <a
-                  href="mailto:privacy@meetmelly.com"
-                  className="text-primary hover:underline font-medium"
-                >
-                  privacy@meetmelly.com
-                </a>{" "}
-                with the subject line &quot;Account Deletion Request.&quot;
-              </li>
-            </ul>
-            <p className="mt-4 text-sm text-gray-400">
-              All deletion requests are processed within 30 days of identity
-              verification, in accordance with our{" "}
-              <a
-                href="/privacy"
-                className="text-primary hover:underline font-medium"
-              >
-                Privacy Policy
-              </a>
-              .
+            <p className="text-sm text-gray-600 leading-relaxed">
+              If you have an active subscription, deleting your account does not
+              automatically cancel it. Please cancel your subscription through
+              your device&apos;s subscription settings (
+              <strong>Apple App Store</strong> or{" "}
+              <strong>Google Play Store</strong>) before deleting your account
+              to avoid future charges.
             </p>
           </div>
+
+          {/* --- FOOTER NOTE --- */}
+          <p className="mt-8 text-center text-sm text-gray-400">
+            All deletion requests are processed within 30 days of identity
+            verification, in accordance with our{" "}
+            <a
+              href="/privacy"
+              className="text-primary hover:underline font-medium"
+            >
+              Privacy Policy
+            </a>
+            .
+          </p>
         </div>
       </main>
 
       {/* --- FOOTER --- */}
       <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">
-          © 2026 Melly App. All rights reserved.
-        </p>
+        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
         <div className="flex items-center justify-center gap-4 text-sm">
           <a
             href="/privacy"

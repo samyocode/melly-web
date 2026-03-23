@@ -30,3 +30,46 @@ body {
   color: rgb(var(--foreground-rgb));
   background: #fdf2f8;
 }
+
+/* ─── OrbButton blob animations ───────────────────────────────────────────── */
+/* Add these to your globals.css or app/globals.css                            */
+
+@keyframes orb-drift-1 {
+  0% {
+    transform: translate(-40%, -20%);
+  }
+  50% {
+    transform: translate(120%, 20%);
+  }
+  100% {
+    transform: translate(-40%, -20%);
+  }
+}
+
+@keyframes orb-drift-2 {
+  0% {
+    transform: translate(100%, 30%);
+  }
+  50% {
+    transform: translate(-80%, -15%);
+  }
+  100% {
+    transform: translate(100%, 30%);
+  }
+}
+
+.orb-blob-1 {
+  animation: orb-drift-1 6s ease-in-out infinite;
+}
+
+.orb-blob-2 {
+  animation: orb-drift-2 8s ease-in-out infinite;
+}
+
+/* Pause animations when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .orb-blob-1,
+  .orb-blob-2 {
+    animation: none;
+  }
+}

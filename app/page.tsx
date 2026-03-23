@@ -4,6 +4,7 @@ import Script from "next/script";
 import Image from "next/image";
 import Link from "next/link";
 import MellyOrb from "@/components/MellyOrb";
+import OrbButton from "@/components/OrbButton";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -260,12 +261,9 @@ export default function LandingPage() {
             your person.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6">
-            <a
-              href="#quizzes"
-              className="w-full sm:w-auto px-8 py-4 text-base font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-lg shadow-pink-500/25 text-center"
-            >
+            <OrbButton href="#quizzes" size="lg" fullWidthMobile>
               Try a Free Quiz
-            </a>
+            </OrbButton>
             <a
               href="#waitlist"
               className="w-full sm:w-auto px-8 py-4 text-base font-bold text-gray-700 rounded-full bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 transition text-center"
@@ -538,12 +536,9 @@ export default function LandingPage() {
                 placeholder="your@email.com"
                 className="flex-1 px-5 py-3.5 text-base rounded-full border border-gray-200 bg-pink-50/60 focus:bg-white focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition"
               />
-              <button
-                type="submit"
-                className="px-6 py-3.5 text-base font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-md shadow-pink-500/20 whitespace-nowrap"
-              >
+              <OrbButton type="submit" className="whitespace-nowrap">
                 Join Waitlist
-              </button>
+              </OrbButton>
             </form>
           </div>
         </div>

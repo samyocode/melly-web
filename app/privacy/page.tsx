@@ -1,6 +1,9 @@
 // app/privacy/page.tsx
 
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Privacy Policy – Melly",
@@ -13,59 +16,16 @@ const EFFECTIVE_DATE = "March 13, 2026";
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-primary selection:text-white">
-      {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-50 w-full py-5 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <div className="flex items-center justify-between max-w-7xl px-8 mx-auto">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-orb1"></div>
-            <span className="text-xl font-bold tracking-tight text-gray-900">
-              Melly
-            </span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
-            <a href="/" className="hover:text-primary transition">
-              Home
-            </a>
-            <a href="/#quizzes" className="hover:text-primary transition">
-              Quizzes
-            </a>
-            <a
-              href="mailto:hello@meetmelly.com"
-              className="hover:text-primary transition"
-            >
-              Contact
-            </a>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-700 hover:text-primary transition">
-              Log in
-            </button>
-            <button className="px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20">
-              Download
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* --- HERO HEADER --- */}
-      <header className="relative py-20 overflow-hidden bg-[#fdf2f8]">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orb1/20 via-softPinkBg to-white pointer-events-none"></div>
-        <div className="relative z-10 max-w-3xl px-6 mx-auto text-center">
-          <h1 className="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-6xl">
-            Privacy Policy
-          </h1>
-          <p className="text-lg text-gray-500">
-            Effective: {EFFECTIVE_DATE} · Last updated: {LAST_UPDATED}
-          </p>
-        </div>
-      </header>
+    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-pink-500 selection:text-white">
+      <Navbar />
+      <PageHeader
+        title="Privacy Policy"
+        subtitle={`Effective: ${EFFECTIVE_DATE} · Last updated: ${LAST_UPDATED}`}
+      />
 
       {/* --- CONTENT --- */}
       <main className="py-20">
-        <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
+        <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-pink-500 prose-a:no-underline hover:prose-a:underline">
           {/* ---- INTRODUCTION ---- */}
           <p>
             Escondido Development LLC. (&quot;Melly,&quot; &quot;we,&quot;
@@ -412,7 +372,7 @@ export default function PrivacyPage() {
             </tbody>
           </table>
 
-          {/* ---- 5. DATA RETENTION ---- */}
+          {/* ---- 5–14 remain identical in content, just inheriting new prose-a:text-pink-500 ---- */}
           <h2>5. Data Retention</h2>
           <p>
             We retain your Personal Data only as long as reasonably necessary
@@ -480,7 +440,6 @@ export default function PrivacyPage() {
             <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
-          {/* ---- 6. DATA SECURITY ---- */}
           <h2>6. Data Security</h2>
           <p>
             We implement technical and organizational measures designed to
@@ -512,7 +471,6 @@ export default function PrivacyPage() {
             maintaining the confidentiality of your account credentials.
           </p>
 
-          {/* ---- 7. YOUR RIGHTS ---- */}
           <h2>7. Your Rights</h2>
 
           <h3>7.1 Rights Under the GDPR (EEA, UK, and Switzerland)</h3>
@@ -606,7 +564,6 @@ export default function PrivacyPage() {
             permitted by law.
           </p>
 
-          {/* ---- 8. INTERNATIONAL TRANSFERS ---- */}
           <h2>8. International Data Transfers</h2>
           <p>
             Your data may be transferred to and processed in countries other
@@ -636,7 +593,6 @@ export default function PrivacyPage() {
             <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
-          {/* ---- 9. CHILDREN ---- */}
           <h2>9. Children&apos;s Privacy</h2>
           <p>
             The Service is not directed to, and we do not knowingly collect
@@ -650,7 +606,6 @@ export default function PrivacyPage() {
             <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
-          {/* ---- 10. AUTOMATED DECISION-MAKING ---- */}
           <h2>10. Automated Decision-Making &amp; Profiling</h2>
           <p>
             Melly uses algorithmic processing to generate compatibility scores
@@ -662,7 +617,6 @@ export default function PrivacyPage() {
             <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
-          {/* ---- 11. COOKIES ---- */}
           <h2>11. Cookies &amp; Tracking Technologies</h2>
           <p>
             Our website uses cookies and similar technologies for the following
@@ -691,7 +645,6 @@ export default function PrivacyPage() {
             functionality.
           </p>
 
-          {/* ---- 12. THIRD-PARTY LINKS ---- */}
           <h2>12. Third-Party Links &amp; Services</h2>
           <p>
             The Service may contain links to websites or services operated by
@@ -700,7 +653,6 @@ export default function PrivacyPage() {
             policies before providing them with any personal information.
           </p>
 
-          {/* ---- 13. CHANGES ---- */}
           <h2>13. Changes to This Privacy Policy</h2>
           <p>
             We may update this Privacy Policy from time to time to reflect
@@ -714,7 +666,6 @@ export default function PrivacyPage() {
             changes constitutes your acceptance of the revised policy.
           </p>
 
-          {/* ---- 14. CONTACT ---- */}
           <h2>14. Contact Us</h2>
           <p>
             If you have questions, concerns, or requests regarding this Privacy
@@ -757,25 +708,7 @@ export default function PrivacyPage() {
         </article>
       </main>
 
-      {/* --- FOOTER --- */}
-      <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <a
-            href="/privacy"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Privacy Policy
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="mailto:hello@meetmelly.com"
-            className="text-primary hover:text-primaryDark transition"
-          >
-            hello@meetmelly.com
-          </a>
-        </div>
-      </footer>
+      <Footer currentPage="privacy" />
     </div>
   );
 }

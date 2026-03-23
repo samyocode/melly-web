@@ -1,6 +1,9 @@
 // app/terms/page.tsx
 
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Terms of Service – Melly",
@@ -13,59 +16,16 @@ const EFFECTIVE_DATE = "March 13, 2026";
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-primary selection:text-white">
-      {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-50 w-full py-5 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <div className="flex items-center justify-between max-w-7xl px-8 mx-auto">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-orb1"></div>
-            <span className="text-xl font-bold tracking-tight text-gray-900">
-              Melly
-            </span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
-            <a href="/" className="hover:text-primary transition">
-              Home
-            </a>
-            <a href="/#quizzes" className="hover:text-primary transition">
-              Quizzes
-            </a>
-            <a
-              href="mailto:hello@meetmelly.com"
-              className="hover:text-primary transition"
-            >
-              Contact
-            </a>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-700 hover:text-primary transition">
-              Log in
-            </button>
-            <button className="px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20">
-              Download
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* --- HERO HEADER --- */}
-      <header className="relative py-20 overflow-hidden bg-[#fdf2f8]">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orb1/20 via-softPinkBg to-white pointer-events-none"></div>
-        <div className="relative z-10 max-w-3xl px-6 mx-auto text-center">
-          <h1 className="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-6xl">
-            Terms of Service
-          </h1>
-          <p className="text-lg text-gray-500">
-            Effective: {EFFECTIVE_DATE} · Last updated: {LAST_UPDATED}
-          </p>
-        </div>
-      </header>
+    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-pink-500 selection:text-white">
+      <Navbar />
+      <PageHeader
+        title="Terms of Service"
+        subtitle={`Effective: ${EFFECTIVE_DATE} · Last updated: ${LAST_UPDATED}`}
+      />
 
       {/* --- CONTENT --- */}
       <main className="py-20">
-        <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
+        <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-pink-500 prose-a:no-underline hover:prose-a:underline">
           {/* ---- INTRODUCTION ---- */}
           <p>
             Welcome to Melly. These Terms of Service (&quot;Terms&quot;)
@@ -96,7 +56,6 @@ export default function TermsPage() {
             acceptance of the updated Terms.
           </p>
 
-          {/* ---- 1. ELIGIBILITY ---- */}
           <h2>1. Eligibility</h2>
           <p>To use the Service, you must:</p>
           <ul>
@@ -130,7 +89,6 @@ export default function TermsPage() {
             result in suspension or termination of your account.
           </p>
 
-          {/* ---- 2. ACCOUNT REGISTRATION ---- */}
           <h2>2. Account Registration &amp; Security</h2>
           <p>
             You must create an account to use the Service. When registering, you
@@ -163,7 +121,6 @@ export default function TermsPage() {
             Each person may maintain only one active account.
           </p>
 
-          {/* ---- 3. THE SERVICE ---- */}
           <h2>3. Description of the Service</h2>
           <p>
             Melly is a dating and social connection platform that uses
@@ -199,7 +156,6 @@ export default function TermsPage() {
             other users.
           </p>
 
-          {/* ---- 4. USER CONDUCT ---- */}
           <h2>4. User Conduct &amp; Community Guidelines</h2>
           <p>
             You agree to use the Service in a lawful, respectful manner and in
@@ -282,7 +238,6 @@ export default function TermsPage() {
             users, the Service, or third parties.
           </p>
 
-          {/* ---- 5. USER CONTENT ---- */}
           <h2>5. User Content</h2>
 
           <h3>5.1 Ownership</h3>
@@ -332,7 +287,6 @@ export default function TermsPage() {
             Content.
           </p>
 
-          {/* ---- 6. SUBSCRIPTIONS & PURCHASES ---- */}
           <h2>6. Subscriptions, Purchases &amp; Billing</h2>
 
           <h3>6.1 Paid Features</h3>
@@ -382,7 +336,6 @@ export default function TermsPage() {
             the standard rate. Free trials are limited to one per user.
           </p>
 
-          {/* ---- 7. INTELLECTUAL PROPERTY ---- */}
           <h2>7. Intellectual Property</h2>
           <p>
             The Service, including all software, algorithms, user interface
@@ -418,7 +371,6 @@ export default function TermsPage() {
             </li>
           </ul>
 
-          {/* ---- 8. DMCA ---- */}
           <h2>8. Copyright Infringement &amp; DMCA</h2>
           <p>
             We respect the intellectual property rights of others. If you
@@ -463,7 +415,6 @@ export default function TermsPage() {
             </li>
           </ul>
 
-          {/* ---- 9. DATA PRIVACY & YOUR DATA RIGHTS ---- */}
           <h2>9. Data Privacy &amp; Your Data Rights</h2>
           <p>
             Our collection, use, and protection of your Personal Data is
@@ -605,7 +556,6 @@ export default function TermsPage() {
             after such changes constitutes acceptance of the updated practices.
           </p>
 
-          {/* ---- 10. DISCLAIMERS ---- */}
           <h2>10. Disclaimers</h2>
           <p>
             <strong>
@@ -643,7 +593,6 @@ export default function TermsPage() {
             meet in person.
           </p>
 
-          {/* ---- 11. LIMITATION OF LIABILITY ---- */}
           <h2>11. Limitation of Liability</h2>
           <p>
             <strong>
@@ -684,7 +633,6 @@ export default function TermsPage() {
             apply to the maximum extent permitted by applicable law.
           </p>
 
-          {/* ---- 12. INDEMNIFICATION ---- */}
           <h2>12. Indemnification</h2>
           <p>
             You agree to indemnify, defend, and hold harmless Melly and its
@@ -706,7 +654,6 @@ export default function TermsPage() {
             </li>
           </ul>
 
-          {/* ---- 13. DISPUTE RESOLUTION ---- */}
           <h2>13. Dispute Resolution &amp; Arbitration</h2>
 
           <h3>13.1 Informal Resolution</h3>
@@ -766,7 +713,6 @@ export default function TermsPage() {
             resolved in the state or federal courts located in Sheridan County.
           </p>
 
-          {/* ---- 14. TERMINATION ---- */}
           <h2>14. Termination</h2>
 
           <h3>14.1 Termination by You</h3>
@@ -806,7 +752,6 @@ export default function TermsPage() {
             13 (Dispute Resolution), and 16 (General Provisions).
           </p>
 
-          {/* ---- 15. GOVERNING LAW ---- */}
           <h2>15. Governing Law</h2>
           <p>
             These Terms shall be governed by and construed in accordance with
@@ -817,7 +762,6 @@ export default function TermsPage() {
             located in Sheridan County, Wyoming.
           </p>
 
-          {/* ---- 16. GENERAL PROVISIONS ---- */}
           <h2>16. General Provisions</h2>
 
           <h3>16.1 Entire Agreement</h3>
@@ -871,7 +815,6 @@ export default function TermsPage() {
             upon delivery.
           </p>
 
-          {/* ---- 17. CONTACT ---- */}
           <h2>17. Contact Us</h2>
           <p>If you have any questions about these Terms, please contact us:</p>
           <table>
@@ -911,32 +854,7 @@ export default function TermsPage() {
         </article>
       </main>
 
-      {/* --- FOOTER --- */}
-      <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <a
-            href="/privacy"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Privacy Policy
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="/terms"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Terms of Service
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="mailto:hello@meetmelly.com"
-            className="text-primary hover:text-primaryDark transition"
-          >
-            hello@meetmelly.com
-          </a>
-        </div>
-      </footer>
+      <Footer currentPage="terms" />
     </div>
   );
 }

@@ -2,195 +2,210 @@
 
 import Script from "next/script";
 import Image from "next/image";
-import Orb from "@/components/Orb";
+import Link from "next/link";
+import MellyOrb from "@/components/MellyOrb";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-// --- HARDCODED DATA ---
-const QUIZZES = [
+// --- FEATURED QUIZZES (funnel-optimized order) ---
+const FEATURED_QUIZZES = [
   {
-    title: "Pick Your Power",
+    title: "Clingy or Cool?",
     description:
-      "If you could have any superpower, what would it be? This fun quiz reveals your secret personality through your choice of amazing abilities.",
-    cover_image_key: "power",
-  },
-  {
-    title: "Soul Recharge",
-    description:
-      "When your personal battery is at zero, what plugs you back in? Discover what truly recharges your mind, body, and spirit.",
-    cover_image_key: "soul_recharge",
-  },
-  {
-    title: "Recharge Mode",
-    description:
-      "Discover how you recharge your energy and your ideal social setting.",
-    cover_image_key: "recharge",
-  },
-  {
-    title: "The 10-Year Plan",
-    description:
-      "What is the grand plan for your one precious life? This quiz uncovers your core ambitions and your vision for the future.",
-    cover_image_key: "10_year",
-  },
-  {
-    title: "All In or Play It Safe?",
-    description:
-      "Are you a cautious saver or a bold investor? This quiz reveals your natural comfort level with financial risk and uncertainty.",
-    cover_image_key: "all_in_vs_safe",
-  },
-  {
-    title: "Making Amends",
-    description:
-      "What does a sincere apology look like to you? Discover how you make amends and what you need to hear to truly forgive.",
-    cover_image_key: "amends",
-  },
-  {
-    title: "The Bill Splitter",
-    description:
-      "How do you approach money and financial decisions in a partnership?",
-    cover_image_key: "bill_splitter",
+      "Based on Attachment Theory, discover how you bond with partners.",
+    cover_image_key: "clingy_vs_cool",
+    slug: "clingy-or-cool",
+    tag: "Most Popular",
   },
   {
     title: "Your Brain on Love",
     description:
-      "Based on the research of Dr. Helen Fisher, this quiz uncovers your biological temperament and what you naturally seek in a partner.",
+      "Based on Dr. Helen Fisher's research, uncover your biological love temperament.",
     cover_image_key: "brain_on_love",
+    slug: "your-brain-on-love",
+    tag: "Science-Backed",
   },
   {
     title: "Is It Cheating?",
     description:
-      "Liking an ex's photo at 2 AM? Keeping a 'work spouse' secret? This quiz explores the grey areas of modern relationships to find your personal boundaries.",
+      "Liking an ex's photo at 2 AM? Explore the grey areas of modern relationships.",
     cover_image_key: "cheating",
-  },
-  {
-    title: "City Slicker / Country Soul",
-    description:
-      "Discover the setting where you feel most at home: the city, the suburbs, the country, or always on the move.",
-    cover_image_key: "city_vs_country",
-  },
-  {
-    title: "Clingy or Cool?",
-    description:
-      "Discover your unique way of connecting in relationships. This quiz, based on Attachment Theory, reveals how you bond with partners.",
-    cover_image_key: "clingy_vs_cool",
+    slug: "is-it-cheating",
+    tag: "Trending",
   },
   {
     title: "Comedy Love Language",
     description:
-      "What makes you laugh out loud? Discover your unique comedic voice and who you'll share the best inside jokes with.",
+      "What makes you laugh? Discover your comedic voice and who you'll vibe with.",
     cover_image_key: "comedy",
-  },
-  {
-    title: "Your Dating DNA",
-    description:
-      "Initial assessment to understand core personality and dating styles from the conversational onboarding flow.",
-    cover_image_key: "dating_dna",
-  },
-  {
-    title: "Dreamer or Realist?",
-    description:
-      "Are you driven by big ideas, practical realities, logical analysis, or gut feelings? Discover the mental lens you use to navigate the world.",
-    cover_image_key: "dreamer_vs_realist",
-  },
-  {
-    title: "Early Bird or Night Owl?",
-    description:
-      "Are you powered by the sunrise or the moonlight? This quiz uncovers your natural biological rhythm for peak energy and focus.",
-    cover_image_key: "early_vs_night",
-  },
-  {
-    title: "Fight or Flight?",
-    description:
-      "Discover your approach to disagreements and what you need to feel heard.",
-    cover_image_key: "fight_vs_flight",
-  },
-  {
-    title: "Fixer or Listener?",
-    description:
-      "When your partner is struggling, are you a problem-solver, an empathetic listener, a cheerleader, or a steady rock? Discover your support style.",
-    cover_image_key: "fixer_vs_listener",
-  },
-  {
-    title: "Foodie or Fuel?",
-    description:
-      "Is food an art, fuel, comfort, or convenience? Discover your personal approach to eating and who you'd share a perfect meal with.",
-    cover_image_key: "foodie_vs_fuel",
-  },
-  {
-    title: "The Glow Up Guide",
-    description:
-      "How do you evolve? Discover if you're a steady improver, a big leap-taker, a reflective learner, or a collaborative builder.",
-    cover_image_key: "glowup",
+    slug: "comedy-love-language",
+    tag: "Fun",
   },
   {
     title: "The Ick Detector",
     description:
-      "What do you notice first on a dating profile? This quiz, inspired by the social media trend, reveals if you're looking for red flags, green flags, or those quirky 'beige' flags.",
+      "Red flags, green flags, or beige flags — what does your radar pick up first?",
     cover_image_key: "ick",
+    slug: "the-ick-detector",
+    tag: "Viral",
   },
   {
-    title: "Meet the Parents",
+    title: "Fixer or Listener?",
     description:
-      "Are holidays a huge family affair or a quiet getaway? Discover your unique approach to navigating parents, siblings, and the all-important in-laws.",
-    cover_image_key: "parents",
+      "When your partner is struggling, what's your instinct? Discover your support style.",
+    cover_image_key: "fixer_vs_listener",
+    slug: "fixer-or-listener",
+    tag: "Relationship",
+  },
+];
+
+const ALL_QUIZZES = [
+  {
+    title: "Clingy or Cool?",
+    cover_image_key: "clingy_vs_cool",
+    slug: "clingy-or-cool",
   },
   {
-    title: "Passport Personality",
-    description:
-      "Are you a luxury lounger or a backpacker explorer? Discover how you experience the world and who you should travel it with.",
-    cover_image_key: "passport",
+    title: "Your Brain on Love",
+    cover_image_key: "brain_on_love",
+    slug: "your-brain-on-love",
   },
   {
-    title: "Planner or Winger?",
-    description:
-      "Do you feel best with a detailed schedule or an open road? This quiz reveals how you approach organizing your time and making plans.",
-    cover_image_key: "planner_vs_winger",
+    title: "Is It Cheating?",
+    cover_image_key: "cheating",
+    slug: "is-it-cheating",
   },
   {
-    title: "The Roommate Test",
-    description:
-      "Are you a meticulous organizer, a cozy clutter-bug, or a practical DIYer? Discover your unique approach to creating a home.",
-    cover_image_key: "roommate",
+    title: "Comedy Love Language",
+    cover_image_key: "comedy",
+    slug: "comedy-love-language",
   },
   {
-    title: "Roots vs. Wings",
-    description:
-      "Do you thrive on a predictable routine and a solid home base, or are you constantly seeking freedom and new horizons?",
-    cover_image_key: "roots_vs_wings",
+    title: "The Ick Detector",
+    cover_image_key: "ick",
+    slug: "the-ick-detector",
   },
   {
-    title: "Saint or Sinner?",
-    description:
-      "What guides your decisions when things get complicated? This quiz uncovers your core ethical principles for navigating the world.",
-    cover_image_key: "saint_vs_sinner",
-  },
-  {
-    title: "The Saturday Test",
-    description:
-      "What energizes you in your free time? Discover if you're a Creator, a Thinker, an Adventurer, or a Connector.",
-    cover_image_key: "saturday",
-  },
-  {
-    title: "Spender or Saver?",
-    description:
-      "Is money a source of anxiety, a tool for freedom, or a measure of success? This quiz uncovers your core beliefs about wealth.",
-    cover_image_key: "spender_vs_saver",
-  },
-  {
-    title: "Squad Goals",
-    description:
-      "Discover how you connect with others and your ideal social circle.",
-    cover_image_key: "squad",
-  },
-  {
-    title: "Twin Flame or Solo Flyer?",
-    description:
-      "How do you and a partner build a life together while honoring your individual selves? Discover your unique approach to growth and independence.",
-    cover_image_key: "twin_vs_solo",
+    title: "Fixer or Listener?",
+    cover_image_key: "fixer_vs_listener",
+    slug: "fixer-or-listener",
   },
   {
     title: "Vent or Vanish?",
-    description:
-      "Do you need to talk it out right now, or do you need a moment to think? Discover your natural rhythm for communication.",
     cover_image_key: "vent_vs_vanish",
+    slug: "vent-or-vanish",
+  },
+  {
+    title: "Fight or Flight?",
+    cover_image_key: "fight_vs_flight",
+    slug: "fight-or-flight",
+  },
+  {
+    title: "Dreamer or Realist?",
+    cover_image_key: "dreamer_vs_realist",
+    slug: "dreamer-or-realist",
+  },
+  {
+    title: "Roots vs. Wings",
+    cover_image_key: "roots_vs_wings",
+    slug: "roots-vs-wings",
+  },
+  {
+    title: "Your Dating DNA",
+    cover_image_key: "dating_dna",
+    slug: "your-dating-dna",
+  },
+  {
+    title: "The 10-Year Plan",
+    cover_image_key: "10_year",
+    slug: "the-10-year-plan",
+  },
+  {
+    title: "Twin Flame or Solo Flyer?",
+    cover_image_key: "twin_vs_solo",
+    slug: "twin-flame-or-solo-flyer",
+  },
+  { title: "Making Amends", cover_image_key: "amends", slug: "making-amends" },
+  {
+    title: "Early Bird or Night Owl?",
+    cover_image_key: "early_vs_night",
+    slug: "early-bird-or-night-owl",
+  },
+  {
+    title: "Spender or Saver?",
+    cover_image_key: "spender_vs_saver",
+    slug: "spender-or-saver",
+  },
+  {
+    title: "All In or Play It Safe?",
+    cover_image_key: "all_in_vs_safe",
+    slug: "all-in-or-play-it-safe",
+  },
+  {
+    title: "The Bill Splitter",
+    cover_image_key: "bill_splitter",
+    slug: "the-bill-splitter",
+  },
+  {
+    title: "Passport Personality",
+    cover_image_key: "passport",
+    slug: "passport-personality",
+  },
+  {
+    title: "Planner or Winger?",
+    cover_image_key: "planner_vs_winger",
+    slug: "planner-or-winger",
+  },
+  {
+    title: "Foodie or Fuel?",
+    cover_image_key: "foodie_vs_fuel",
+    slug: "foodie-or-fuel",
+  },
+  {
+    title: "The Saturday Test",
+    cover_image_key: "saturday",
+    slug: "the-saturday-test",
+  },
+  {
+    title: "The Glow Up Guide",
+    cover_image_key: "glowup",
+    slug: "the-glow-up-guide",
+  },
+  {
+    title: "Soul Recharge",
+    cover_image_key: "soul_recharge",
+    slug: "soul-recharge",
+  },
+  {
+    title: "Pick Your Power",
+    cover_image_key: "power",
+    slug: "pick-your-power",
+  },
+  {
+    title: "Saint or Sinner?",
+    cover_image_key: "saint_vs_sinner",
+    slug: "saint-or-sinner",
+  },
+  {
+    title: "Meet the Parents",
+    cover_image_key: "parents",
+    slug: "meet-the-parents",
+  },
+  {
+    title: "The Roommate Test",
+    cover_image_key: "roommate",
+    slug: "the-roommate-test",
+  },
+  {
+    title: "City Slicker / Country Soul",
+    cover_image_key: "city_vs_country",
+    slug: "city-slicker-country-soul",
+  },
+  { title: "Squad Goals", cover_image_key: "squad", slug: "squad-goals" },
+  {
+    title: "Recharge Mode",
+    cover_image_key: "recharge",
+    slug: "recharge-mode",
   },
 ];
 
@@ -199,13 +214,13 @@ export default function LandingPage() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Melly",
-    applicationCategory: "DatingApplication",
+    applicationCategory: "SocialNetworkingApplication",
     operatingSystem: "iOS, Android",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   };
 
   return (
-    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-primary selection:text-white">
+    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-pink-500 selection:text-white">
       <Script
         id="app-json-ld"
         type="application/ld+json"
@@ -213,149 +228,190 @@ export default function LandingPage() {
       />
 
       {/* --- NAVBAR --- */}
-      <nav className="absolute top-0 left-0 z-50 w-full py-6 bg-transparent">
-        <div className="flex items-center justify-between max-w-7xl px-8 mx-auto">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-orb1"></div>
-            <span className="text-xl font-bold tracking-tight text-gray-900">
-              Melly
-            </span>
-          </div>
+      <Navbar position="fixed" variant="landing" />
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
-            <a href="#" className="hover:text-primary transition">
-              Home
-            </a>
-            <a href="#quizzes" className="hover:text-primary transition">
-              Quizzes
+      {/* --- HERO --- */}
+      <header className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-hidden bg-pink-50/60">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_var(--tw-gradient-stops))] from-pink-200/30 via-pink-50/60 to-white pointer-events-none" />
+        <div className="relative z-10 max-w-4xl px-5 sm:px-6 mx-auto text-center">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-6 sm:mb-8 text-sm font-medium text-pink-700 bg-white rounded-full border border-pink-100 shadow-sm">
+            <span className="flex -space-x-1.5">
+              <MellyOrb size={20} />
+              <MellyOrb size={20} />
+              <MellyOrb size={20} />
+            </span>
+            Join 2,000+ singles on the waitlist
+          </div>
+          <h1 className="mb-5 sm:mb-6 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-gray-900">
+            Where singles{" "}
+            <span
+              className="text-transparent bg-clip-text"
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg, #f472b6 0%, #ec4899 40%, #db2777 100%)",
+              }}
+            >
+              mingle
+            </span>
+          </h1>
+          <p className="max-w-xl mx-auto mb-8 sm:mb-10 text-lg sm:text-xl text-gray-600 leading-relaxed">
+            A social network for singles — powered by Melly, your AI matchmaker.
+            Dating, meetups, events, and quizzes that actually help you find
+            your person.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6">
+            <a
+              href="#quizzes"
+              className="w-full sm:w-auto px-8 py-4 text-base font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-lg shadow-pink-500/25 text-center"
+            >
+              Try a Free Quiz
             </a>
             <a
-              href="mailto:hello@meetmelly.com"
-              className="hover:text-primary transition"
+              href="#waitlist"
+              className="w-full sm:w-auto px-8 py-4 text-base font-bold text-gray-700 rounded-full bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 transition text-center"
             >
-              Contact
+              Join the Waitlist
             </a>
           </div>
-
-          <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-700 hover:text-primary transition">
-              Log in
-            </button>
-            <button className="px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20">
-              Download
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* --- HERO SECTION --- */}
-      <header className="relative pt-32 pb-20 overflow-hidden text-center bg-[#fdf2f8]">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orb1/20 via-softPinkBg to-white pointer-events-none"></div>
-
-        <div className="relative z-10 max-w-5xl px-6 mx-auto">
-          <h1 className="mb-8 text-6xl font-extrabold leading-none tracking-tight text-gray-900 md:text-7xl">
-            Stop collecting matches
-            {/* <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orb2">
-              Matchmaker app
-            </span> */}
-          </h1>
-
-          <p className="max-w-2xl mx-auto mb-10 text-xl text-gray-600">
-            Break the endless swipe cycle & start going on dates
+          <p className="text-sm text-gray-400">
+            No sign-up required to take a quiz. Instant results.
           </p>
-
-          {/* App Store Buttons */}
-          <div className="flex flex-col items-center justify-center gap-4 mb-16 sm:flex-row">
-            <button className="flex items-center gap-3 px-6 py-3.5 text-white transition rounded-xl bg-black hover:bg-gray-900">
-              <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.79-1.31.02-2.3-1.23-3.14-2.47-2.17-3.15-2.31-6.52-1.14-8.36 1.14-1.76 3.07-2.08 4.65-2.08 1.3 0 2.51.88 3.3.88.78 0 2.24-.92 3.79-.88 1.27.05 2.43.52 3.26 1.37-2.91 1.75-2.44 5.64.35 6.84-.62 1.62-1.47 3.23-2.22 4.46zM13 3.5c.73-.83 1.21-1.96 1.07-3.1-1.05.08-2.31.71-3.06 1.54-.71.81-1.32 2.04-1.17 3.13 1.17.09 2.38-.69 3.16-1.57z" />
-              </svg>
-              <div className="text-left">
-                <div className="text-xs">Download on the</div>
-                <div className="text-lg font-bold leading-none">App Store</div>
-              </div>
-            </button>
-
-            <button className="flex items-center gap-3 px-6 py-3.5 text-white transition rounded-xl bg-black hover:bg-gray-900">
-              <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3,20.5V3.5C3,2.91,3.34,2.39,3.84,2.15L13.69,12L3.84,21.85C3.34,21.6,3,21.09,3,20.5M16.81,15.12L21.25,12.69C21.71,12.44,22,11.97,22,11.5C22,11.03,21.71,10.56,21.25,10.31L16.81,7.88L14.75,9.94L16.81,12L14.75,14.06L16.81,15.12M14.75,14.06L16.81,12L14.75,9.94L5,0.19C5.31,0.08,5.66,0.04,6,0.04C6.53,0.04,7.03,0.24,7.41,0.62L14.75,7.97V16.03L7.41,23.38C7.03,23.76,6.53,23.96,6,23.96C5.66,23.96,5.31,23.92,5,23.81L14.75,14.06Z" />
-              </svg>
-              <div className="text-left">
-                <div className="text-xs">GET IT ON</div>
-                <div className="text-lg font-bold leading-none">
-                  Google Play
-                </div>
-              </div>
-            </button>
-          </div>
-
-          {/* Center Phone Mockup */}
-          <div className="relative flex justify-center">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-10 scale-[1.8] opacity-40">
-              <Orb />
-            </div>
-
-            <div className="relative w-[320px] h-[640px] bg-white rounded-[3.5rem] border-[10px] border-gray-900 shadow-2xl overflow-hidden z-20">
-              <div className="p-6 bg-white border-b border-gray-50">
-                <div className="w-10 h-10 mb-3 rounded-full bg-gradient-to-br from-primary to-orb1"></div>
-                <div className="w-32 h-5 bg-gray-100 rounded-full"></div>
-              </div>
-              <div className="p-5 space-y-6 bg-gray-50 h-full">
-                <div className="self-end p-4 ml-auto text-sm text-white shadow-sm bg-primary rounded-2xl rounded-tr-sm max-w-[85%]">
-                  Have you taken the &quot;City vs Country&quot; quiz yet?
-                </div>
-                <div className="self-start p-4 mr-auto text-sm text-gray-800 bg-white shadow-sm rounded-2xl rounded-tl-sm max-w-[85%]">
-                  Yes! I got &quot;Urban Soul&quot;. What about you?
-                </div>
-                <div className="self-end p-3 ml-auto text-sm font-medium border shadow-sm bg-aiAccent text-primaryDark border-softPinkBorder rounded-2xl rounded-tr-sm max-w-[85%] flex items-center gap-2">
-                  <span className="text-base">✨</span> Compatibility Match: 94%
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </header>
 
-      {/* --- QUIZ CARDS SECTION --- */}
-      <section id="quizzes" className="py-24 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900">
-              Explore Our Quizzes
+      {/* --- MEET MELLY --- */}
+      <section id="meet-melly" className="py-16 sm:py-24 bg-white">
+        <div className="max-w-5xl px-5 sm:px-6 mx-auto">
+          <div className="max-w-2xl mx-auto text-center mb-12 sm:mb-16">
+            <MellyOrb
+              size={56}
+              className="mx-auto mb-5 shadow-lg shadow-pink-500/20"
+            />
+            <h2 className="mb-4 text-3xl sm:text-4xl font-bold text-gray-900">
+              Meet Melly, your AI matchmaker
             </h2>
-            <p className="text-xl text-gray-500">
-              See what everyone is talking about.
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+              She&apos;s not a chatbot. She&apos;s more like that friend
+              who&apos;s annoyingly good at setting people up — witty,
+              observant, and genuinely invested in your love life.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {QUIZZES.map((quiz) => (
+          {/* Chat preview */}
+          <div className="max-w-md mx-auto mb-12 sm:mb-16">
+            <div className="rounded-3xl bg-pink-50/60 border border-pink-100 p-4 sm:p-5 space-y-3">
+              <div className="flex items-start gap-2.5">
+                <MellyOrb size={32} className="mt-0.5" />
+                <div className="px-4 py-3 bg-white rounded-2xl rounded-tl-sm shadow-sm max-w-[85%]">
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    Okay, not to play favorites, but I&apos;m really smiling at
+                    this story... You and Alex both got &quot;Secure
+                    Anchor&quot; on the attachment quiz. I have a really good
+                    feeling about this one.
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <div className="px-4 py-3 bg-pink-500 text-white rounded-2xl rounded-tr-sm shadow-sm max-w-[85%]">
+                  <p className="text-sm leading-relaxed">
+                    Okay wait, that&apos;s actually cool. What does that mean
+                    for us?
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <MellyOrb size={32} className="mt-0.5" />
+                <div className="px-4 py-3 bg-white rounded-2xl rounded-tl-sm shadow-sm max-w-[85%]">
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    It means you both navigate intimacy with a steady heart. I
+                    can just picture you two... comfortable silence on a Sunday
+                    morning, zero anxiety. ✨
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-5">
+            {[
+              {
+                emoji: "🧠",
+                title: "31 personality quizzes",
+                desc: "Attachment style, conflict style, humor type, money mindset — Melly uses them all to understand who you really are.",
+              },
+              {
+                emoji: "💕",
+                title: "AI-powered matching",
+                desc: "Not just swiping. Melly studies your quiz results, values, and patterns to introduce you to people who truly complement you.",
+              },
+              {
+                emoji: "🎉",
+                title: "Events & meetups",
+                desc: "Real-life connections. Join events, bring a plus-one, and meet people in a low-pressure social setting.",
+              },
+            ].map((item) => (
               <div
-                key={quiz.title}
-                className="overflow-hidden transition duration-300 transform bg-white border border-gray-100 shadow-sm group rounded-3xl hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
+                key={item.title}
+                className="p-6 sm:p-7 rounded-3xl bg-pink-50/60 border border-pink-100"
               >
-                <div className="relative w-full h-56 overflow-hidden bg-gray-100">
+                <div className="text-3xl mb-4">{item.emoji}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- QUIZZES --- */}
+      <section id="quizzes" className="py-16 sm:py-24 bg-pink-50/60">
+        <div className="px-5 sm:px-6 mx-auto max-w-7xl">
+          <div className="mb-10 sm:mb-14 text-center">
+            <h2 className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900">
+              Start with a Quiz
+            </h2>
+            <p className="text-base sm:text-lg text-gray-500 max-w-lg mx-auto">
+              Take a 2-minute quiz and chat with Melly about your results. No
+              sign-up, no paywall — just genuine self-discovery.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-12">
+            {FEATURED_QUIZZES.map((quiz) => (
+              <Link
+                key={quiz.slug}
+                href={`/quiz/${quiz.slug}`}
+                className="group relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl border border-pink-100/80 shadow-sm hover:shadow-xl hover:shadow-pink-500/10 transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
                   <Image
                     src={`/quizzes/${quiz.cover_image_key}.jpg`}
                     alt={quiz.title}
                     fill
                     className="object-cover transition duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 opacity-50 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <h3 className="absolute bottom-5 left-5 text-2xl font-bold text-white shadow-sm">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                    <span className="px-2.5 py-1 text-xs font-bold text-white bg-pink-500/90 backdrop-blur-sm rounded-full">
+                      {quiz.tag}
+                    </span>
+                  </div>
+                  <h3 className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 text-xl sm:text-2xl font-bold text-white leading-tight">
                     {quiz.title}
                   </h3>
                 </div>
-
-                <div className="p-6">
-                  <p className="mb-6 text-base leading-relaxed text-gray-600 line-clamp-4">
+                <div className="p-4 sm:p-5">
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 line-clamp-2">
                     {quiz.description}
                   </p>
-                  <div className="flex items-center text-base font-bold text-primary">
-                    <span>Take Quiz in App</span>
+                  <div className="flex items-center text-sm font-bold text-pink-500">
+                    <span>Chat with Melly</span>
                     <svg
-                      className="w-5 h-5 ml-2 transition transform group-hover:translate-x-1"
+                      className="w-4 h-4 ml-1.5 transition transform group-hover:translate-x-1"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -363,44 +419,138 @@ export default function LandingPage() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth="2"
+                        strokeWidth="2.5"
                         d="M17 8l4 4m0 0l-4 4m4-4H3"
                       />
                     </svg>
                   </div>
                 </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mb-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+              All 31 Quizzes
+            </h3>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+            {ALL_QUIZZES.map((quiz) => (
+              <Link
+                key={quiz.slug}
+                href={`/quiz/${quiz.slug}`}
+                className="group relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-lg hover:shadow-pink-500/10 transition-all duration-300"
+              >
+                <Image
+                  src={`/quizzes/${quiz.cover_image_key}.jpg`}
+                  alt={quiz.title}
+                  fill
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3">
+                  <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">
+                    {quiz.title}
+                  </h4>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- HOW IT WORKS --- */}
+      <section className="py-16 sm:py-24 bg-white">
+        <div className="max-w-5xl px-5 sm:px-6 mx-auto">
+          <h2 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-gray-900">
+            How Melly Works
+          </h2>
+          <p className="max-w-lg mx-auto mb-12 sm:mb-16 text-center text-gray-500 text-base sm:text-lg">
+            Quizzes aren&apos;t destiny — they&apos;re a starting point. You
+            always have agency in who you connect with.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-4">
+            {[
+              {
+                step: "01",
+                title: "Take a quiz",
+                desc: "2 minutes, no sign-up. Melly walks you through it like a conversation.",
+                emoji: "💬",
+              },
+              {
+                step: "02",
+                title: "Get your result",
+                desc: "Discover your patterns — attachment, humor, conflict, money, and more.",
+                emoji: "🪞",
+              },
+              {
+                step: "03",
+                title: "Chat with Melly",
+                desc: "Ask her what your result means, how it affects dating, and what to watch for.",
+                emoji: "✨",
+              },
+              {
+                step: "04",
+                title: "Meet your people",
+                desc: "Join the app. Melly uses your insights to match you with compatible singles.",
+                emoji: "💕",
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className="relative p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-pink-50/60 border border-pink-100 text-center"
+              >
+                <div className="text-2xl mb-3">{item.emoji}</div>
+                <div className="text-xs font-bold text-pink-500 mb-1.5 tracking-widest uppercase">
+                  Step {item.step}
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- FOOTER --- */}
-      <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <a
-            href="/privacy"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Privacy Policy
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="/terms"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Terms of Service
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="mailto:hello@meetmelly.com"
-            className="text-primary hover:text-primaryDark transition"
-          >
-            hello@meetmelly.com
-          </a>
+      {/* --- WAITLIST CTA --- */}
+      <section id="waitlist" className="py-16 sm:py-24 bg-pink-50/60">
+        <div className="max-w-2xl mx-auto px-5 sm:px-6 text-center">
+          <div className="p-8 sm:p-12 rounded-3xl bg-white border border-pink-100 shadow-xl shadow-pink-500/5">
+            <MellyOrb
+              size={48}
+              className="mx-auto mb-5 shadow-lg shadow-pink-500/20"
+            />
+            <h2 className="mb-3 text-2xl sm:text-3xl font-bold text-gray-900">
+              Be first in line
+            </h2>
+            <p className="mb-8 text-gray-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
+              Melly is launching soon. Join the waitlist to save your quiz
+              results, get your full compatibility profile, and be the first to
+              meet your people.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="flex-1 px-5 py-3.5 text-base rounded-full border border-gray-200 bg-pink-50/60 focus:bg-white focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3.5 text-base font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-md shadow-pink-500/20 whitespace-nowrap"
+              >
+                Join Waitlist
+              </button>
+            </form>
+          </div>
         </div>
-      </footer>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,9 @@
 // app/safety-standards/page.tsx
 
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Safety Standards – Melly",
@@ -13,59 +16,16 @@ const EFFECTIVE_DATE = "March 19, 2026";
 
 export default function SafetyStandardsPage() {
   return (
-    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-primary selection:text-white">
-      {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-50 w-full py-5 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <div className="flex items-center justify-between max-w-7xl px-8 mx-auto">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-orb1"></div>
-            <span className="text-xl font-bold tracking-tight text-gray-900">
-              Melly
-            </span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
-            <a href="/" className="hover:text-primary transition">
-              Home
-            </a>
-            <a href="/#quizzes" className="hover:text-primary transition">
-              Quizzes
-            </a>
-            <a
-              href="mailto:hello@meetmelly.com"
-              className="hover:text-primary transition"
-            >
-              Contact
-            </a>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-700 hover:text-primary transition">
-              Log in
-            </button>
-            <button className="px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20">
-              Download
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* --- HERO HEADER --- */}
-      <header className="relative py-20 overflow-hidden bg-[#fdf2f8]">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orb1/20 via-softPinkBg to-white pointer-events-none"></div>
-        <div className="relative z-10 max-w-3xl px-6 mx-auto text-center">
-          <h1 className="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-6xl">
-            Safety Standards
-          </h1>
-          <p className="text-lg text-gray-500">
-            Effective: {EFFECTIVE_DATE} · Last updated: {LAST_UPDATED}
-          </p>
-        </div>
-      </header>
+    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-pink-500 selection:text-white">
+      <Navbar />
+      <PageHeader
+        title="Safety Standards"
+        subtitle={`Effective: ${EFFECTIVE_DATE} · Last updated: ${LAST_UPDATED}`}
+      />
 
       {/* --- CONTENT --- */}
       <main className="py-20">
-        <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
+        <article className="max-w-3xl px-6 mx-auto prose prose-lg prose-gray prose-headings:font-bold prose-headings:tracking-tight prose-a:text-pink-500 prose-a:no-underline hover:prose-a:underline">
           {/* ---- INTRODUCTION ---- */}
           <p>
             Escondido Development LLC (&quot;Melly,&quot; &quot;we,&quot;
@@ -77,7 +37,6 @@ export default function SafetyStandardsPage() {
             and respond to CSAE on our platform.
           </p>
 
-          {/* ---- 1. ZERO TOLERANCE POLICY ---- */}
           <h2>1. Zero Tolerance Policy</h2>
           <p>
             Melly maintains a strict zero-tolerance policy toward any form of
@@ -109,7 +68,6 @@ export default function SafetyStandardsPage() {
             appropriate authorities.
           </p>
 
-          {/* ---- 2. AGE VERIFICATION & ENFORCEMENT ---- */}
           <h2>2. Age Verification &amp; Enforcement</h2>
           <p>
             Melly is exclusively available to users aged 18 and older. We
@@ -134,7 +92,6 @@ export default function SafetyStandardsPage() {
             </li>
           </ul>
 
-          {/* ---- 3. DETECTION & PREVENTION ---- */}
           <h2>3. Detection &amp; Prevention</h2>
           <p>
             We employ a combination of technology and human oversight to detect
@@ -164,7 +121,6 @@ export default function SafetyStandardsPage() {
             </li>
           </ul>
 
-          {/* ---- 4. IN-APP REPORTING ---- */}
           <h2>4. In-App Reporting</h2>
           <p>
             Melly provides accessible tools for users to report CSAE and other
@@ -198,7 +154,6 @@ export default function SafetyStandardsPage() {
             <a href="mailto:hello@meetmelly.com">hello@meetmelly.com</a>.
           </p>
 
-          {/* ---- 5. REPORTING TO AUTHORITIES ---- */}
           <h2>5. Reporting to Authorities</h2>
           <p>
             Melly complies with all applicable laws regarding the reporting of
@@ -229,7 +184,6 @@ export default function SafetyStandardsPage() {
             </li>
           </ul>
 
-          {/* ---- 6. STAFF TRAINING & ACCOUNTABILITY ---- */}
           <h2>6. Staff Training &amp; Accountability</h2>
           <p>
             All team members involved in content moderation, trust and safety,
@@ -248,7 +202,6 @@ export default function SafetyStandardsPage() {
             </li>
           </ul>
 
-          {/* ---- 7. POLICY UPDATES ---- */}
           <h2>7. Policy Updates</h2>
           <p>
             We regularly review and update our safety standards to reflect
@@ -259,7 +212,6 @@ export default function SafetyStandardsPage() {
             platform.
           </p>
 
-          {/* ---- 8. CONTACT ---- */}
           <h2>8. Contact Us</h2>
           <p>
             If you have questions about our safety standards, wish to report a
@@ -305,32 +257,7 @@ export default function SafetyStandardsPage() {
         </article>
       </main>
 
-      {/* --- FOOTER --- */}
-      <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <a
-            href="/privacy"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Privacy Policy
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="/safety-standards"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Safety Standards
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="mailto:hello@meetmelly.com"
-            className="text-primary hover:text-primaryDark transition"
-          >
-            hello@meetmelly.com
-          </a>
-        </div>
-      </footer>
+      <Footer currentPage="safety-standards" />
     </div>
   );
 }

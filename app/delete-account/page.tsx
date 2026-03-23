@@ -1,6 +1,9 @@
 // app/delete-account/page.tsx
 
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Delete Your Account – Melly",
@@ -10,55 +13,12 @@ export const metadata: Metadata = {
 
 export default function DeleteAccountPage() {
   return (
-    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-primary selection:text-white">
-      {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-50 w-full py-5 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <div className="flex items-center justify-between max-w-7xl px-8 mx-auto">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-orb1"></div>
-            <span className="text-xl font-bold tracking-tight text-gray-900">
-              Melly
-            </span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
-            <a href="/" className="hover:text-primary transition">
-              Home
-            </a>
-            <a href="/#quizzes" className="hover:text-primary transition">
-              Quizzes
-            </a>
-            <a
-              href="mailto:hello@meetmelly.com"
-              className="hover:text-primary transition"
-            >
-              Contact
-            </a>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-700 hover:text-primary transition">
-              Log in
-            </button>
-            <button className="px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20">
-              Download
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* --- HERO HEADER --- */}
-      <header className="relative py-20 overflow-hidden bg-[#fdf2f8]">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orb1/20 via-softPinkBg to-white pointer-events-none"></div>
-        <div className="relative z-10 max-w-3xl px-6 mx-auto text-center">
-          <h1 className="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-6xl">
-            Delete Your Account
-          </h1>
-          <p className="text-lg text-gray-500">
-            Request permanent deletion of your account and personal data.
-          </p>
-        </div>
-      </header>
+    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-pink-500 selection:text-white">
+      <Navbar />
+      <PageHeader
+        title="Delete Your Account"
+        subtitle="Request permanent deletion of your account and personal data."
+      />
 
       {/* --- CONTENT --- */}
       <main className="py-20">
@@ -74,7 +34,7 @@ export default function DeleteAccountPage() {
                 submit an account deletion request, here is what to expect:
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                <div className="p-5 rounded-2xl bg-pink-50/60 border border-pink-100">
                   <div className="mb-2 text-2xl">🗑️</div>
                   <h3 className="mb-1 text-sm font-bold text-gray-900">
                     Profile &amp; content removed
@@ -85,7 +45,7 @@ export default function DeleteAccountPage() {
                     other users.
                   </p>
                 </div>
-                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                <div className="p-5 rounded-2xl bg-pink-50/60 border border-pink-100">
                   <div className="mb-2 text-2xl">💬</div>
                   <h3 className="mb-1 text-sm font-bold text-gray-900">
                     Messages erased
@@ -95,7 +55,7 @@ export default function DeleteAccountPage() {
                     longer be able to see your side of any conversation.
                   </p>
                 </div>
-                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                <div className="p-5 rounded-2xl bg-pink-50/60 border border-pink-100">
                   <div className="mb-2 text-2xl">⏳</div>
                   <h3 className="mb-1 text-sm font-bold text-gray-900">
                     30-day grace period
@@ -106,7 +66,7 @@ export default function DeleteAccountPage() {
                     deletion begins.
                   </p>
                 </div>
-                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                <div className="p-5 rounded-2xl bg-pink-50/60 border border-pink-100">
                   <div className="mb-2 text-2xl">📋</div>
                   <h3 className="mb-1 text-sm font-bold text-gray-900">
                     Limited retention
@@ -116,7 +76,7 @@ export default function DeleteAccountPage() {
                     be retained as required by law. See our{" "}
                     <a
                       href="/privacy"
-                      className="text-primary hover:underline font-medium"
+                      className="text-pink-500 hover:underline font-medium"
                     >
                       Privacy Policy
                     </a>{" "}
@@ -128,7 +88,7 @@ export default function DeleteAccountPage() {
           </div>
 
           {/* --- DIVIDER --- */}
-          <hr className="mb-12 border-gray-100" />
+          <hr className="mb-12 border-pink-100" />
 
           {/* --- HOW TO DELETE --- */}
           <div className="mb-12">
@@ -137,9 +97,9 @@ export default function DeleteAccountPage() {
             </h2>
 
             {/* Method 1: In-app */}
-            <div className="mb-6 p-6 rounded-2xl bg-gray-50 border border-gray-100">
+            <div className="mb-6 p-6 rounded-2xl bg-pink-50/60 border border-pink-100">
               <div className="flex items-start gap-4">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm shrink-0">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-pink-500/10 text-pink-500 font-bold text-sm shrink-0">
                   1
                 </div>
                 <div>
@@ -158,9 +118,9 @@ export default function DeleteAccountPage() {
             </div>
 
             {/* Method 2: Email */}
-            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+            <div className="p-6 rounded-2xl bg-pink-50/60 border border-pink-100">
               <div className="flex items-start gap-4">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm shrink-0">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-pink-500/10 text-pink-500 font-bold text-sm shrink-0">
                   2
                 </div>
                 <div>
@@ -172,7 +132,7 @@ export default function DeleteAccountPage() {
                     account to{" "}
                     <a
                       href="mailto:hello@meetmelly.com?subject=Account%20Deletion%20Request"
-                      className="text-primary hover:underline font-medium"
+                      className="text-pink-500 hover:underline font-medium"
                     >
                       hello@meetmelly.com
                     </a>{" "}
@@ -183,7 +143,7 @@ export default function DeleteAccountPage() {
                   </p>
                   <a
                     href="mailto:hello@meetmelly.com?subject=Account%20Deletion%20Request"
-                    className="inline-flex px-5 py-2.5 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20"
+                    className="inline-flex px-5 py-2.5 text-sm font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-md shadow-pink-500/20"
                   >
                     Send Deletion Request
                   </a>
@@ -213,7 +173,7 @@ export default function DeleteAccountPage() {
             verification, in accordance with our{" "}
             <a
               href="/privacy"
-              className="text-primary hover:underline font-medium"
+              className="text-pink-500 hover:underline font-medium"
             >
               Privacy Policy
             </a>
@@ -222,32 +182,7 @@ export default function DeleteAccountPage() {
         </div>
       </main>
 
-      {/* --- FOOTER --- */}
-      <footer className="py-12 text-center bg-gray-50 border-t border-gray-100">
-        <p className="mb-2 text-gray-500">© 2026 Melly. All rights reserved.</p>
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <a
-            href="/privacy"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Privacy Policy
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="/terms"
-            className="text-primary hover:text-primaryDark transition font-medium"
-          >
-            Terms of Service
-          </a>
-          <span className="text-gray-300">·</span>
-          <a
-            href="mailto:hello@meetmelly.com"
-            className="text-primary hover:text-primaryDark transition"
-          >
-            hello@meetmelly.com
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

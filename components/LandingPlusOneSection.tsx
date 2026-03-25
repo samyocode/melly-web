@@ -3,14 +3,13 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import MellyOrb from "@/components/MellyOrb";
 import AvatarWithCharmsWeb from "@/components/AvatarWithCharmsWeb";
 import type { CharmIndex } from "@/components/AvatarWithCharmsWeb";
 
-// ─── APP DOWNLOAD LINKS (replace with real URLs when submitted) ─────────────
+// ─── APP DOWNLOAD LINKS (replace when submitted) ───────────────────────────
 const APP_LINKS = {
-  ios: "#ios", // e.g. "https://apps.apple.com/app/melly/id123456789"
-  android: "#android", // e.g. "https://play.google.com/store/apps/details?id=com.melly"
+  ios: "#ios",
+  android: "#android",
 };
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
@@ -32,13 +31,6 @@ interface FakeEvent {
   charms: CharmIndex[];
 }
 
-interface MapBounds {
-  minLat: number;
-  maxLat: number;
-  minLng: number;
-  maxLng: number;
-}
-
 // ─── DATA ───────────────────────────────────────────────────────────────────
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -48,6 +40,8 @@ const CATEGORY_ICONS: Record<string, string> = {
   fitness: "💪",
   gaming: "🎮",
   picnic: "🧺",
+  brunch: "🥐",
+  yoga: "🧘",
 };
 
 const FAKE_EVENTS: FakeEvent[] = [
@@ -155,17 +149,91 @@ const FAKE_EVENTS: FakeEvent[] = [
   },
 ];
 
-const MAP_BOUNDS: MapBounds = {
+// Extra events for the marquee (extends the visual variety)
+const MARQUEE_EXTRA_EVENTS: FakeEvent[] = [
+  {
+    id: "m1",
+    title: "Brunch & mimosas",
+    category: "brunch",
+    hostName: "Kira",
+    hostAge: 26,
+    hostPhoto:
+      "https://api.dicebear.com/9.x/notionists/svg?seed=Kira26&backgroundColor=fce7f3",
+    lat: 0,
+    lng: 0,
+    location: "West Village",
+    dateLabel: "Sun · 11 AM",
+    seats: 2,
+    tag: "Date-friendly",
+    tagColor: "#EC4899",
+    charms: [0, 7],
+  },
+  {
+    id: "m2",
+    title: "Sunset yoga in the park",
+    category: "yoga",
+    hostName: "Dani",
+    hostAge: 31,
+    hostPhoto:
+      "https://api.dicebear.com/9.x/notionists/svg?seed=Dani31&backgroundColor=d1fae5",
+    lat: 0,
+    lng: 0,
+    location: "Bryant Park",
+    dateLabel: "Sat · 6 PM",
+    seats: 6,
+    tag: "Group",
+    tagColor: "#8B5CF6",
+    charms: [4, 10],
+  },
+  {
+    id: "m3",
+    title: "Live jazz + cocktails",
+    category: "dinner",
+    hostName: "Marcus",
+    hostAge: 28,
+    hostPhoto:
+      "https://api.dicebear.com/9.x/notionists/svg?seed=Marcus28&backgroundColor=dbeafe",
+    lat: 0,
+    lng: 0,
+    location: "Harlem",
+    dateLabel: "Fri · 9 PM",
+    seats: 1,
+    tag: "Date-friendly",
+    tagColor: "#EC4899",
+    charms: [6, 11],
+  },
+  {
+    id: "m4",
+    title: "Museum hop + coffee",
+    category: "gallery",
+    hostName: "Ava",
+    hostAge: 24,
+    hostPhoto:
+      "https://api.dicebear.com/9.x/notionists/svg?seed=Ava24&backgroundColor=ede9fe",
+    lat: 0,
+    lng: 0,
+    location: "Upper East Side",
+    dateLabel: "Sat · 2 PM",
+    seats: 1,
+    tag: "Chill",
+    tagColor: "#10B981",
+    charms: [3, 5],
+  },
+];
+
+const ALL_MARQUEE_EVENTS = [...FAKE_EVENTS, ...MARQUEE_EXTRA_EVENTS];
+
+const MAP_BOUNDS = {
   minLat: 40.64,
   maxLat: 40.8,
   minLng: -74.02,
   maxLng: -73.94,
 };
 
-// Height of the event detail card in px (approx) — used to compute pin offset
-const CARD_HEIGHT_ESTIMATE = 200;
+// How many pixels to shift all pins up when card is open
+const PIN_SHIFT_PX = 60;
 
-// ─── BOLDER MAP BACKGROUND ─────────────────────────────────────────────────
+// ─── MAP BACKGROUND ────────────────────────────────────────────────────────
 
 function StyledMapBg() {
   return (
@@ -175,31 +243,22 @@ function StyledMapBg() {
       preserveAspectRatio="xMidYMid slice"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Base land */}
       <rect width="720" height="514" fill="#E8ECF1" />
-
-      {/* Water — Hudson River (left) — more saturated */}
       <path
         d="M0 0 L85 0 L65 120 L42 260 L55 400 L32 514 L0 514 Z"
         fill="#B8D4F0"
         opacity="0.7"
       />
-
-      {/* Water — East River (right) */}
       <path
         d="M615 0 L720 0 L720 514 L635 514 L655 380 L645 200 L665 80 Z"
         fill="#B8D4F0"
         opacity="0.7"
       />
-
-      {/* Water — upper bay */}
       <path
         d="M0 514 L220 514 L190 475 L110 455 L35 485 Z"
         fill="#B8D4F0"
         opacity="0.55"
       />
-
-      {/* Central Park — more vivid */}
       <rect
         x="255"
         y="28"
@@ -209,11 +268,7 @@ function StyledMapBg() {
         fill="#A8D5A0"
         opacity="0.55"
       />
-
-      {/* Prospect Park */}
       <ellipse cx="275" cy="418" rx="48" ry="38" fill="#A8D5A0" opacity="0.5" />
-
-      {/* Building blocks — Manhattan density */}
       {[
         { x: 140, y: 150, w: 30, h: 20 },
         { x: 185, y: 170, w: 25, h: 18 },
@@ -229,7 +284,7 @@ function StyledMapBg() {
         { x: 500, y: 200, w: 30, h: 20 },
       ].map((b, i) => (
         <rect
-          key={`bldg-${i}`}
+          key={`b-${i}`}
           x={b.x}
           y={b.y}
           width={b.w}
@@ -239,8 +294,6 @@ function StyledMapBg() {
           opacity="0.5"
         />
       ))}
-
-      {/* Major roads — bolder */}
       {[95, 155, 215, 275, 340, 400].map((y) => (
         <line
           key={`h-${y}`}
@@ -265,8 +318,6 @@ function StyledMapBg() {
           opacity="0.6"
         />
       ))}
-
-      {/* Broadway (diagonal) — bolder */}
       <line
         x1="195"
         y1="0"
@@ -276,8 +327,6 @@ function StyledMapBg() {
         strokeWidth="2"
         opacity="0.5"
       />
-
-      {/* Bridge hints — visible */}
       <line
         x1="575"
         y1="175"
@@ -305,8 +354,6 @@ function StyledMapBg() {
         strokeWidth="2"
         opacity="0.4"
       />
-
-      {/* Neighborhood labels — darker, more readable */}
       <text
         x="295"
         y="195"
@@ -384,17 +431,6 @@ function StyledMapBg() {
       >
         East Village
       </text>
-      <text
-        x="170"
-        y="370"
-        fill="#8B95A3"
-        fontSize="11"
-        fontWeight="600"
-        fontFamily="system-ui"
-        textAnchor="middle"
-      >
-        West Village
-      </text>
     </svg>
   );
 }
@@ -404,13 +440,12 @@ function StyledMapBg() {
 function MapPin({
   event,
   isSelected,
-  hasSelection,
+  cardOpen,
   onSelect,
 }: {
   event: FakeEvent;
   isSelected: boolean;
-  /** Whether ANY pin is selected (used to shift all pins up) */
-  hasSelection: boolean;
+  cardOpen: boolean;
   onSelect: (event: FakeEvent) => void;
 }) {
   const xPct =
@@ -422,20 +457,21 @@ function MapPin({
       (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat)) *
     100;
 
+  // When card is open, shift all pins up by a fixed pixel amount
+  // so the selected pin doesn't get hidden behind the card
+  const yOffset = cardOpen ? -PIN_SHIFT_PX : 0;
+
   return (
     <div
       className="absolute cursor-pointer"
       style={{
         left: `${xPct}%`,
-        top: `${yPct}%`,
-        // When a card is showing, shift all pins up so the selected one
-        // isn't hidden behind the card overlay
-        transform: `translate(-50%, -50%) ${hasSelection ? "translateY(-25%)" : ""}`,
-        transition:
-          "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease",
+        top: `calc(${yPct}% + ${yOffset}px)`,
+        transform: "translate(-50%, -50%)",
+        transition: "top 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease",
         zIndex: isSelected ? 50 : 10,
         filter: isSelected
-          ? "drop-shadow(0 4px 12px rgba(236,72,153,0.35))"
+          ? "drop-shadow(0 4px 14px rgba(236,72,153,0.4))"
           : "drop-shadow(0 2px 6px rgba(0,0,0,0.12))",
       }}
       onClick={(e) => {
@@ -455,7 +491,6 @@ function MapPin({
           size={isSelected ? 52 : 42}
         />
       </div>
-      {/* Pin tail */}
       <div
         className="mx-auto -mt-1 transition-colors duration-300"
         style={{
@@ -493,7 +528,6 @@ function EventDetailCard({
       >
         ×
       </button>
-
       <div className="flex items-center gap-2 mb-2.5">
         <span
           className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
@@ -512,7 +546,6 @@ function EventDetailCard({
           {event.seats === 1 ? "1 spot left" : `${event.seats} spots`}
         </span>
       </div>
-
       <div className="flex items-center gap-2.5">
         <AvatarWithCharmsWeb
           imageUrl={event.hostPhoto}
@@ -529,16 +562,12 @@ function EventDetailCard({
           <span className="text-xs text-gray-600">🕐 {event.dateLabel}</span>
         </div>
       </div>
-
-      {/* Primary CTA — waitlist for now */}
       <button
         onClick={onJoin}
         className="mt-3.5 w-full py-3 rounded-full bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 text-white text-sm font-bold transition active:scale-[0.97]"
       >
         Request to join
       </button>
-
-      {/* App store badges — secondary, ready for when links go live */}
       <div className="mt-2.5 flex items-center justify-center gap-1.5">
         <span className="text-[10px] text-gray-400">Available soon on</span>
         <a
@@ -547,7 +576,7 @@ function EventDetailCard({
           onClick={(e) => {
             if (APP_LINKS.ios === "#ios") {
               e.preventDefault();
-              onJoin(); // fallback to waitlist while app isn't live
+              onJoin();
             }
           }}
         >
@@ -568,6 +597,38 @@ function EventDetailCard({
         </a>
       </div>
     </div>
+  );
+}
+
+// ─── MARQUEE EVENT CHIP ─────────────────────────────────────────────────────
+
+function MarqueeChip({
+  event,
+  onTap,
+}: {
+  event: FakeEvent;
+  onTap: () => void;
+}) {
+  const icon = CATEGORY_ICONS[event.category] || "📍";
+  return (
+    <button
+      onClick={onTap}
+      className="flex-shrink-0 flex items-center gap-2.5 px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:border-pink-300 hover:shadow-md transition-all duration-200 group"
+    >
+      <AvatarWithCharmsWeb
+        imageUrl={event.hostPhoto}
+        charmIndices={event.charms}
+        size={28}
+      />
+      <div className="text-left pr-1">
+        <p className="text-xs font-semibold text-gray-900 leading-tight group-hover:text-pink-600 transition-colors">
+          {event.title}
+        </p>
+        <p className="text-[10px] text-gray-400 leading-tight mt-0.5">
+          {event.hostName} · {icon} {event.location} · {event.dateLabel}
+        </p>
+      </div>
+    </button>
   );
 }
 
@@ -592,8 +653,40 @@ export default function LandingPlusOneSection({
     );
   }, [selectedEvent, onOpenWaitlist]);
 
+  const handleMarqueeTap = useCallback(
+    (event: FakeEvent) => {
+      onOpenWaitlist(
+        "I'd love to get you in on this one! 💕",
+        `"${event.title}" with ${event.hostName} caught your eye — I love that. Join the waitlist and I'll make sure you're one of the first to browse Plus Ones near you.`,
+      );
+    },
+    [onOpenWaitlist],
+  );
+
   return (
-    <section className="py-16 sm:py-24 bg-white">
+    <section className="py-16 sm:py-24 bg-white overflow-hidden">
+      {/* Marquee keyframes */}
+      <style jsx global>{`
+        @keyframes marqueeScroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(100%);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+
       <div className="max-w-5xl px-5 sm:px-6 mx-auto">
         <div className="max-w-2xl mx-auto text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 mb-4 text-sm font-semibold text-violet-600 bg-violet-50 rounded-full">
@@ -617,26 +710,21 @@ export default function LandingPlusOneSection({
           style={{ aspectRatio: "720 / 514" }}
         >
           <StyledMapBg />
-
-          {/* Click-to-deselect */}
           <div
             className="absolute inset-0 z-[5]"
             onClick={() => setSelectedEvent(null)}
           />
-
-          {/* Pins */}
           <div className="absolute inset-0 z-10">
             {FAKE_EVENTS.map((ev) => (
               <MapPin
                 key={ev.id}
                 event={ev}
                 isSelected={selectedEvent?.id === ev.id}
-                hasSelection={selectedEvent !== null}
+                cardOpen={selectedEvent !== null}
                 onSelect={setSelectedEvent}
               />
             ))}
           </div>
-
           {selectedEvent && (
             <EventDetailCard
               event={selectedEvent}
@@ -644,7 +732,6 @@ export default function LandingPlusOneSection({
               onJoin={handleJoin}
             />
           )}
-
           {!selectedEvent && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-gray-900/75 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-1.5 animate-[fadeIn_0.6s_ease-out_0.5s_both]">
               <span className="text-xs text-white/50">👆</span>
@@ -658,6 +745,39 @@ export default function LandingPlusOneSection({
         <p className="text-center mt-5 text-xs text-gray-400">
           Preview — real events from singles in your city, coming soon.
         </p>
+      </div>
+
+      {/* ── Event Marquee ── */}
+      <div className="mt-10 relative">
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+        <div className="overflow-hidden">
+          <div
+            className="flex gap-3 w-max"
+            style={{
+              animation: "marqueeScroll 35s linear infinite",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.animationPlayState =
+                "paused";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.animationPlayState =
+                "running";
+            }}
+          >
+            {/* Duplicate the list for seamless loop */}
+            {[...ALL_MARQUEE_EVENTS, ...ALL_MARQUEE_EVENTS].map((ev, i) => (
+              <MarqueeChip
+                key={`${ev.id}-${i}`}
+                event={ev}
+                onTap={() => handleMarqueeTap(ev)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

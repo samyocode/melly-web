@@ -44,6 +44,9 @@ const CATEGORY_ICONS: Record<string, string> = {
   yoga: "🧘",
 };
 
+const cdnAvatar = (name: string) =>
+  `https://res.cloudinary.com/ddwerzvdw/image/upload/w_400,h_400,c_fill,g_face,f_auto,q_auto/avatars/landing/${name}.webp`;
+
 const FAKE_EVENTS: FakeEvent[] = [
   {
     id: "1",
@@ -51,8 +54,7 @@ const FAKE_EVENTS: FakeEvent[] = [
     category: "dinner",
     hostName: "Mia",
     hostAge: 27,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Mia27&backgroundColor=fce7f3",
+    hostPhoto: cdnAvatar("mia"),
     lat: 40.7268,
     lng: -73.9855,
     location: "East Village",
@@ -68,8 +70,7 @@ const FAKE_EVENTS: FakeEvent[] = [
     category: "fitness",
     hostName: "Jordan",
     hostAge: 30,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Jordan30&backgroundColor=dbeafe",
+    hostPhoto: cdnAvatar("jordan"),
     lat: 40.6602,
     lng: -73.969,
     location: "Prospect Park",
@@ -85,8 +86,7 @@ const FAKE_EVENTS: FakeEvent[] = [
     category: "gallery",
     hostName: "Priya",
     hostAge: 26,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Priya26&backgroundColor=fce7f3",
+    hostPhoto: cdnAvatar("priya"),
     lat: 40.7465,
     lng: -74.0014,
     location: "Chelsea",
@@ -102,8 +102,7 @@ const FAKE_EVENTS: FakeEvent[] = [
     category: "gaming",
     hostName: "Alex",
     hostAge: 29,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Alex29&backgroundColor=ede9fe",
+    hostPhoto: cdnAvatar("alex"),
     lat: 40.7081,
     lng: -73.9571,
     location: "Williamsburg",
@@ -119,8 +118,7 @@ const FAKE_EVENTS: FakeEvent[] = [
     category: "coffee",
     hostName: "Sam",
     hostAge: 25,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Sam25&backgroundColor=fef3c7",
+    hostPhoto: cdnAvatar("sam"),
     lat: 40.7233,
     lng: -73.9985,
     location: "SoHo",
@@ -136,8 +134,7 @@ const FAKE_EVENTS: FakeEvent[] = [
     category: "picnic",
     hostName: "Lena",
     hostAge: 28,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Lena28&backgroundColor=d1fae5",
+    hostPhoto: cdnAvatar("lena"),
     lat: 40.7829,
     lng: -73.9654,
     location: "Central Park",
@@ -157,8 +154,7 @@ const MARQUEE_EXTRA_EVENTS: FakeEvent[] = [
     category: "brunch",
     hostName: "Kira",
     hostAge: 26,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Kira26&backgroundColor=fce7f3",
+    hostPhoto: cdnAvatar("kira"),
     lat: 0,
     lng: 0,
     location: "West Village",
@@ -174,8 +170,7 @@ const MARQUEE_EXTRA_EVENTS: FakeEvent[] = [
     category: "yoga",
     hostName: "Dani",
     hostAge: 31,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Dani31&backgroundColor=d1fae5",
+    hostPhoto: cdnAvatar("dani"),
     lat: 0,
     lng: 0,
     location: "Bryant Park",
@@ -191,8 +186,7 @@ const MARQUEE_EXTRA_EVENTS: FakeEvent[] = [
     category: "dinner",
     hostName: "Marcus",
     hostAge: 28,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Marcus28&backgroundColor=dbeafe",
+    hostPhoto: cdnAvatar("marcus"),
     lat: 0,
     lng: 0,
     location: "Harlem",
@@ -208,8 +202,7 @@ const MARQUEE_EXTRA_EVENTS: FakeEvent[] = [
     category: "gallery",
     hostName: "Ava",
     hostAge: 24,
-    hostPhoto:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=Ava24&backgroundColor=ede9fe",
+    hostPhoto: cdnAvatar("ava"),
     lat: 0,
     lng: 0,
     location: "Upper East Side",
@@ -488,7 +481,7 @@ function MapPin({
         <AvatarWithCharmsWeb
           imageUrl={event.hostPhoto}
           charmIndices={event.charms}
-          size={isSelected ? 52 : 42}
+          size={isSelected ? 62 : 52}
         />
       </div>
       <div
@@ -550,7 +543,7 @@ function EventDetailCard({
         <AvatarWithCharmsWeb
           imageUrl={event.hostPhoto}
           charmIndices={event.charms}
-          size={42}
+          size={48}
         />
         <div className="flex-1 min-w-0">
           <h4 className="text-base font-bold text-gray-900 leading-tight">
@@ -613,18 +606,18 @@ function MarqueeChip({
   return (
     <button
       onClick={onTap}
-      className="flex-shrink-0 flex items-center gap-2.5 px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:border-pink-300 hover:shadow-md transition-all duration-200 group"
+      className="flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-full bg-white border border-gray-200 shadow-sm hover:border-pink-300 hover:shadow-md transition-all duration-200 group"
     >
       <AvatarWithCharmsWeb
         imageUrl={event.hostPhoto}
         charmIndices={event.charms}
-        size={28}
+        size={38}
       />
-      <div className="text-left pr-1">
-        <p className="text-xs font-semibold text-gray-900 leading-tight group-hover:text-pink-600 transition-colors">
+      <div className="text-left pr-2">
+        <p className="text-sm font-semibold text-gray-900 leading-tight group-hover:text-pink-600 transition-colors">
           {event.title}
         </p>
-        <p className="text-[10px] text-gray-400 leading-tight mt-0.5">
+        <p className="text-xs text-gray-400 leading-tight mt-0.5">
           {event.hostName} · {icon} {event.location} · {event.dateLabel}
         </p>
       </div>

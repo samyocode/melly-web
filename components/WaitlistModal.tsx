@@ -353,13 +353,13 @@ export function WaitlistModal({
   const shortCity = city.split(",")[0].trim();
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-md mx-4 mb-0 bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-[slideUp_0.3s_ease-out] overflow-hidden max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl animate-[slideUp_0.3s_ease-out] overflow-hidden max-h-[90vh] flex flex-col">
         <div className="h-1.5 flex-shrink-0 bg-gradient-to-r from-primary via-orb1 to-orb2" />
 
         <SparklesBurst

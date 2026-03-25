@@ -611,7 +611,7 @@ function MarqueeChip({
       <AvatarWithCharmsWeb
         imageUrl={event.hostPhoto}
         charmIndices={event.charms}
-        size={38}
+        size={46}
       />
       <div className="text-left pr-2">
         <p className="text-sm font-semibold text-gray-900 leading-tight group-hover:text-pink-600 transition-colors">

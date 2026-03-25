@@ -98,7 +98,11 @@ const CHARMS = [
 
 export type CharmIndex = number;
 
-const SLOT_ANGLES_DEG = [315, 45, 225];
+// Slot positions (screen coords where Y goes down):
+// Slot 0 → top-right (45°)
+// Slot 1 → bottom-left (225°)
+// Slot 2 → bottom-right (315°)
+const SLOT_ANGLES_DEG = [45, 225, 315];
 
 interface AvatarWithCharmsWebProps {
   imageUrl: string | null | undefined;

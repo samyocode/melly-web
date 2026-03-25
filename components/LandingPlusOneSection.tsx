@@ -698,10 +698,7 @@ export default function LandingPlusOneSection({
         </div>
 
         {/* Map */}
-        <div
-          className="relative w-full max-w-[720px] mx-auto rounded-3xl overflow-hidden border border-gray-200 shadow-sm"
-          style={{ aspectRatio: "720 / 514" }}
-        >
+        <div className="relative w-full max-w-[720px] mx-auto rounded-3xl overflow-hidden border border-gray-200 shadow-sm aspect-[3/4] sm:aspect-[720/514]">
           <StyledMapBg />
           <div
             className="absolute inset-0 z-[5]"

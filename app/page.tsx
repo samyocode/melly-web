@@ -128,9 +128,10 @@ export default function LandingPage() {
             </span>
           </h1>
           <p className="max-w-xl mx-auto mb-8 sm:mb-10 text-lg sm:text-xl text-gray-600 leading-relaxed">
-            A social network for singles — powered by Melly, your AI matchmaker.
-            Dating, meetups, events, and quizzes that actually help you find
-            your person.
+            I&apos;m Melly, and I genuinely can&apos;t wait to find your person.
+            I&apos;ll learn who you really are, handpick people you&apos;ll
+            click with, and set up real ways to meet them. No swiping — just me,
+            doing what I do best.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6">
             <OrbButton href="#quizzes" size="lg" fullWidthMobile>
@@ -158,12 +159,13 @@ export default function LandingPage() {
               className="mx-auto mb-5 shadow-lg shadow-pink-500/20"
             />
             <h2 className="mb-4 text-3xl sm:text-4xl font-bold text-gray-900">
-              Meet Melly, your AI matchmaker
+              A little about me ✨
             </h2>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-              She&apos;s not a chatbot. She&apos;s more like that friend
-              who&apos;s annoyingly good at setting people up — witty,
-              observant, and genuinely invested in your love life.
+              I&apos;m not a chatbot — I&apos;m more like that friend who&apos;s
+              annoyingly good at setting people up. Witty, observant, and
+              genuinely invested in your love life. Here&apos;s what it looks
+              like when I&apos;m in my element:
             </p>
           </div>
 
@@ -208,17 +210,17 @@ export default function LandingPage() {
               {
                 emoji: "🧠",
                 title: "31 personality quizzes",
-                desc: "Attachment style, conflict style, humor type, money mindset — Melly uses them all to understand who you really are.",
+                desc: "Attachment style, conflict style, humor type, money mindset — I use them all to understand who you really are.",
               },
               {
                 emoji: "💕",
                 title: "AI-powered matching",
-                desc: "Not just swiping. Melly studies your quiz results, values, and patterns to introduce you to people who truly complement you.",
+                desc: "Not just swiping. I study your quiz results, values, and patterns to introduce you to people who truly complement you.",
               },
               {
                 emoji: "🎉",
                 title: "Events & meetups",
-                desc: "Real-life connections. Join events, bring a plus-one, and meet people in a low-pressure social setting.",
+                desc: "Real-life connections. I help you find events, bring a plus-one, and meet people in a low-pressure social setting.",
               },
             ].map((item) => (
               <div
@@ -243,11 +245,12 @@ export default function LandingPage() {
         <div className="px-5 sm:px-6 mx-auto max-w-7xl">
           <div className="mb-10 sm:mb-14 text-center">
             <h2 className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900">
-              Start with a Quiz
+              Let&apos;s start here
             </h2>
             <p className="text-base sm:text-lg text-gray-500 max-w-lg mx-auto">
-              Take a 2-minute quiz and chat with Melly about your results. No
-              sign-up, no paywall — just genuine self-discovery.
+              Take a 2-minute quiz and I&apos;ll walk you through your results.
+              No sign-up, no paywall — just genuine self-discovery. I&apos;ll be
+              right here the whole time.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-8">
@@ -280,7 +283,7 @@ export default function LandingPage() {
                     {quiz.description}
                   </p>
                   <div className="flex items-center text-sm font-bold text-pink-500">
-                    <span>Chat with Melly</span>
+                    <span>Chat with me</span>
                     <svg
                       className="w-4 h-4 ml-1.5 transition transform group-hover:translate-x-1"
                       fill="none"
@@ -331,60 +334,72 @@ export default function LandingPage() {
       {/* --- MEL INTERACTIVE FEED --- */}
       <LandingFeedSection onOpenWaitlist={openWaitlist} />
 
-      {/* --- HOW IT WORKS --- */}
+      {/* --- HOW MELLY WORKS (first person, journey-focused) --- */}
       <section className="py-16 sm:py-24 bg-white">
         <div className="max-w-5xl px-5 sm:px-6 mx-auto">
           <h2 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-gray-900">
-            How Melly Works
+            Here&apos;s how I find your person
           </h2>
           <p className="max-w-lg mx-auto mb-12 sm:mb-16 text-center text-gray-500 text-base sm:text-lg">
-            Quizzes aren&apos;t destiny — they&apos;re a starting point. You
-            always have agency in who you connect with.
+            I&apos;ve got three ways to connect you with people who actually get
+            you — and I&apos;m learning more about you with every single one.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-5">
             {[
               {
                 step: "01",
-                title: "Take a quiz",
-                desc: "2 minutes, no sign-up. Melly walks you through it like a conversation.",
-                emoji: "💬",
+                title: "I introduce you",
+                desc: "I study your personality, values, and patterns across 31 quizzes — then I handpick people who genuinely complement you. No swiping, no guesswork. Just me, doing my thing.",
+                emoji: "💕",
+                label: "AI Matchmaker",
+                labelColor: "text-pink-500 bg-pink-500/[0.06]",
               },
               {
                 step: "02",
-                title: "Get your result",
-                desc: "Discover your patterns — attachment, humor, conflict, money, and more.",
-                emoji: "🪞",
+                title: "I set up real meetups",
+                desc: "I help you find Plus One events hosted by other singles near you — rooftop drinks, trail runs, gallery hops. You request to join and show up as yourself. I handle the rest.",
+                emoji: "🎉",
+                label: "Events & Meetups",
+                labelColor: "text-violet-600 bg-violet-50",
               },
               {
                 step: "03",
-                title: "Chat with Melly",
-                desc: "Ask her what your result means, how it affects dating, and what to watch for.",
+                title: "I spark conversations",
+                desc: "Every day, I drop prompts in your feed — polls, this-or-thats, and guessing games. Every answer helps me understand you better and connects you with people who think like you.",
                 emoji: "✨",
-              },
-              {
-                step: "04",
-                title: "Meet your people",
-                desc: "Join the app. Melly uses your insights to match you with compatible singles.",
-                emoji: "💕",
+                label: "Feed & Prompts",
+                labelColor: "text-amber-600 bg-amber-50",
               },
             ].map((item) => (
               <div
                 key={item.step}
-                className="relative p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-pink-50/60 border border-pink-100 text-center"
+                className="relative p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-pink-50/60 border border-pink-100"
               >
-                <div className="text-2xl mb-3">{item.emoji}</div>
+                <div className="flex items-center gap-2.5 mb-4">
+                  <span className="text-2xl">{item.emoji}</span>
+                  <span
+                    className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${item.labelColor}`}
+                  >
+                    {item.label}
+                  </span>
+                </div>
                 <div className="text-xs font-bold text-pink-500 mb-1.5 tracking-widest uppercase">
                   Step {item.step}
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
             ))}
           </div>
+          <p className="max-w-md mx-auto mt-8 text-center text-sm text-gray-400 leading-relaxed">
+            Every quiz you take, prompt you answer, and event you join makes me
+            smarter about who you are — and who you&apos;ll click with. You
+            always have agency in who you connect with.
+          </p>
         </div>
       </section>
 
@@ -397,12 +412,13 @@ export default function LandingPage() {
               className="mx-auto mb-5 shadow-lg shadow-pink-500/20"
             />
             <h2 className="mb-3 text-2xl sm:text-3xl font-bold text-gray-900">
-              Be first in line
+              I&apos;m almost ready for you
             </h2>
             <p className="mb-8 text-gray-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
-              Melly is launching soon. Join the waitlist to save your quiz
-              results, get your full compatibility profile, and be the first to
-              meet your people.
+              I&apos;m launching soon, city by city. Join the waitlist and
+              I&apos;ll save your quiz results, start building your
+              compatibility profile, and let you know the moment I arrive in
+              your area. I genuinely can&apos;t wait.
             </p>
             {waitlistDone ? (
               <div className="p-4 rounded-2xl bg-pink-50/60 border border-pink-100">
@@ -410,7 +426,7 @@ export default function LandingPage() {
                   You&apos;re on the list! 🎉
                 </p>
                 <p className="text-sm text-gray-500">
-                  We&apos;ll let you know when Melly is ready.
+                  I&apos;ll let you know when I&apos;m ready for you.
                 </p>
               </div>
             ) : (
@@ -418,7 +434,7 @@ export default function LandingPage() {
                 onClick={() =>
                   openWaitlist(
                     "I'd love to keep chatting! 💕",
-                    "Melly is launching city by city. Where are you based? I'll make sure you're one of the first to know when we arrive.",
+                    "I'm launching city by city. Where are you based? I'll make sure you're one of the first to know when I arrive.",
                   )
                 }
                 className="whitespace-nowrap"
@@ -446,4 +462,4 @@ export default function LandingPage() {
       />
     </div>
   );
-} // app/page.tsx
+}

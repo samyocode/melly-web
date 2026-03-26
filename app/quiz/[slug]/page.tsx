@@ -63,6 +63,15 @@ const MELLY_DISCUSSION_PROMPTS = [
   "Curious what this means for you? I'd love to dig deeper — ask me anything.",
   "This is just the beginning. Want to know how this plays out in real relationships? Ask away!",
 ];
+
+const WAITLIST_PITCHES = [
+  "I already know so much about you from this one quiz. Imagine what I could do with all 31. Join the waitlist and I'll use your results to find people who genuinely complement you.",
+  "This is just the beginning of your story. Join the waitlist and I'll use everything I learn about you to find someone who truly gets you.",
+  "You'd be amazed how much I can read from these answers. Join the waitlist and let me put all this insight to work finding your person.",
+  "I'm already building a picture of who you are — and honestly, I love what I see. Join the waitlist and I'll match you with people who'll love it too.",
+  "One quiz down, and I'm already excited about your potential matches. Join the waitlist and I'll keep sharpening your compatibility profile.",
+];
+
 const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
 // ─── FEATURED CHARMS (personality category, have icon_url) ──────────────────
@@ -175,6 +184,8 @@ function ChatBubble({
   );
 }
 
+// ─── GATED CHAT INPUT (honest — no bait-and-switch) ─────────────────────────
+
 function GatedChatInput({ onTap }: { onTap: () => void }) {
   return (
     <div className="sticky bottom-0 z-40 bg-white/80 backdrop-blur-lg border-t border-softPinkBorder">
@@ -183,23 +194,12 @@ function GatedChatInput({ onTap }: { onTap: () => void }) {
           onClick={onTap}
           className="w-full flex items-center gap-3 px-4 py-3 bg-softPinkBg rounded-full border border-gray-200 text-left transition hover:border-primary/30 group"
         >
+          <MellyOrb size={24} className="flex-shrink-0" />
           <span className="flex-1 text-sm text-gray-400 group-hover:text-gray-500 transition">
-            Ask Melly about your result...
+            Want to dig deeper? Chat with Melly in the app...
           </span>
-          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <svg
-              className="w-4 h-4 text-primary/50"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="M5 12h14M12 5l7 7-7 7"
-              />
-            </svg>
+          <span className="flex-shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full text-white bg-gradient-to-r from-pink-400 to-primary">
+            Coming soon
           </span>
         </button>
       </div>
@@ -474,11 +474,9 @@ function SignupModal({
         onClick={onClose}
       />
 
-      {/* Modal — max-h with scroll for small screens */}
       <div className="relative w-full max-w-md mx-4 mb-0 bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-[slideUp_0.3s_ease-out] overflow-hidden max-h-[90vh] flex flex-col">
         <div className="h-1.5 flex-shrink-0 bg-gradient-to-r from-primary via-orb1 to-orb2" />
 
-        {/* Sparkle burst on successful signup */}
         <SparklesBurst
           trigger={showSparkles}
           onComplete={() => setShowSparkles(false)}
@@ -527,7 +525,6 @@ function SignupModal({
                   <CityPicker value={city} onChange={setCity} />
                 </div>
 
-                {/* GPS option */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="flex-1 h-px bg-gray-200" />
                   <span className="text-xs text-gray-400 font-medium">or</span>
@@ -658,10 +655,9 @@ function SignupModal({
               </>
             )}
 
-            {/* ── STEP 3: Celebrate — sparkle burst + what to expect ── */}
+            {/* ── STEP 3: Celebrate ── */}
             {step === "celebrate" && (
               <div className="relative py-4">
-                {/* Sparkle burst — centered and large */}
                 <div className="relative h-48 flex items-center justify-center mb-4">
                   <SparklesBurst
                     trigger={showSparkles}
@@ -683,7 +679,6 @@ function SignupModal({
                   matching day.
                 </p>
 
-                {/* What to expect */}
                 <div className="text-left space-y-3 mb-6 animate-[fadeIn_0.4s_ease-out_0.8s_both]">
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest text-center">
                     What happens next
@@ -747,7 +742,6 @@ function SignupModal({
                   badges you can wear on your profile. Here&apos;s a sneak peek:
                 </p>
 
-                {/* Charms teaser */}
                 <div className="p-4 rounded-2xl bg-softPinkBg border border-softPinkBorder mb-5">
                   <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
                     {FEATURED_CHARMS.map((charm) => (
@@ -799,7 +793,290 @@ function SignupModal({
   );
 }
 
-// ─── RESULT CARD ─────────────────────────────────────────────────────────────
+// ─── SHARE SHEET ────────────────────────────────────────────────────────────
+
+function ShareSheet({ result, quiz }: { result: QuizResult; quiz: QuizData }) {
+  const [copied, setCopied] = useState(false);
+
+  const shareText = `I got "${result.name}" on the ${quiz.title} quiz! ${result.tagline}`;
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `I got "${result.name}" on the ${quiz.title} quiz!`,
+          text: `${result.tagline} — Take the quiz yourself:`,
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        /* user cancelled */
+      }
+    }
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `${shareText}\n\nTake it yourself: ${shareUrl}`,
+      );
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      window.prompt("Copy this link:", shareUrl);
+    }
+  };
+
+  const channels = [
+    {
+      name: "Instagram",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg>
+      ),
+      color: "#E4405F",
+      action: handleNativeShare,
+    },
+    {
+      name: "X",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+      ),
+      color: "#000000",
+      action: () =>
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+          "_blank",
+        ),
+    },
+    {
+      name: "WhatsApp",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+      ),
+      color: "#25D366",
+      action: () =>
+        window.open(
+          `https://wa.me/?text=${encodeURIComponent(shareText + "\n\n" + shareUrl)}`,
+          "_blank",
+        ),
+    },
+    {
+      name: "Copy",
+      icon: copied ? (
+        <svg
+          viewBox="0 0 24 24"
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      ) : (
+        <svg
+          viewBox="0 0 24 24"
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+          />
+        </svg>
+      ),
+      color: "#6B7280",
+      action: handleCopy,
+    },
+  ];
+
+  return (
+    <div className="rounded-2xl bg-white border border-softPinkBorder overflow-hidden animate-[fadeSlideIn_0.35s_ease-out_0.1s_both]">
+      <div className="px-5 pt-4 pb-2.5 text-center bg-gradient-to-b from-softPinkBg to-transparent">
+        <p className="text-sm font-bold text-gray-900 mb-0.5">
+          Share your result
+        </p>
+        <p className="text-xs text-gray-400">
+          See if your friends get the same — or start a debate
+        </p>
+      </div>
+      <div className="px-5 pb-4 flex justify-center gap-5">
+        {channels.map((ch) => (
+          <button
+            key={ch.name}
+            onClick={ch.action}
+            className="flex flex-col items-center gap-1.5 group"
+          >
+            <div
+              className="w-11 h-11 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 group-active:scale-95"
+              style={{
+                backgroundColor: ch.name === "Copy" ? "#F3F4F6" : ch.color,
+              }}
+            >
+              <span style={{ color: ch.name === "Copy" ? "#6B7280" : "#fff" }}>
+                {ch.icon}
+              </span>
+            </div>
+            <span className="text-[10px] font-medium text-gray-500">
+              {ch.name === "Copy" && copied ? "Copied!" : ch.name}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── SOCIAL PROOF BRIDGE ────────────────────────────────────────────────────
+
+function SocialProofBridge({ quizTitle }: { quizTitle: string }) {
+  return (
+    <div className="flex items-center gap-3 px-3.5 py-3 rounded-xl bg-softPinkBg/50 border border-softPinkBorder animate-[fadeSlideIn_0.4s_ease-out_0.4s_both]">
+      <div className="flex -space-x-2 flex-shrink-0">
+        {["#FCE7F3", "#DBEAFE", "#EDE9FE", "#D1FAE5"].map((bg, i) => (
+          <div
+            key={i}
+            className="w-6 h-6 rounded-full border-2 border-white"
+            style={{
+              background: `linear-gradient(135deg, ${bg}, ${bg}dd)`,
+              zIndex: 4 - i,
+            }}
+          />
+        ))}
+      </div>
+      <p className="text-xs text-gray-500 leading-snug">
+        <span className="font-semibold text-gray-700">Thousands of people</span>{" "}
+        took the {quizTitle} quiz.{" "}
+        <span className="text-gray-400">
+          Your answers carry over when you join.
+        </span>
+      </p>
+    </div>
+  );
+}
+
+// ─── WAITLIST PITCH (Mel's voice) ───────────────────────────────────────────
+
+function WaitlistPitch({
+  onSignup,
+  waitlistSubmitted,
+}: {
+  onSignup: () => void;
+  waitlistSubmitted: boolean;
+}) {
+  const [pitchText] = useState(() => pick(WAITLIST_PITCHES));
+
+  if (waitlistSubmitted) {
+    return (
+      <div className="p-4 rounded-2xl bg-softPinkBg border border-softPinkBorder text-center animate-[fadeSlideIn_0.3s_ease-out]">
+        <p className="text-sm font-bold text-primary mb-0.5">
+          You&apos;re on the list! 🎉
+        </p>
+        <p className="text-xs text-gray-500">
+          We&apos;ll let you know when Melly is ready.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative p-4 rounded-2xl bg-gradient-to-br from-softPinkBg to-lightPurpleBg border border-softPinkBorder animate-[fadeSlideIn_0.4s_ease-out_0.5s_both]">
+      <div className="flex items-start gap-2.5">
+        <MellyOrb size={32} className="mt-0.5 flex-shrink-0" />
+        <div className="flex-1">
+          <p className="text-sm text-gray-700 leading-relaxed mb-3">
+            {pitchText}
+          </p>
+          <button
+            onClick={onSignup}
+            className="w-full py-3 rounded-full text-sm font-bold text-white bg-gradient-to-r from-pink-400 via-primary to-primaryDark shadow-md shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
+          >
+            Join Waitlist — It&apos;s Free
+          </button>
+          <p className="text-[10px] text-gray-400 text-center mt-2">
+            No spam. Just a heads-up when we launch in your city.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── NEXT QUIZZES (list format) ─────────────────────────────────────────────
+
+function NextQuizzesList({ slug }: { slug: string }) {
+  const nextQuizzes = NEXT_QUIZZES[slug] || DEFAULT_NEXT_QUIZZES;
+
+  return (
+    <div className="animate-[fadeSlideIn_0.4s_ease-out_0.6s_both]">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="flex-1 h-px bg-softPinkBorder" />
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+          Keep exploring
+        </p>
+        <div className="flex-1 h-px bg-softPinkBorder" />
+      </div>
+      <div className="flex flex-col gap-2">
+        {nextQuizzes.map((nq) => (
+          <Link
+            key={nq.slug}
+            href={`/quiz/${nq.slug}`}
+            className="group flex items-center gap-3 p-2.5 rounded-xl bg-white border border-softPinkBorder transition-all hover:shadow-md hover:-translate-y-0.5"
+          >
+            <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+              <Image
+                src={`${CLD}/${nq.cover}.webp`}
+                alt={nq.title}
+                fill
+                sizes="56px"
+                className="object-cover transition duration-500 group-hover:scale-110"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">
+                {nq.title}
+              </p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                2 min · Chat with Melly
+              </p>
+            </div>
+            <svg
+              className="w-4 h-4 text-gray-300 group-hover:text-primary/60 transition-all group-hover:translate-x-0.5 flex-shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── RESULT CARD (redesigned) ───────────────────────────────────────────────
+//
+// Flow: Result reveal → Share (primary) → Social proof → Waitlist pitch → Next quizzes
+//
 
 function ResultCard({
   result,
@@ -814,53 +1091,30 @@ function ResultCard({
   onSignup: () => void;
   waitlistSubmitted: boolean;
 }) {
-  const nextQuizzes = NEXT_QUIZZES[slug] || DEFAULT_NEXT_QUIZZES;
-  const [copied, setCopied] = useState(false);
-  const handleShare = async () => {
-    const shareData = {
-      title: `I got "${result.name}" on the ${quiz.title} quiz!`,
-      text: `${result.tagline} — Take the quiz yourself:`,
-      url: window.location.href,
-    };
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        return;
-      } catch {
-        /* fall through */
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(
-        `I got "${result.name}" on the ${quiz.title} quiz! ${result.tagline}\n\nTake it yourself: ${window.location.href}`,
-      );
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      window.prompt("Copy this link:", window.location.href);
-    }
-  };
-
   return (
     <div className="px-4 sm:px-6 animate-[fadeSlideIn_0.4s_ease-out]">
-      <div className="ml-10 sm:ml-[42px]">
-        <div className="relative p-5 sm:p-6 rounded-2xl bg-white border border-softPinkBorder shadow-lg shadow-primary/5 mb-4 overflow-hidden">
+      <div className="ml-10 sm:ml-[42px] space-y-3">
+        {/* ═══ 1. THE RESULT (let the dopamine land) ═══ */}
+        <div className="relative p-5 sm:p-6 rounded-2xl bg-white border border-softPinkBorder shadow-lg shadow-primary/5 overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-orb1 to-orb2" />
           <div className="pt-1">
-            <p className="text-[11px] font-bold text-primary tracking-widest uppercase mb-1">
+            <p className="text-[10px] font-bold text-primary tracking-[0.15em] uppercase mb-1.5">
               Your Result
             </p>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1 leading-tight">
               {result.name}
             </h3>
             <p className="text-sm text-gray-500 italic mb-4">
               &ldquo;{result.tagline}&rdquo;
             </p>
             <div className="flex flex-wrap gap-1.5 mb-4">
-              {result.traits.map((t) => (
+              {result.traits.map((t, i) => (
                 <span
                   key={t}
                   className="px-2.5 py-1 text-xs font-medium text-primaryDark bg-softPinkBg border border-softPinkBorder rounded-full"
+                  style={{
+                    animation: `fadeSlideIn 0.3s ease-out ${300 + i * 100}ms both`,
+                  }}
                 >
                   {t}
                 </span>
@@ -871,85 +1125,28 @@ function ResultCard({
             </p>
           </div>
         </div>
-        <div className="p-3.5 rounded-xl bg-lightPurpleBg border border-softPinkBorder mb-4">
-          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-            <span className="font-semibold text-gray-700">Remember:</span> This
-            is a starting point for self-awareness, not a verdict. The best
-            relationships are built by people who understand their patterns and
-            choose to grow.
-          </p>
-        </div>
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={handleShare}
-            className="flex-1 px-3 py-2.5 text-xs sm:text-sm font-bold text-primary bg-white border border-primary/20 rounded-full hover:bg-primary/5 transition text-center"
-          >
-            {copied ? "Copied! ✓" : "Share Result"}
-          </button>
-          <button
-            onClick={() => window.location.reload()}
-            className="flex-1 px-3 py-2.5 text-xs sm:text-sm font-bold text-gray-500 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition text-center"
-          >
-            Retake
-          </button>
-        </div>
-        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-softPinkBg to-lightPurpleBg border border-softPinkBorder mb-4">
-          <div className="text-center">
-            <div className="text-2xl mb-2">💕</div>
-            <h4 className="text-lg font-bold text-gray-900 mb-1">
-              See who you&apos;re compatible with
-            </h4>
-            <p className="text-sm text-gray-600 mb-4 max-w-xs mx-auto">
-              Save your result and get matched with people who complement your
-              attachment style when Melly launches.
-            </p>
-            {waitlistSubmitted ? (
-              <div className="p-3 rounded-xl bg-white border border-softPinkBorder">
-                <p className="text-sm font-bold text-primary mb-0.5">
-                  You&apos;re on the list! 🎉
-                </p>
-                <p className="text-xs text-gray-500">
-                  We&apos;ll let you know when Melly is ready.
-                </p>
-              </div>
-            ) : (
-              <button
-                onClick={onSignup}
-                className="w-full sm:w-auto px-6 py-3 text-sm font-bold text-white rounded-full bg-primary hover:bg-primaryDark transition shadow-md shadow-primary/20"
-              >
-                Join Waitlist
-              </button>
-            )}
-          </div>
-        </div>
-        <div>
-          <p className="text-sm font-bold text-gray-900 mb-3 text-center">
-            Keep exploring
-          </p>
-          <div className="grid grid-cols-3 gap-2">
-            {nextQuizzes.map((nq) => (
-              <Link
-                key={nq.slug}
-                href={`/quiz/${nq.slug}`}
-                className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-all"
-              >
-                <Image
-                  src={`${CLD}/${nq.cover}.webp`}
-                  alt={nq.title}
-                  fill
-                  sizes="(max-width: 640px) 33vw, 200px"
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-1.5 left-1.5 right-1.5">
-                  <p className="text-[10px] sm:text-xs font-bold text-white leading-tight">
-                    {nq.title}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+
+        {/* Disclaimer */}
+        <p className="text-[11px] text-gray-400 leading-relaxed px-1">
+          This is a starting point for self-awareness, not a verdict. The best
+          relationships are built by people who understand their patterns and
+          choose to grow.
+        </p>
+
+        {/* ═══ 2. SHARE (primary CTA — the growth mechanic) ═══ */}
+        <ShareSheet result={result} quiz={quiz} />
+
+        {/* ═══ 3. SOCIAL PROOF BRIDGE ═══ */}
+        <SocialProofBridge quizTitle={quiz.title} />
+
+        {/* ═══ 4. WAITLIST PITCH (Mel's voice) ═══ */}
+        <WaitlistPitch
+          onSignup={onSignup}
+          waitlistSubmitted={waitlistSubmitted}
+        />
+
+        {/* ═══ 5. NEXT QUIZZES (list format) ═══ */}
+        <NextQuizzesList slug={slug} />
       </div>
     </div>
   );
@@ -1130,7 +1327,6 @@ function ComingSoonPage({
         </div>
       </main>
 
-      {/* Reuse the same signup modal */}
       <SignupModal
         visible={showSignupModal}
         onClose={() => setShowSignupModal(false)}
@@ -1176,6 +1372,8 @@ function ComingSoonPage({
     </div>
   );
 }
+
+// ─── QUIZ CHAT ──────────────────────────────────────────────────────────────
 
 function QuizChat({ quiz, slug }: { quiz: QuizData; slug: string }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);

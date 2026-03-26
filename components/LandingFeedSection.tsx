@@ -83,24 +83,9 @@ const PROMPTS: Prompt[] = [
     bio_text:
       "Speaks fluent sarcasm but means every compliment. Will plan the perfect date but pretend it was spontaneous. Looking for someone who gets my references and doesn't mind that I talk to my plants.",
     candidates: [
-      {
-        id: "c1",
-        name: "Priya",
-        age: 26,
-        photo: cdnAvatar("priya"),
-      },
-      {
-        id: "c2",
-        name: "Kira",
-        age: 26,
-        photo: cdnAvatar("kira"),
-      },
-      {
-        id: "c3",
-        name: "Mia",
-        age: 27,
-        photo: cdnAvatar("mia"),
-      },
+      { id: "c1", name: "Priya", age: 26, photo: cdnAvatar("priya") },
+      { id: "c2", name: "Kira", age: 26, photo: cdnAvatar("kira") },
+      { id: "c3", name: "Mia", age: 27, photo: cdnAvatar("mia") },
     ],
     correct_index: 1,
     totalPlayed: 2341,
@@ -196,9 +181,7 @@ function AnimatedPollOption({
       return;
     }
     const barTimer = setTimeout(() => {
-      if (barRef.current) {
-        barRef.current.style.width = `${opt.percentage}%`;
-      }
+      if (barRef.current) barRef.current.style.width = `${opt.percentage}%`;
     }, delay);
     const pctTimer = setTimeout(() => setShowPct(true), delay + 500);
     return () => {
@@ -212,8 +195,7 @@ function AnimatedPollOption({
       onClick={onSelect}
       disabled={disabled}
       className={`
-        relative flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-sm text-left w-full overflow-hidden
-        transition-all duration-200
+        relative flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-sm text-left w-full overflow-hidden transition-all duration-200
         ${isSelected ? "border-pink-500/30 bg-pink-500/[0.04]" : "border-gray-200 bg-gray-50"}
         ${answered ? "cursor-default" : "cursor-pointer hover:border-pink-200"}
         ${isSelected && answered ? "animate-[selectBounce_0.35s_ease-out]" : ""}
@@ -221,15 +203,12 @@ function AnimatedPollOption({
     >
       <div
         ref={barRef}
-        className={`absolute inset-y-0 left-0 rounded-xl ${
-          isSelected ? "bg-pink-500/10" : "bg-gray-200/50"
-        }`}
+        className={`absolute inset-y-0 left-0 rounded-xl ${isSelected ? "bg-pink-500/10" : "bg-gray-200/50"}`}
         style={{
           width: "0%",
           transition: "width 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
-
       <span className="relative z-10 flex items-center gap-2">
         {opt.emoji && <span className="text-base">{opt.emoji}</span>}
         <span
@@ -238,15 +217,9 @@ function AnimatedPollOption({
           {opt.label}
         </span>
       </span>
-
       {answered && (
         <span
-          className={`
-            relative z-10 text-[13px] font-bold tabular-nums
-            ${isSelected ? "text-pink-500" : "text-gray-500"}
-            transition-all duration-300
-            ${showPct ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"}
-          `}
+          className={`relative z-10 text-[13px] font-bold tabular-nums ${isSelected ? "text-pink-500" : "text-gray-500"} transition-all duration-300 ${showPct ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"}`}
         >
           {opt.percentage}%
         </span>
@@ -276,17 +249,14 @@ function PollCard({
           {prompt.tag}
         </span>
       </div>
-
       <p className="text-[15px] font-medium text-gray-900 leading-snug mb-3.5">
         {prompt.prompt_text}
       </p>
-
       {!answered && (
         <p className="text-xs text-gray-400 font-medium mb-2.5">
           🔥 {prompt.totalVotes.toLocaleString()} people answered
         </p>
       )}
-
       <div className="flex flex-col gap-2">
         {prompt.options.map((opt, idx) => (
           <AnimatedPollOption
@@ -300,7 +270,6 @@ function PollCard({
           />
         ))}
       </div>
-
       {answered && (
         <button
           onClick={onSeeVotes}
@@ -315,10 +284,9 @@ function PollCard({
           <span className="text-pink-500 font-semibold">→</span>
         </button>
       )}
-
       {!answered && (
         <p className="mt-2.5 text-[11px] text-gray-400">
-          This feeds directly into who Melly suggests for you.
+          This feeds directly into who I suggest for you.
         </p>
       )}
     </div>
@@ -345,15 +313,12 @@ function MatchBioCard({
   const handleSelect = (index: number) => {
     if (hasAnswered) return;
     setChosenIndex(index);
-
-    // Stagger reveals: result border → Melly bubble
     setTimeout(() => setShowResult(true), 300);
     setTimeout(() => setShowMellyBubble(true), 900);
   };
 
   return (
     <div className="bg-white rounded-2xl sm:rounded-3xl border border-pink-100 p-5 sm:p-6">
-      {/* Header */}
       <div className="flex items-center gap-2.5 mb-3">
         <MellyOrb size={36} />
         <span className="text-sm font-semibold text-gray-900">Melly</span>
@@ -361,35 +326,26 @@ function MatchBioCard({
           {prompt.tag}
         </span>
       </div>
-
-      {/* Prompt */}
       <p className="text-[15px] font-medium text-gray-900 leading-snug mb-2">
         Who do you think wrote this bio?
       </p>
-
-      {/* Pre-answer social proof */}
       {!hasAnswered && (
         <p className="text-xs text-gray-400 font-medium mb-3">
           🎯 {prompt.totalPlayed.toLocaleString()} people played ·{" "}
           {prompt.accuracy}% accuracy
         </p>
       )}
-
-      {/* Bio text */}
       <div className="px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-100 mb-4">
         <p className="text-sm text-gray-700 leading-relaxed italic">
           &ldquo;{prompt.bio_text}&rdquo;
         </p>
       </div>
-
-      {/* Candidate photos */}
       <div className="grid grid-cols-3 gap-2.5 mb-2">
         {prompt.candidates.map((candidate, index) => {
           const isChosen = chosenIndex === index;
           const isCorrectAnswer = index === prompt.correct_index;
           const showCorrectBorder = showResult && isCorrectAnswer;
           const showWrongBorder = showResult && isChosen && !isCorrectAnswer;
-
           return (
             <button
               key={candidate.id}
@@ -410,11 +366,7 @@ function MatchBioCard({
                 sizes="(max-width: 640px) 30vw, 140px"
                 className="object-cover"
               />
-
-              {/* Gradient overlay for name */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-              {/* Name + age (visible after answering) */}
               {showResult && (
                 <div className="absolute bottom-0 left-0 right-0 p-2 animate-[fadeIn_0.3s_ease-out]">
                   <p className="text-[11px] font-bold text-white leading-tight">
@@ -422,8 +374,6 @@ function MatchBioCard({
                   </p>
                 </div>
               )}
-
-              {/* Pre-answer: anonymous label */}
               {!hasAnswered && (
                 <div className="absolute bottom-0 left-0 right-0 p-2">
                   <p className="text-[11px] font-medium text-white/80 leading-tight">
@@ -431,8 +381,6 @@ function MatchBioCard({
                   </p>
                 </div>
               )}
-
-              {/* Correct badge */}
               {showCorrectBorder && (
                 <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
                   <svg
@@ -450,8 +398,6 @@ function MatchBioCard({
                   </svg>
                 </div>
               )}
-
-              {/* Wrong badge */}
               {showWrongBorder && (
                 <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-red-500 flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
                   <svg
@@ -474,13 +420,9 @@ function MatchBioCard({
         })}
       </div>
 
-      {/* Melly insight bubble */}
       {showMellyBubble && (
         <div
-          className={`
-            flex items-start gap-2.5 px-3.5 py-3 rounded-xl border mt-3 animate-[fadeSlideIn_0.4s_ease-out]
-            ${isCorrect ? "bg-emerald-500/[0.04] border-emerald-500/20" : "bg-red-500/[0.03] border-red-400/15"}
-          `}
+          className={`flex items-start gap-2.5 px-3.5 py-3 rounded-xl border mt-3 animate-[fadeSlideIn_0.4s_ease-out] ${isCorrect ? "bg-emerald-500/[0.04] border-emerald-500/20" : "bg-red-500/[0.03] border-red-400/15"}`}
         >
           <MellyOrb size={22} className="mt-0.5 flex-shrink-0" />
           <p
@@ -490,7 +432,7 @@ function MatchBioCard({
               <>
                 Correct! Only {prompt.accuracy}% got this one — sharp eye.{" "}
                 <span className="font-normal text-emerald-700/80">
-                  This is the kind of game you&apos;ll play in the Melly app to
+                  This is the kind of game you&apos;ll play in the app to
                   sharpen your people-reading skills.
                 </span>
               </>
@@ -499,8 +441,8 @@ function MatchBioCard({
                 Not quite — only {prompt.accuracy}% got it right, so you&apos;re
                 not alone.{" "}
                 <span className="font-normal text-red-800/70">
-                  That was {correctCandidate.name}! In the app, Melly tracks how
-                  you read bios and uses it to find your match.
+                  That was {correctCandidate.name}! In the app, I track how you
+                  read bios and use it to find your match.
                 </span>
               </>
             )}
@@ -508,7 +450,6 @@ function MatchBioCard({
         </div>
       )}
 
-      {/* Post-answer CTA */}
       {showMellyBubble && (
         <button
           onClick={onJoinWaitlist}
@@ -524,11 +465,10 @@ function MatchBioCard({
         </button>
       )}
 
-      {/* Pre-answer footer */}
       {!hasAnswered && (
         <p className="mt-2 text-[11px] text-gray-400">
-          Tap a photo to make your guess. Melly uses this to understand how you
-          read people.
+          Tap a photo to make your guess. I use this to understand how you read
+          people.
         </p>
       )}
     </div>
@@ -587,7 +527,7 @@ export default function LandingFeedSection({
         <div className="max-w-2xl mx-auto text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 mb-4 text-sm font-semibold text-pink-500 bg-pink-500/[0.06] rounded-full">
             <MellyOrb size={16} />
-            Powered by Melly
+            Powered by me ✨
           </div>
           <h2 className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900">
             Your daily dose of{" "}
@@ -596,9 +536,9 @@ export default function LandingFeedSection({
             </span>
           </h2>
           <p className="text-base sm:text-lg text-gray-500 max-w-md mx-auto">
-            Melly drops prompts in your feed — polls, this-or-thats, and
-            guessing games. Every answer helps her understand you better and
-            find your match.
+            Every day, I drop prompts in your feed — polls, this-or-thats, and
+            guessing games. Every answer helps me understand you better and find
+            your match.
           </p>
         </div>
 
@@ -612,7 +552,7 @@ export default function LandingFeedSection({
                   onJoinWaitlist={() =>
                     onOpenWaitlist(
                       "You've got a good eye! ✨",
-                      `${prompt.totalPlayed.toLocaleString()} people played this game. Join the waitlist and Melly will use how you read bios to find your perfect match.`,
+                      `${prompt.totalPlayed.toLocaleString()} people played this game. Join the waitlist and I'll use how you read bios to find your perfect match.`,
                     )
                   }
                 />
@@ -635,7 +575,7 @@ export default function LandingFeedSection({
 
         <div className="text-center mt-10">
           <p className="text-sm text-gray-500 mb-4">
-            These are real prompts from the Melly app.
+            These are real prompts from the app.
             <br />
             Your answers carry over when you join.
           </p>
@@ -643,7 +583,7 @@ export default function LandingFeedSection({
             onClick={() =>
               onOpenWaitlist(
                 "I'd love to keep chatting! 💕",
-                "Melly is launching city by city. Join the waitlist and I'll personally let you know the moment we arrive near you.",
+                "I'm launching city by city. Join the waitlist and I'll personally let you know the moment I arrive near you.",
               )
             }
             className="px-8 py-4 rounded-full bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 text-white text-base font-bold shadow-lg shadow-pink-500/25 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-pink-500/30 active:scale-[0.98]"

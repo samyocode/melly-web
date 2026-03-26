@@ -146,7 +146,6 @@ const FAKE_EVENTS: FakeEvent[] = [
   },
 ];
 
-// Extra events for the marquee (extends the visual variety)
 const MARQUEE_EXTRA_EVENTS: FakeEvent[] = [
   {
     id: "m1",
@@ -223,7 +222,6 @@ const MAP_BOUNDS = {
   maxLng: -73.94,
 };
 
-// How many pixels to shift all pins up when card is open
 const PIN_SHIFT_PX = 60;
 
 // ─── MAP BACKGROUND ────────────────────────────────────────────────────────
@@ -449,9 +447,6 @@ function MapPin({
     ((MAP_BOUNDS.maxLat - event.lat) /
       (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat)) *
     100;
-
-  // When card is open, shift all pins up by a fixed pixel amount
-  // so the selected pin doesn't get hidden behind the card
   const yOffset = cardOpen ? -PIN_SHIFT_PX : 0;
 
   return (
@@ -658,7 +653,6 @@ export default function LandingPlusOneSection({
 
   return (
     <section className="py-16 sm:py-24 bg-white overflow-hidden">
-      {/* Marquee keyframes */}
       <style jsx global>{`
         @keyframes marqueeScroll {
           0% {
@@ -686,14 +680,15 @@ export default function LandingPlusOneSection({
             <span>🎉</span> Real-world meetups
           </div>
           <h2 className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900">
-            Find your{" "}
+            I&apos;ll find you a{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600">
               plus one
             </span>
           </h2>
           <p className="text-base sm:text-lg text-gray-500 max-w-md mx-auto">
-            Browse real plans from singles near you. Tap a pin to see who&apos;s
-            hosting — and request to join.
+            I curate real plans from singles near you — rooftop drinks, trail
+            runs, gallery hops. Tap a pin to see who&apos;s hosting, and request
+            to join.
           </p>
         </div>
 
@@ -739,16 +734,12 @@ export default function LandingPlusOneSection({
 
       {/* ── Event Marquee ── */}
       <div className="mt-10 relative">
-        {/* Fade edges */}
         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-
         <div className="overflow-hidden">
           <div
             className="flex gap-3 w-max"
-            style={{
-              animation: "marqueeScroll 35s linear infinite",
-            }}
+            style={{ animation: "marqueeScroll 35s linear infinite" }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.animationPlayState =
                 "paused";
@@ -758,7 +749,6 @@ export default function LandingPlusOneSection({
                 "running";
             }}
           >
-            {/* Duplicate the list for seamless loop */}
             {[...ALL_MARQUEE_EVENTS, ...ALL_MARQUEE_EVENTS].map((ev, i) => (
               <MarqueeChip
                 key={`${ev.id}-${i}`}

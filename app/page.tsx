@@ -14,6 +14,10 @@ import LandingPlusOneSection from "@/components/LandingPlusOneSection";
 import LandingFeedSection from "@/components/LandingFeedSection";
 import { WaitlistModal } from "@/components/WaitlistModal";
 
+// --- Cloudinary optimized base URL ---
+const CLD =
+  "https://res.cloudinary.com/ddwerzvdw/image/upload/f_auto,q_auto/quizzes";
+
 // --- FEATURED QUIZZES (funnel-optimized order) ---
 const FEATURED_QUIZZES = [
   {
@@ -255,9 +259,10 @@ export default function LandingPage() {
               >
                 <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
                   <Image
-                    src={`/quizzes/${quiz.cover_image_key}.jpg`}
+                    src={`${CLD}/${quiz.cover_image_key}.webp`}
                     alt={quiz.title}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

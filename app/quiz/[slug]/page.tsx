@@ -23,6 +23,10 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
 
+// --- Cloudinary optimized base URL ---
+const CLD =
+  "https://res.cloudinary.com/ddwerzvdw/image/upload/f_auto,q_auto/quizzes";
+
 // ─── LOCAL TYPES ─────────────────────────────────────────────────────────────
 type MessageType =
   | "welcome"
@@ -930,9 +934,10 @@ function ResultCard({
                 className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-all"
               >
                 <Image
-                  src={`/quizzes/${nq.cover}.jpg`}
+                  src={`${CLD}/${nq.cover}.webp`}
                   alt={nq.title}
                   fill
+                  sizes="(max-width: 640px) 33vw, 200px"
                   className="object-cover transition duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
@@ -1015,9 +1020,10 @@ function ComingSoonPage({
         {coverKey && (
           <div className="relative w-full aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden mb-6 shadow-lg">
             <Image
-              src={`/quizzes/${coverKey}.jpg`}
+              src={`${CLD}/${coverKey}.webp`}
               alt={title}
               fill
+              sizes="(max-width: 640px) 100vw, 512px"
               className="object-cover"
               priority
             />
@@ -1106,9 +1112,10 @@ function ComingSoonPage({
                 className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-all"
               >
                 <Image
-                  src={`/quizzes/${nq.cover}.jpg`}
+                  src={`${CLD}/${nq.cover}.webp`}
                   alt={nq.title}
                   fill
+                  sizes="(max-width: 640px) 33vw, 200px"
                   className="object-cover transition duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />

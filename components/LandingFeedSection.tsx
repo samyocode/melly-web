@@ -3,7 +3,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import MellyOrb from "@/components/MellyOrb";
+
+// --- Cloudinary avatar helper (same as LandingPlusOneSection) ---
+const cdnAvatar = (name: string) =>
+  `https://res.cloudinary.com/ddwerzvdw/image/upload/w_400,h_400,c_fill,g_face,f_auto,q_auto/avatars/landing/${name}.webp`;
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 
@@ -24,17 +29,27 @@ interface PollPrompt {
   tag: string;
 }
 
-interface OpenTextPrompt {
+type Prompt = PollPrompt | MatchBioPrompt;
+
+// ─── MATCH BIO TYPES ────────────────────────────────────────────────────────
+
+interface MatchBioCandidate {
   id: string;
-  kind: "open_text";
-  prompt_text: string;
-  placeholder: string;
-  sampleAnswers: string[];
-  totalAnswers: number;
-  tag: string;
+  name: string;
+  age: number;
+  photo: string;
 }
 
-type Prompt = PollPrompt | OpenTextPrompt;
+interface MatchBioPrompt {
+  id: string;
+  kind: "match_bio";
+  bio_text: string;
+  candidates: MatchBioCandidate[];
+  correct_index: number;
+  totalPlayed: number;
+  accuracy: number;
+  tag: string;
+}
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
 
@@ -61,6 +76,36 @@ const PROMPTS: Prompt[] = [
     ],
     totalVotes: 2978,
     tag: "This or That",
+  },
+  {
+    id: "p-bio",
+    kind: "match_bio",
+    bio_text:
+      "Speaks fluent sarcasm but means every compliment. Will plan the perfect date but pretend it was spontaneous. Looking for someone who gets my references and doesn't mind that I talk to my plants.",
+    candidates: [
+      {
+        id: "c1",
+        name: "Priya",
+        age: 26,
+        photo: cdnAvatar("priya"),
+      },
+      {
+        id: "c2",
+        name: "Kira",
+        age: 26,
+        photo: cdnAvatar("kira"),
+      },
+      {
+        id: "c3",
+        name: "Mia",
+        age: 27,
+        photo: cdnAvatar("mia"),
+      },
+    ],
+    correct_index: 1,
+    totalPlayed: 2341,
+    accuracy: 38,
+    tag: "Guess the Bio",
   },
   {
     id: "p2",
@@ -98,19 +143,6 @@ const PROMPTS: Prompt[] = [
     ],
     totalVotes: 2623,
     tag: "Poll",
-  },
-  {
-    id: "p3",
-    kind: "open_text",
-    prompt_text: "Describe your perfect Saturday in 10 words or less.",
-    placeholder: "Sleeping in, brunch, bookstore, sunset walk…",
-    sampleAnswers: [
-      "Sleep in, farmer's market, cook together, movie night",
-      "Coffee, hike, nap, dinner with someone I like",
-      "Beach, book, tacos, live music under the stars",
-    ],
-    totalAnswers: 1456,
-    tag: "Open ended",
   },
 ];
 
@@ -163,7 +195,6 @@ function AnimatedPollOption({
       setShowPct(false);
       return;
     }
-    // Staggered animation: bar fills, then percentage fades in
     const barTimer = setTimeout(() => {
       if (barRef.current) {
         barRef.current.style.width = `${opt.percentage}%`;
@@ -188,7 +219,6 @@ function AnimatedPollOption({
         ${isSelected && answered ? "animate-[selectBounce_0.35s_ease-out]" : ""}
       `}
     >
-      {/* Fill bar */}
       <div
         ref={barRef}
         className={`absolute inset-y-0 left-0 rounded-xl ${
@@ -271,7 +301,6 @@ function PollCard({
         ))}
       </div>
 
-      {/* Post-answer: see votes CTA */}
       {answered && (
         <button
           onClick={onSeeVotes}
@@ -296,30 +325,35 @@ function PollCard({
   );
 }
 
-// ─── OPEN TEXT CARD ─────────────────────────────────────────────────────────
+// ─── MATCH BIO CARD ─────────────────────────────────────────────────────────
 
-function OpenTextCard({
+function MatchBioCard({
   prompt,
-  onSeeAnswers,
+  onJoinWaitlist,
 }: {
-  prompt: OpenTextPrompt;
-  onSeeAnswers: () => void;
+  prompt: MatchBioPrompt;
+  onJoinWaitlist: () => void;
 }) {
-  const [text, setText] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [sampleIdx, setSampleIdx] = useState(0);
+  const [chosenIndex, setChosenIndex] = useState<number | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const [showMellyBubble, setShowMellyBubble] = useState(false);
+  const hasAnswered = chosenIndex !== null;
+  const isCorrect =
+    chosenIndex !== null && chosenIndex === prompt.correct_index;
+  const correctCandidate = prompt.candidates[prompt.correct_index];
 
-  useEffect(() => {
-    if (submitted) return;
-    const iv = setInterval(
-      () => setSampleIdx((s) => (s + 1) % prompt.sampleAnswers.length),
-      3500,
-    );
-    return () => clearInterval(iv);
-  }, [submitted, prompt.sampleAnswers.length]);
+  const handleSelect = (index: number) => {
+    if (hasAnswered) return;
+    setChosenIndex(index);
+
+    // Stagger reveals: result border → Melly bubble
+    setTimeout(() => setShowResult(true), 300);
+    setTimeout(() => setShowMellyBubble(true), 900);
+  };
 
   return (
     <div className="bg-white rounded-2xl sm:rounded-3xl border border-pink-100 p-5 sm:p-6">
+      {/* Header */}
       <div className="flex items-center gap-2.5 mb-3">
         <MellyOrb size={36} />
         <span className="text-sm font-semibold text-gray-900">Melly</span>
@@ -328,70 +362,174 @@ function OpenTextCard({
         </span>
       </div>
 
-      <p className="text-[15px] font-medium text-gray-900 leading-snug mb-2.5">
-        {prompt.prompt_text}
+      {/* Prompt */}
+      <p className="text-[15px] font-medium text-gray-900 leading-snug mb-2">
+        Who do you think wrote this bio?
       </p>
 
-      {!submitted && (
-        <div className="mb-3">
-          <p className="text-xs text-gray-400 font-medium mb-1.5">
-            {prompt.totalAnswers.toLocaleString()} people answered
-          </p>
-          <p className="text-[13px] text-gray-500 italic leading-snug">
-            &ldquo;{prompt.sampleAnswers[sampleIdx]}&rdquo;
+      {/* Pre-answer social proof */}
+      {!hasAnswered && (
+        <p className="text-xs text-gray-400 font-medium mb-3">
+          🎯 {prompt.totalPlayed.toLocaleString()} people played ·{" "}
+          {prompt.accuracy}% accuracy
+        </p>
+      )}
+
+      {/* Bio text */}
+      <div className="px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-100 mb-4">
+        <p className="text-sm text-gray-700 leading-relaxed italic">
+          &ldquo;{prompt.bio_text}&rdquo;
+        </p>
+      </div>
+
+      {/* Candidate photos */}
+      <div className="grid grid-cols-3 gap-2.5 mb-2">
+        {prompt.candidates.map((candidate, index) => {
+          const isChosen = chosenIndex === index;
+          const isCorrectAnswer = index === prompt.correct_index;
+          const showCorrectBorder = showResult && isCorrectAnswer;
+          const showWrongBorder = showResult && isChosen && !isCorrectAnswer;
+
+          return (
+            <button
+              key={candidate.id}
+              onClick={() => handleSelect(index)}
+              disabled={hasAnswered}
+              className={`
+                relative rounded-xl overflow-hidden aspect-[3/4] transition-all duration-300
+                ${!hasAnswered ? "cursor-pointer hover:scale-[1.02] active:scale-[0.98]" : "cursor-default"}
+                ${showCorrectBorder ? "ring-[3px] ring-emerald-500 ring-offset-1" : ""}
+                ${showWrongBorder ? "ring-[3px] ring-red-400 ring-offset-1" : ""}
+                ${!showResult && isChosen ? "ring-[3px] ring-pink-500 ring-offset-1" : ""}
+              `}
+            >
+              <Image
+                src={candidate.photo}
+                alt={hasAnswered ? candidate.name : "Candidate"}
+                fill
+                sizes="(max-width: 640px) 30vw, 140px"
+                className="object-cover"
+              />
+
+              {/* Gradient overlay for name */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+              {/* Name + age (visible after answering) */}
+              {showResult && (
+                <div className="absolute bottom-0 left-0 right-0 p-2 animate-[fadeIn_0.3s_ease-out]">
+                  <p className="text-[11px] font-bold text-white leading-tight">
+                    {candidate.name}, {candidate.age}
+                  </p>
+                </div>
+              )}
+
+              {/* Pre-answer: anonymous label */}
+              {!hasAnswered && (
+                <div className="absolute bottom-0 left-0 right-0 p-2">
+                  <p className="text-[11px] font-medium text-white/80 leading-tight">
+                    Tap to guess
+                  </p>
+                </div>
+              )}
+
+              {/* Correct badge */}
+              {showCorrectBorder && (
+                <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
+                  <svg
+                    className="w-3.5 h-3.5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+              )}
+
+              {/* Wrong badge */}
+              {showWrongBorder && (
+                <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-red-500 flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
+                  <svg
+                    className="w-3.5 h-3.5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Melly insight bubble */}
+      {showMellyBubble && (
+        <div
+          className={`
+            flex items-start gap-2.5 px-3.5 py-3 rounded-xl border mt-3 animate-[fadeSlideIn_0.4s_ease-out]
+            ${isCorrect ? "bg-emerald-500/[0.04] border-emerald-500/20" : "bg-red-500/[0.03] border-red-400/15"}
+          `}
+        >
+          <MellyOrb size={22} className="mt-0.5 flex-shrink-0" />
+          <p
+            className={`text-[13px] font-semibold leading-snug ${isCorrect ? "text-emerald-800" : "text-red-900"}`}
+          >
+            {isCorrect ? (
+              <>
+                Correct! Only {prompt.accuracy}% got this one — sharp eye.{" "}
+                <span className="font-normal text-emerald-700/80">
+                  This is the kind of game you&apos;ll play in the Melly app to
+                  sharpen your people-reading skills.
+                </span>
+              </>
+            ) : (
+              <>
+                Not quite — only {prompt.accuracy}% got it right, so you&apos;re
+                not alone.{" "}
+                <span className="font-normal text-red-800/70">
+                  That was {correctCandidate.name}! In the app, Melly tracks how
+                  you read bios and uses it to find your match.
+                </span>
+              </>
+            )}
           </p>
         </div>
       )}
 
-      {!submitted ? (
-        <div>
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder={prompt.placeholder}
-            rows={2}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-900 resize-none outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-500/10"
-          />
-          <div className="flex items-center justify-between mt-2">
-            <span className="text-[11px] text-gray-400">{text.length}/280</span>
-            <button
-              onClick={() => text.trim() && setSubmitted(true)}
-              disabled={!text.trim()}
-              className="px-4 py-1.5 rounded-full text-[13px] font-semibold transition disabled:opacity-40 bg-pink-500 text-white hover:bg-pink-600 disabled:hover:bg-pink-500"
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="animate-[fadeIn_0.3s_ease-out]">
-          <div className="px-3.5 py-2.5 rounded-xl bg-gray-50">
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <span className="text-green-500 text-sm">✓</span>
-              <span className="text-xs font-medium text-gray-500">
-                Your answer
-              </span>
-            </div>
-            <p className="text-sm text-gray-900 leading-snug">{text}</p>
-          </div>
-
-          <button
-            onClick={onSeeAnswers}
-            className="mt-2.5 w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-[13px] transition hover:border-pink-500 hover:shadow-[0_0_0_3px_rgba(236,72,153,0.06)] animate-[fadeSlideIn_0.4s_ease-out_0.3s_both]"
-          >
-            <span className="flex items-center gap-2">
-              <BlurAvatarStack />
-              <span className="text-gray-600 font-medium">
-                See how {prompt.totalAnswers.toLocaleString()} others answered
-              </span>
+      {/* Post-answer CTA */}
+      {showMellyBubble && (
+        <button
+          onClick={onJoinWaitlist}
+          className="mt-3 w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-[13px] transition hover:border-pink-500 hover:shadow-[0_0_0_3px_rgba(236,72,153,0.06)] animate-[fadeSlideIn_0.4s_ease-out_0.3s_both]"
+        >
+          <span className="flex items-center gap-2">
+            <BlurAvatarStack />
+            <span className="text-gray-600 font-medium">
+              See how {prompt.totalPlayed.toLocaleString()} others guessed
             </span>
-            <span className="text-pink-500 font-semibold">→</span>
-          </button>
+          </span>
+          <span className="text-pink-500 font-semibold">→</span>
+        </button>
+      )}
 
-          <p className="mt-2 text-[11px] text-gray-400">
-            Saved — Melly just got a little smarter about you.
-          </p>
-        </div>
+      {/* Pre-answer footer */}
+      {!hasAnswered && (
+        <p className="mt-2 text-[11px] text-gray-400">
+          Tap a photo to make your guess. Melly uses this to understand how you
+          read people.
+        </p>
       )}
     </div>
   );
@@ -410,7 +548,6 @@ export default function LandingFeedSection({
     <section className="py-16 sm:py-24 bg-pink-50/60 relative overflow-hidden">
       <div className="absolute -top-32 -right-20 w-72 h-72 rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.06)_0%,transparent_70%)] pointer-events-none" />
 
-      {/* Custom keyframes for poll animations */}
       <style jsx global>{`
         @keyframes selectBounce {
           0% {
@@ -436,6 +573,14 @@ export default function LandingFeedSection({
             transform: translateY(0);
           }
         }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
       `}</style>
 
       <div className="max-w-5xl px-5 sm:px-6 mx-auto">
@@ -451,23 +596,23 @@ export default function LandingFeedSection({
             </span>
           </h2>
           <p className="text-base sm:text-lg text-gray-500 max-w-md mx-auto">
-            Melly drops prompts in your feed — polls, this-or-thats, and open
-            questions. Every answer helps her understand you better and find
-            your match.
+            Melly drops prompts in your feed — polls, this-or-thats, and
+            guessing games. Every answer helps her understand you better and
+            find your match.
           </p>
         </div>
 
         <div className="max-w-md mx-auto flex flex-col gap-5">
           {PROMPTS.map((prompt) => {
-            if (prompt.kind === "open_text") {
+            if (prompt.kind === "match_bio") {
               return (
-                <OpenTextCard
+                <MatchBioCard
                   key={prompt.id}
                   prompt={prompt}
-                  onSeeAnswers={() =>
+                  onJoinWaitlist={() =>
                     onOpenWaitlist(
-                      "I was hoping you'd want to see! ✨",
-                      "Join the waitlist and I'll unlock what other singles said — and more importantly, help you find the ones who think like you.",
+                      "You've got a good eye! ✨",
+                      `${prompt.totalPlayed.toLocaleString()} people played this game. Join the waitlist and Melly will use how you read bios to find your perfect match.`,
                     )
                   }
                 />

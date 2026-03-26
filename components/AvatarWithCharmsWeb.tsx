@@ -1,8 +1,15 @@
 // components/AvatarWithCharmsWeb.tsx
 //
 // Web port of the React Native AvatarWithCharms component.
-// Uses the same slot-angle orbit math (315°, 45°, 225°) and
-// die-cut sticker positioning from components/Charms/AvatarWithCharms.tsx.
+// Uses the same slot-angle orbit math and die-cut sticker positioning
+// from components/Charms/AvatarWithCharms.tsx.
+//
+// Slot layout (up to 3 charms):
+//   Slot 0 → top-right (45°)
+//   Slot 1 → bottom-left (225°)
+//   Slot 2 → bottom-right (315°)
+//
+// Most profiles only equip 2 charms, so slot 2 is rarely used.
 
 "use client";
 
@@ -98,10 +105,11 @@ const CHARMS = [
 
 export type CharmIndex = number;
 
-// Slot positions (screen coords where Y goes down):
-// Slot 0 → top-right (45°)
-// Slot 1 → bottom-left (225°)
-// Slot 2 → bottom-right (315°)
+// Angles in standard math convention (counter-clockwise from right, Y-up).
+// The rendering formula flips Y for screen coords (Y-down), so:
+//   45°  → top-right on screen
+//   225° → bottom-left on screen
+//   315° → bottom-right on screen
 const SLOT_ANGLES_DEG = [45, 225, 315];
 
 interface AvatarWithCharmsWebProps {
@@ -117,10 +125,11 @@ export default function AvatarWithCharmsWeb({
   size = 48,
   className,
 }: AvatarWithCharmsWebProps) {
-  const charmSize = Math.round(size * 0.42);
+  const charmSize = Math.round(size * 0.38);
   const halfCharm = charmSize / 2;
-  const orbitRadius = size / 2 + halfCharm * 0.15;
-  const padding = halfCharm + 2;
+  // Place charm centers on the avatar edge (radius = half avatar + half charm)
+  const orbitRadius = size / 2 + halfCharm * 0.45;
+  const padding = halfCharm + 4;
   const containerSize = size + padding * 2;
 
   const positions = charmIndices
@@ -131,7 +140,9 @@ export default function AvatarWithCharmsWeb({
       const rad = (SLOT_ANGLES_DEG[idx] * Math.PI) / 180;
       return {
         charm,
+        // cos gives horizontal offset (positive = right)
         left: containerSize / 2 + orbitRadius * Math.cos(rad) - halfCharm,
+        // -sin flips Y from math coords (Y-up) to screen coords (Y-down)
         top: containerSize / 2 - orbitRadius * Math.sin(rad) - halfCharm,
       };
     })
@@ -149,6 +160,7 @@ export default function AvatarWithCharmsWeb({
         height: containerSize,
         position: "relative",
         flexShrink: 0,
+        overflow: "visible",
       }}
     >
       {/* Subtle ring when charms are equipped */}

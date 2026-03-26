@@ -6,6 +6,9 @@ import MellyOrb from "@/components/MellyOrb";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+const CLD =
+  "https://res.cloudinary.com/ddwerzvdw/image/upload/f_auto,q_auto/quizzes";
+
 const ALL_QUIZZES = [
   {
     title: "Clingy or Cool?",
@@ -193,9 +196,10 @@ export default function QuizzesPage() {
               className="group relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-lg hover:shadow-pink-500/10 transition-all duration-300 hover:-translate-y-0.5"
             >
               <Image
-                src={`/quizzes/${quiz.cover_image_key}.jpg`}
+                src={`${CLD}/${quiz.cover_image_key}.webp`}
                 alt={quiz.title}
                 fill
+                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                 className="object-cover transition duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />

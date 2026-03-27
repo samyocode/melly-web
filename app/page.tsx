@@ -12,7 +12,151 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LandingPlusOneSection from "@/components/LandingPlusOneSection";
 import LandingFeedSection from "@/components/LandingFeedSection";
-import { WaitlistModal } from "@/components/WaitlistModal";
+
+// --- Placeholder store links (replace with real links when ready) ---
+const APP_STORE_URL = "https://apps.apple.com/app/melly/idYOUR_ID";
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.melly.app";
+
+function getDevicePlatform(): "ios" | "android" | "desktop" {
+  if (typeof window === "undefined") return "desktop";
+  const ua = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(ua)) return "ios";
+  if (/android/.test(ua)) return "android";
+  return "desktop";
+}
+
+function DownloadModal({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
+  if (!visible) return null;
+  const platform = getDevicePlatform();
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative w-full max-w-md mx-4 mb-0 bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-[slideUp_0.3s_ease-out] overflow-hidden max-h-[90vh] flex flex-col">
+        <div className="h-1 flex-shrink-0 bg-gradient-to-r from-pink-400 to-pink-500" />
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition text-gray-500 z-10"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <div className="text-center">
+            <div className="flex justify-center mb-5">
+              <MellyOrb size={56} />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              I&apos;m ready to find your person 💕
+            </h3>
+            <p className="text-sm text-gray-500 leading-relaxed mb-6">
+              Download Melly to take all 31 quizzes, get matched with compatible
+              people, and find real-life events near you.
+            </p>
+
+            {platform === "ios" && (
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-base font-bold text-white bg-black rounded-full hover:bg-gray-800 transition shadow-lg shadow-black/10 mb-3"
+              >
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                </svg>
+                Download on the App Store
+              </a>
+            )}
+            {platform === "android" && (
+              <a
+                href={PLAY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-base font-bold text-white bg-black rounded-full hover:bg-gray-800 transition shadow-lg shadow-black/10 mb-3"
+              >
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-1.4l2.834 1.639a1 1 0 010 1.708l-2.834 1.639-2.532-2.532 2.532-2.454zM5.864 2.658L16.8 8.99l-2.302 2.302-8.635-8.635z" />
+                </svg>
+                Download on Google Play
+              </a>
+            )}
+            {platform === "desktop" && (
+              <div className="flex gap-2.5 mb-3">
+                <a
+                  href={APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-bold text-white bg-black rounded-full hover:bg-gray-800 transition"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                  </svg>
+                  App Store
+                </a>
+                <a
+                  href={PLAY_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-bold text-white bg-black rounded-full hover:bg-gray-800 transition"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-1.4l2.834 1.639a1 1 0 010 1.708l-2.834 1.639-2.532-2.532 2.532-2.454zM5.864 2.658L16.8 8.99l-2.302 2.302-8.635-8.635z" />
+                  </svg>
+                  Google Play
+                </a>
+              </div>
+            )}
+
+            <button
+              onClick={onClose}
+              className="w-full px-5 py-3 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-100 transition"
+            >
+              Maybe later
+            </button>
+          </div>
+        </div>
+        <div className="h-[env(safe-area-inset-bottom)] bg-white flex-shrink-0 sm:hidden" />
+      </div>
+    </div>
+  );
+}
 
 // --- Cloudinary optimized base URL ---
 const CLD =
@@ -71,17 +215,8 @@ const FEATURED_QUIZZES = [
 ];
 
 export default function LandingPage() {
-  // --- Waitlist modal state ---
-  const [showWaitlist, setShowWaitlist] = useState(false);
-  const [waitlistHeadline, setWaitlistHeadline] = useState("");
-  const [waitlistSubtext, setWaitlistSubtext] = useState("");
-  const [waitlistDone, setWaitlistDone] = useState(false);
-
-  const openWaitlist = (headline: string, subtext: string) => {
-    setWaitlistHeadline(headline);
-    setWaitlistSubtext(subtext);
-    setShowWaitlist(true);
-  };
+  // --- Download modal state ---
+  const [showDownload, setShowDownload] = useState(false);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -93,7 +228,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen font-sans text-gray-900 bg-white selection:bg-pink-500 selection:text-white">
+    <div className="min-h-screen font-sans text-gray-900 bg-stone-50 selection:bg-pink-500 selection:text-white">
       <Script
         id="app-json-ld"
         type="application/ld+json"
@@ -104,16 +239,16 @@ export default function LandingPage() {
       <Navbar position="fixed" variant="landing" />
 
       {/* --- HERO --- */}
-      <header className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-hidden bg-pink-50/60">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_var(--tw-gradient-stops))] from-pink-200/30 via-pink-50/60 to-white pointer-events-none" />
+      <header className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_var(--tw-gradient-stops))] from-stone-100/60 via-white to-white pointer-events-none" />
         <div className="relative z-10 max-w-4xl px-5 sm:px-6 mx-auto text-center">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-6 sm:mb-8 text-sm font-medium text-pink-700 bg-white rounded-full border border-pink-100 shadow-sm">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-6 sm:mb-8 text-sm font-medium text-gray-600 bg-white rounded-full border border-gray-200 shadow-sm">
             <span className="flex -space-x-1.5">
               <MellyOrb size={20} />
               <MellyOrb size={20} />
               <MellyOrb size={20} />
             </span>
-            Join 2,000+ singles on the waitlist
+            Join 2,000+ singles on Melly
           </div>
           <h1 className="mb-5 sm:mb-6 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-gray-900">
             Where singles{" "}
@@ -127,7 +262,7 @@ export default function LandingPage() {
               mingle
             </span>
           </h1>
-          <p className="max-w-xl mx-auto mb-8 sm:mb-10 text-lg sm:text-xl text-gray-600 leading-relaxed">
+          <p className="max-w-xl mx-auto mb-8 sm:mb-10 text-lg sm:text-xl text-gray-500 leading-relaxed">
             I&apos;m Melly, and I genuinely can&apos;t wait to find your person.
             I&apos;ll learn who you really are, handpick people you&apos;ll
             click with, and set up real ways to meet them. No swiping — just me,
@@ -138,10 +273,10 @@ export default function LandingPage() {
               Try a Free Quiz
             </OrbButton>
             <a
-              href="#waitlist"
-              className="w-full sm:w-auto px-8 py-4 text-base font-bold text-gray-700 rounded-full bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 transition text-center"
+              href="#download"
+              className="w-full sm:w-auto px-8 py-4 text-base font-bold text-gray-700 rounded-full bg-white border border-gray-200 hover:border-gray-400 hover:text-gray-900 transition text-center"
             >
-              Join the Waitlist
+              Download the App
             </a>
           </div>
           <p className="text-sm text-gray-400">
@@ -151,7 +286,7 @@ export default function LandingPage() {
       </header>
 
       {/* --- MEET MELLY --- */}
-      <section id="meet-melly" className="py-16 sm:py-24 bg-white">
+      <section id="meet-melly" className="py-16 sm:py-24 bg-stone-50">
         <div className="max-w-5xl px-5 sm:px-6 mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-12 sm:mb-16">
             <MellyOrb
@@ -161,7 +296,7 @@ export default function LandingPage() {
             <h2 className="mb-4 text-3xl sm:text-4xl font-bold text-gray-900">
               A little about me ✨
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-500 leading-relaxed">
               I&apos;m not a chatbot — I&apos;m more like that friend who&apos;s
               annoyingly good at setting people up. Witty, observant, and
               genuinely invested in your love life. Here&apos;s what it looks
@@ -171,10 +306,10 @@ export default function LandingPage() {
 
           {/* Chat preview */}
           <div className="max-w-md mx-auto mb-12 sm:mb-16">
-            <div className="rounded-3xl bg-pink-50/60 border border-pink-100 p-4 sm:p-5 space-y-3">
+            <div className="rounded-3xl bg-white border border-gray-200 p-4 sm:p-5 space-y-3 shadow-sm">
               <div className="flex items-start gap-2.5">
                 <MellyOrb size={32} className="mt-0.5" />
-                <div className="px-4 py-3 bg-white rounded-2xl rounded-tl-sm shadow-sm max-w-[85%]">
+                <div className="px-4 py-3 bg-stone-50 rounded-2xl rounded-tl-sm max-w-[85%]">
                   <p className="text-sm text-gray-700 leading-relaxed">
                     Okay, not to play favorites, but I&apos;m really smiling at
                     this story... You and Alex both got &quot;Secure
@@ -193,7 +328,7 @@ export default function LandingPage() {
               </div>
               <div className="flex items-start gap-2.5">
                 <MellyOrb size={32} className="mt-0.5" />
-                <div className="px-4 py-3 bg-white rounded-2xl rounded-tl-sm shadow-sm max-w-[85%]">
+                <div className="px-4 py-3 bg-stone-50 rounded-2xl rounded-tl-sm max-w-[85%]">
                   <p className="text-sm text-gray-700 leading-relaxed">
                     It means you both navigate intimacy with a steady heart. I
                     can just picture you two... comfortable silence on a Sunday
@@ -225,13 +360,13 @@ export default function LandingPage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="p-6 sm:p-7 rounded-3xl bg-pink-50/60 border border-pink-100"
+                className="p-6 sm:p-7 rounded-3xl bg-white border border-gray-200"
               >
                 <div className="text-3xl mb-4">{item.emoji}</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-500 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -240,8 +375,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- QUIZZES (shortened — featured 6 only) --- */}
-      <section id="quizzes" className="py-16 sm:py-24 bg-pink-50/60">
+      {/* --- QUIZZES (with clear CTAs) --- */}
+      <section id="quizzes" className="py-16 sm:py-24 bg-white">
         <div className="px-5 sm:px-6 mx-auto max-w-7xl">
           <div className="mb-10 sm:mb-14 text-center">
             <h2 className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900">
@@ -258,7 +393,7 @@ export default function LandingPage() {
               <Link
                 key={quiz.slug}
                 href={`/quiz/${quiz.slug}`}
-                className="group relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl border border-pink-100/80 shadow-sm hover:shadow-xl hover:shadow-pink-500/10 transition-all duration-300 hover:-translate-y-1"
+                className="group relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
                   <Image
@@ -270,7 +405,7 @@ export default function LandingPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
-                    <span className="px-2.5 py-1 text-xs font-bold text-white bg-pink-500/90 backdrop-blur-sm rounded-full">
+                    <span className="px-2.5 py-1 text-xs font-bold text-white bg-black/50 backdrop-blur-sm rounded-full">
                       {quiz.tag}
                     </span>
                   </div>
@@ -279,24 +414,30 @@ export default function LandingPage() {
                   </h3>
                 </div>
                 <div className="p-4 sm:p-5">
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 line-clamp-2">
+                  <p className="text-sm sm:text-base text-gray-500 leading-relaxed mb-4 line-clamp-2">
                     {quiz.description}
                   </p>
-                  <div className="flex items-center text-sm font-bold text-pink-500">
-                    <span>Chat with me</span>
-                    <svg
-                      className="w-4 h-4 ml-1.5 transition transform group-hover:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2.5"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
+                  {/* ═══ CLEAR CTA BUTTON ═══ */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400 font-medium">
+                      2 min · Free
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded-full group-hover:bg-pink-600 transition-colors shadow-sm">
+                      Start Quiz
+                      <svg
+                        className="w-3.5 h-3.5 transition transform group-hover:translate-x-0.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2.5"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -307,7 +448,7 @@ export default function LandingPage() {
           <div className="text-center">
             <Link
               href="/quizzes"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-pink-500 bg-white rounded-full border border-pink-200 hover:border-pink-400 hover:bg-pink-50 transition"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-gray-700 bg-white rounded-full border border-gray-200 hover:border-gray-400 hover:text-gray-900 transition"
             >
               See all 31 quizzes
               <svg
@@ -329,13 +470,13 @@ export default function LandingPage() {
       </section>
 
       {/* --- PLUS ONE EVENTS --- */}
-      <LandingPlusOneSection onOpenWaitlist={openWaitlist} />
+      <LandingPlusOneSection onOpenWaitlist={() => setShowDownload(true)} />
 
       {/* --- MEL INTERACTIVE FEED --- */}
-      <LandingFeedSection onOpenWaitlist={openWaitlist} />
+      <LandingFeedSection onOpenWaitlist={() => setShowDownload(true)} />
 
       {/* --- HOW MELLY WORKS (first person, journey-focused) --- */}
-      <section className="py-16 sm:py-24 bg-white">
+      <section className="py-16 sm:py-24 bg-stone-50">
         <div className="max-w-5xl px-5 sm:px-6 mx-auto">
           <h2 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-gray-900">
             Here&apos;s how I find your person
@@ -352,7 +493,7 @@ export default function LandingPage() {
                 desc: "I study your personality, values, and patterns across 31 quizzes — then I handpick people who genuinely complement you. No swiping, no guesswork. Just me, doing my thing.",
                 emoji: "💕",
                 label: "AI Matchmaker",
-                labelColor: "text-pink-500 bg-pink-500/[0.06]",
+                labelColor: "text-pink-500 bg-pink-50",
               },
               {
                 step: "02",
@@ -360,7 +501,7 @@ export default function LandingPage() {
                 desc: "I help you find Plus One events hosted by other singles near you — rooftop drinks, trail runs, gallery hops. You request to join and show up as yourself. I handle the rest.",
                 emoji: "🎉",
                 label: "Events & Meetups",
-                labelColor: "text-violet-600 bg-violet-50",
+                labelColor: "text-gray-600 bg-gray-100",
               },
               {
                 step: "03",
@@ -368,12 +509,12 @@ export default function LandingPage() {
                 desc: "Every day, I drop prompts in your feed — polls, this-or-thats, and guessing games. Every answer helps me understand you better and connects you with people who think like you.",
                 emoji: "✨",
                 label: "Feed & Prompts",
-                labelColor: "text-amber-600 bg-amber-50",
+                labelColor: "text-gray-600 bg-gray-100",
               },
             ].map((item) => (
               <div
                 key={item.step}
-                className="relative p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-pink-50/60 border border-pink-100"
+                className="relative p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white border border-gray-200"
               >
                 <div className="flex items-center gap-2.5 mb-4">
                   <span className="text-2xl">{item.emoji}</span>
@@ -389,7 +530,7 @@ export default function LandingPage() {
                 <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-500 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -403,45 +544,28 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- WAITLIST CTA --- */}
-      <section id="waitlist" className="py-16 sm:py-24 bg-pink-50/60">
+      {/* --- DOWNLOAD CTA --- */}
+      <section id="download" className="py-16 sm:py-24 bg-white">
         <div className="max-w-2xl mx-auto px-5 sm:px-6 text-center">
-          <div className="p-8 sm:p-12 rounded-3xl bg-white border border-pink-100 shadow-xl shadow-pink-500/5">
+          <div className="p-8 sm:p-12 rounded-3xl bg-stone-50 border border-gray-200 shadow-xl shadow-black/5">
             <MellyOrb
               size={48}
               className="mx-auto mb-5 shadow-lg shadow-pink-500/20"
             />
             <h2 className="mb-3 text-2xl sm:text-3xl font-bold text-gray-900">
-              I&apos;m almost ready for you
+              I&apos;m ready to find your person
             </h2>
-            <p className="mb-8 text-gray-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
-              I&apos;m launching soon, city by city. Join the waitlist and
-              I&apos;ll save your quiz results, start building your
-              compatibility profile, and let you know the moment I arrive in
-              your area. I genuinely can&apos;t wait.
+            <p className="mb-8 text-gray-500 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
+              Download Melly to take all 31 quizzes, get matched with compatible
+              people, and find real-life events near you. I genuinely can&apos;t
+              wait to get started.
             </p>
-            {waitlistDone ? (
-              <div className="p-4 rounded-2xl bg-pink-50/60 border border-pink-100">
-                <p className="text-base font-bold text-pink-500 mb-0.5">
-                  You&apos;re on the list! 🎉
-                </p>
-                <p className="text-sm text-gray-500">
-                  I&apos;ll let you know when I&apos;m ready for you.
-                </p>
-              </div>
-            ) : (
-              <OrbButton
-                onClick={() =>
-                  openWaitlist(
-                    "I'd love to keep chatting! 💕",
-                    "I'm launching city by city. Where are you based? I'll make sure you're one of the first to know when I arrive.",
-                  )
-                }
-                className="whitespace-nowrap"
-              >
-                Join Waitlist
-              </OrbButton>
-            )}
+            <OrbButton
+              onClick={() => setShowDownload(true)}
+              className="whitespace-nowrap"
+            >
+              Download the App
+            </OrbButton>
           </div>
         </div>
       </section>
@@ -449,16 +573,10 @@ export default function LandingPage() {
       {/* --- FOOTER --- */}
       <Footer />
 
-      {/* --- SHARED WAITLIST MODAL --- */}
-      <WaitlistModal
-        visible={showWaitlist}
-        onClose={() => setShowWaitlist(false)}
-        onSignupComplete={() => {
-          setWaitlistDone(true);
-          setShowWaitlist(false);
-        }}
-        headline={waitlistHeadline}
-        subtext={waitlistSubtext}
+      {/* --- DOWNLOAD MODAL --- */}
+      <DownloadModal
+        visible={showDownload}
+        onClose={() => setShowDownload(false)}
       />
     </div>
   );

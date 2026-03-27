@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Melly – Connect on What Matters",
+  title: "Melly – Where Singles Mingle",
   description:
     "Stop swiping on faces. Start connecting on what matters. Take deep-dive quizzes to find your compatibility DNA.",
 };

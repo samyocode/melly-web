@@ -49,6 +49,7 @@ interface ChatMessage {
   content: string;
   options?: QuizOption[];
   optionsDisabled?: boolean;
+  selectedValue?: number;
 }
 
 // ─── MELLY'S VOICE ──────────────────────────────────────────────────────────
@@ -129,19 +130,50 @@ function ChatBubble({
         </div>
         {message.options && message.options.length > 0 && (
           <div className="flex flex-col gap-1.5">
-            {message.options.map((opt, idx) => (
-              <button
-                key={idx}
-                onClick={() =>
-                  !message.optionsDisabled &&
-                  onOptionSelect?.(opt.text, opt.value)
-                }
-                disabled={message.optionsDisabled}
-                className={`text-left px-4 py-3 rounded-2xl border text-sm leading-relaxed transition-all duration-200 ${message.optionsDisabled ? "border-gray-100 bg-gray-50 text-gray-400 cursor-default" : "border-gray-200 bg-white text-gray-700 hover:bg-stone-50 hover:border-gray-300 active:scale-[0.98]"}`}
-              >
-                {opt.text}
-              </button>
-            ))}
+            {message.options.map((opt, idx) => {
+              const showLetter =
+                message.type === "question" || message.type === "welcome";
+              const isSelected =
+                message.optionsDisabled && message.selectedValue === opt.value;
+              const isDisabledUnselected =
+                message.optionsDisabled && !isSelected;
+              return (
+                <button
+                  key={idx}
+                  onClick={() =>
+                    !message.optionsDisabled &&
+                    onOptionSelect?.(opt.text, opt.value)
+                  }
+                  disabled={message.optionsDisabled}
+                  className={`text-left px-4 py-3 rounded-2xl border text-sm leading-relaxed transition-all duration-200 ${
+                    isSelected
+                      ? "border-pink-200 bg-pink-50 text-pink-700 cursor-default"
+                      : isDisabledUnselected
+                        ? "border-gray-100 bg-gray-50/50 text-gray-300 cursor-default"
+                        : "border-gray-200 bg-white text-gray-700 hover:bg-stone-50 hover:border-gray-300 active:scale-[0.98]"
+                  }`}
+                >
+                  {showLetter ? (
+                    <span className="flex items-start gap-2.5">
+                      <span
+                        className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold ${
+                          isSelected
+                            ? "border-pink-300 text-pink-500 bg-pink-100"
+                            : isDisabledUnselected
+                              ? "border-gray-200 text-gray-300"
+                              : "border-gray-300 text-gray-400"
+                        }`}
+                      >
+                        {String.fromCharCode(65 + idx)}
+                      </span>
+                      <span>{opt.text}</span>
+                    </span>
+                  ) : (
+                    opt.text
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -767,11 +799,11 @@ function QuizChat({ quiz, slug }: { quiz: QuizData; slug: string }) {
     },
     [scrollToBottom],
   );
-  const disableLastOptions = useCallback(() => {
+  const disableLastOptions = useCallback((selectedValue?: number) => {
     setMessages((prev) =>
       prev.map((m, i) =>
         i === prev.length - 1 && m.options
-          ? { ...m, optionsDisabled: true }
+          ? { ...m, optionsDisabled: true, selectedValue }
           : m,
       ),
     );
@@ -793,7 +825,7 @@ function QuizChat({ quiz, slug }: { quiz: QuizData; slug: string }) {
 
   const handleWelcome = useCallback(
     async (text: string) => {
-      disableLastOptions();
+      disableLastOptions(1);
       addUserMessage(text);
       setPhase("questions");
       await addMellyMessage(
@@ -811,7 +843,7 @@ function QuizChat({ quiz, slug }: { quiz: QuizData; slug: string }) {
 
   const handleAnswer = useCallback(
     async (text: string, value: number) => {
-      disableLastOptions();
+      disableLastOptions(value);
       addUserMessage(text);
       const newAnswers = [...answers, value];
       setAnswers(newAnswers);
@@ -876,16 +908,23 @@ function QuizChat({ quiz, slug }: { quiz: QuizData; slug: string }) {
 
   const handlePostResultChoice = useCallback(
     async (text: string, value: number) => {
-      disableLastOptions();
+      disableLastOptions(value);
       addUserMessage(text);
 
       switch (value) {
         case 1: {
-          // Dating insight → then nudge toward sign-in
+          // Dating insight — pool of Melly-voice variations
+          const insightVariations = [
+            `Your "${result?.name}" result on the ${quiz.title} quiz says a lot about how you move in relationships. You've got patterns — we all do — and yours shape who you're drawn to and who actually sticks around. The cool part? Now that you see them, you can use them.`,
+            `Here's what I love about getting "${result?.name}" on ${quiz.title} — it tells me how you connect when it counts. Not the first-date version of you, but the real one. The one who shows up at month three. That's the version I'd match you on.`,
+            `So "${result?.name}" on the ${quiz.title} quiz — this isn't just a label. It's how you handle closeness, conflict, and everything in between. I've seen this pattern before, and I already know the kind of person who'd balance you out perfectly.`,
+            `Your "${result?.name}" result from ${quiz.title} is basically your relationship fingerprint. It tells me what you need, what you give, and where things tend to get tricky. Most people don't know this about themselves — you're already ahead.`,
+            `"${result?.name}" on ${quiz.title} — okay, I'm not going to sugarcoat this. This result tells me exactly how you show up when things get real in a relationship. The good news? Knowing your patterns is literally the cheat code to finding someone who gets you.`,
+            `What I find interesting about getting "${result?.name}" on the ${quiz.title} quiz is that it's not about who you think you want — it's about who you'd actually thrive with. Those are often two very different people. That's where I come in.`,
+          ];
           const insight =
             (result as QuizResult & { datingInsight?: string })
-              ?.datingInsight ||
-            `Your "${result?.name}" result reveals a lot about how you show up in relationships. The way you answered tells me about patterns that shape who you're drawn to — and who'd truly complement you long-term. It's not just compatibility on paper, it's about how your instincts play out when things get real.`;
+              ?.datingInsight || pick(insightVariations);
           await addMellyMessage(
             { role: "assistant", type: "dating-insight", content: insight },
             1400,
@@ -920,6 +959,7 @@ function QuizChat({ quiz, slug }: { quiz: QuizData; slug: string }) {
     },
     [
       result,
+      quiz,
       disableLastOptions,
       addUserMessage,
       addMellyMessage,

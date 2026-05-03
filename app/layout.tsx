@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE_URL, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Melly – Where Singles Mingle",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} – ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
+  },
   description:
     "Stop swiping on faces. Start connecting on what matters. Take deep-dive quizzes to find your compatibility DNA.",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    url: SITE_URL,
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({

@@ -5,7 +5,6 @@
 // + aggregated save data — that's what makes this page non-templated.
 
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
@@ -15,11 +14,10 @@ import {
   getCityBySlug,
   getCitiesWithVenues,
   getVenuesForCity,
-  priceLevelLabel,
-  formatRating,
-  vibeLabel,
+  deriveFilterOptions,
 } from "@/lib/date-spots";
 import { SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
+import VenueListClient from "./VenueListClient";
 
 export const revalidate = 3600;
 
@@ -39,8 +37,8 @@ export async function generateMetadata({
   const cityRow = await getCityBySlug(city);
   if (!cityRow) return { title: "City not found" };
 
-  const title = `Date Spots in ${cityRow.city}`;
-  const description = `${cityRow.venue_count} date-friendly venues in ${cityRow.city}, ranked by Melly users. Restaurants, bars, and experiences picked for how they actually work on a date.`;
+  const title = `The Melly List · ${cityRow.city}`;
+  const description = `The Melly List in ${cityRow.city}: ${cityRow.venue_count} venues vetted for date energy, ranked by Melly Score. Restaurants, bars, and experiences scored on how they actually work for a date.`;
   const url = absoluteUrl(`/date-spots/${city}`);
 
   return {
@@ -64,12 +62,13 @@ export default async function CityHubPage({ params }: { params: Params }) {
   if (!cityRow) notFound();
 
   const venues = await getVenuesForCity(city);
+  const filterOptions = deriveFilterOptions(venues);
   const url = absoluteUrl(`/date-spots/${city}`);
 
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `Date Spots in ${cityRow.city}`,
+    name: `The Melly List · ${cityRow.city}`,
     itemListElement: venues.map((v, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -86,7 +85,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Date Spots",
+        name: "The Melly List",
         item: absoluteUrl("/date-spots"),
       },
       { "@type": "ListItem", position: 3, name: cityRow.city, item: url },
@@ -99,83 +98,29 @@ export default async function CityHubPage({ params }: { params: Params }) {
       <main className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-10 sm:py-12">
         <nav className="text-sm text-gray-400 mb-6" aria-label="Breadcrumb">
           <Link href="/date-spots" className="hover:text-pink-500">
-            Date Spots
+            The Melly List
           </Link>{" "}
           <span className="mx-1">/</span> {cityRow.city}
         </nav>
 
         <header className="mb-8">
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
-            Best Date Spots in {cityRow.city}
+          <p className="text-xs font-bold text-pink-500 tracking-[0.2em] uppercase mb-3">
+            The Melly List · {cityRow.city}
+          </p>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3 leading-[1.05]">
+            The {cityRow.city} list
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-2xl leading-relaxed">
-            {venues.length} venues in {cityRow.city} ranked by date-friendliness
-            — the actual atmosphere, conversation acoustics, and date energy of
-            each spot.
+            {venues.length} venues that earned a place. Ranked by Melly Score —
+            atmosphere, vibe, and what real people save them for.
           </p>
         </header>
 
-        <ol className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {venues.map((v, i) => (
-            <li key={v.id}>
-              <Link
-                href={`/date-spots/${city}/${v.slug}`}
-                className="group block bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-pink-300 hover:shadow-md transition"
-              >
-                <div className="relative aspect-[16/10] bg-gray-100">
-                  {v.photo_url ? (
-                    <Image
-                      src={v.photo_url}
-                      alt={v.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                      unoptimized
-                    />
-                  ) : null}
-                  <div className="absolute top-3 left-3 px-2 py-1 rounded-full bg-white/90 backdrop-blur text-xs font-bold text-gray-900">
-                    #{i + 1}
-                  </div>
-                  {v.date_friendliness_score != null && (
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-pink-500 text-white text-xs font-bold">
-                      {v.date_friendliness_score.toFixed(1)} date score
-                    </div>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h2 className="text-lg font-bold leading-tight group-hover:text-pink-500 transition-colors">
-                    {v.name}
-                  </h2>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {v.neighborhood_label ?? v.city}
-                    {v.price_level != null && (
-                      <> · {priceLevelLabel(v.price_level)}</>
-                    )}
-                    {v.rating != null && <> · ★ {formatRating(v.rating)}</>}
-                  </p>
-                  {v.vibe_tags && v.vibe_tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-3">
-                      {v.vibe_tags.slice(0, 3).map((t) => (
-                        <span
-                          key={t}
-                          className="px-2 py-0.5 text-[11px] font-medium text-gray-600 bg-stone-100 border border-gray-200 rounded-full"
-                        >
-                          {vibeLabel(t)}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  {(v.public_save_count ?? 0) > 0 && (
-                    <p className="text-xs text-pink-500 font-medium mt-3">
-                      Saved by {v.public_save_count} Melly{" "}
-                      {v.public_save_count === 1 ? "user" : "users"}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ol>
+        <VenueListClient
+          citySlug={city}
+          venues={venues}
+          options={filterOptions}
+        />
       </main>
       <Footer />
       <JsonLd id="ld-city-itemlist" data={itemList} />

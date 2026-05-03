@@ -12,6 +12,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LandingPlusOneSection from "@/components/LandingPlusOneSection";
 import LandingFeedSection from "@/components/LandingFeedSection";
+import LandingDateSpotsSection from "@/components/LandingDateSpotsSection";
 
 // --- Placeholder store links (replace with real links when ready) ---
 const APP_STORE_URL = "https://apps.apple.com/app/melly/idYOUR_ID";
@@ -468,6 +469,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* --- DATE SPOTS DIRECTORY --- */}
+      <LandingDateSpotsSection />
 
       {/* --- PLUS ONE EVENTS --- */}
       <LandingPlusOneSection onOpenWaitlist={() => setShowDownload(true)} />

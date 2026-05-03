@@ -1,24 +1,31 @@
 // lib/date-spots.ts
-//
-// Server-only data access for the /date-spots/* routes.
-// All queries are read-only and routed through the public anon key,
-// so they only see what RLS allows + the venue_seo_aggregates MV.
 
 import { supabaseServer } from "./supabase-server";
+import type { Venue } from "./date-spots-display";
 
-// Minimum public saves required before a venue page is published.
-// Below this threshold, pages are 404 (and excluded from sitemap).
-// Tune up if Search Console shows thin-page issues; tune down only
-// once you have moderation in place.
+export type { Venue, FilterOptions } from "./date-spots-display";
+export {
+  priceLevelLabel,
+  formatRating,
+  vibeLabel,
+  intentLabel,
+  timeLabel,
+  servesList,
+  amenityList,
+  deriveFilterOptions,
+} from "./date-spots-display";
+
 export const MIN_PUBLIC_SAVES_FOR_VENUE_PAGE = 0;
-
-// Minimum venues required for a city hub to be published.
-export const MIN_VENUES_FOR_CITY_PAGE = 5;
-
-// Max venues per city hub page.
+export const MIN_VENUES_FOR_CITY_PAGE = 1;
 export const VENUES_PER_CITY_PAGE = 50;
 
-export type VenueAggregate = {
+export interface CityRow {
+  city: string;
+  city_slug: string;
+  venue_count: number;
+}
+
+export interface VenueAggregate {
   place_catalog_id: string;
   slug: string;
   city_slug: string;
@@ -30,9 +37,36 @@ export type VenueAggregate = {
   recent_visits_30d: number;
   top_intents: string[] | null;
   sample_notes: string[] | null;
-};
+}
 
-export type Venue = {
+export interface SitemapVenueRow {
+  slug: string;
+  city_slug: string;
+  updated_at?: string;
+}
+
+interface AggregateRow {
+  place_catalog_id: string;
+  public_save_count: number | null;
+  unique_savers: number | null;
+  recent_visits_30d: number | null;
+  top_intents: string[] | null;
+  sample_notes: string[] | null;
+}
+
+// Note: no more `venue_seo_aggregates(...)` embedded join in this select.
+// We fetch aggregates separately to avoid PostgREST MV-relationship quirks.
+const VENUE_SELECT = `
+  id, slug, city_slug, name, city, country, address, neighborhood_label,
+  lat, lng, primary_category, place_types, vibe_tags, time_of_day_fit,
+  default_energy_level, date_friendliness_score, rating, user_rating_count,
+  price_level, editorial_summary, photo_url, opening_hours,
+  dine_in, outdoor_seating, reservable, live_music, good_for_groups,
+  serves_breakfast, serves_brunch, serves_dinner,
+  serves_cocktails, serves_wine, serves_beer
+`;
+
+interface BaseVenueRow {
   id: string;
   slug: string;
   city_slug: string;
@@ -66,59 +100,36 @@ export type Venue = {
   serves_cocktails: boolean | null;
   serves_wine: boolean | null;
   serves_beer: boolean | null;
-  // joined aggregates (left-join: may be null when MV row missing)
-  public_save_count: number | null;
-  unique_savers: number | null;
-  recent_visits_30d: number | null;
-  top_intents: string[] | null;
-  sample_notes: string[] | null;
-};
+}
 
-const VENUE_SELECT = `
-  id, slug, city_slug, name, city, country, address, neighborhood_label,
-  lat, lng, primary_category, place_types, vibe_tags, time_of_day_fit,
-  default_energy_level, date_friendliness_score, rating, user_rating_count,
-  price_level, editorial_summary, photo_url, opening_hours,
-  dine_in, outdoor_seating, reservable, live_music, good_for_groups,
-  serves_breakfast, serves_brunch, serves_dinner,
-  serves_cocktails, serves_wine, serves_beer,
-  venue_seo_aggregates(public_save_count, unique_savers, recent_visits_30d, top_intents, sample_notes)
-`;
+// Fetches aggregates for a list of venue IDs and returns them as a Map for fast lookup.
+async function fetchAggregates(
+  venueIds: string[],
+): Promise<Map<string, AggregateRow>> {
+  if (venueIds.length === 0) return new Map();
 
-type VenueRow = Omit<
-  Venue,
-  | "public_save_count"
-  | "unique_savers"
-  | "recent_visits_30d"
-  | "top_intents"
-  | "sample_notes"
-> & {
-  venue_seo_aggregates:
-    | {
-        public_save_count: number | null;
-        unique_savers: number | null;
-        recent_visits_30d: number | null;
-        top_intents: string[] | null;
-        sample_notes: string[] | null;
-      }
-    | null
-    | Array<{
-        public_save_count: number | null;
-        unique_savers: number | null;
-        recent_visits_30d: number | null;
-        top_intents: string[] | null;
-        sample_notes: string[] | null;
-      }>;
-};
+  const { data, error } = await supabaseServer
+    .from("venue_seo_aggregates")
+    .select(
+      "place_catalog_id, public_save_count, unique_savers, recent_visits_30d, top_intents, sample_notes",
+    )
+    .in("place_catalog_id", venueIds);
 
-function flattenVenue(row: VenueRow): Venue {
-  const agg = Array.isArray(row.venue_seo_aggregates)
-    ? row.venue_seo_aggregates[0]
-    : row.venue_seo_aggregates;
-  const { venue_seo_aggregates: _ignored, ...rest } = row;
-  void _ignored;
+  if (error) {
+    console.error("[date-spots] fetchAggregates failed:", error.message);
+    return new Map();
+  }
+
+  const map = new Map<string, AggregateRow>();
+  for (const row of (data ?? []) as AggregateRow[]) {
+    map.set(row.place_catalog_id, row);
+  }
+  return map;
+}
+
+function mergeVenue(row: BaseVenueRow, agg: AggregateRow | undefined): Venue {
   return {
-    ...rest,
+    ...row,
     public_save_count: agg?.public_save_count ?? 0,
     unique_savers: agg?.unique_savers ?? 0,
     recent_visits_30d: agg?.recent_visits_30d ?? 0,
@@ -127,17 +138,14 @@ function flattenVenue(row: VenueRow): Venue {
   };
 }
 
-// ─── PUBLIC QUERIES ─────────────────────────────────────────────────────────
-
-export async function getCitiesWithVenues(): Promise<
-  Array<{ city: string; city_slug: string; venue_count: number }>
-> {
-  // The view `cities_with_venue_counts` is created in the migration.
+export async function getCitiesWithVenues(): Promise<CityRow[]> {
   const { data, error } = await supabaseServer
     .from("cities_with_venue_counts")
     .select("city, city_slug, venue_count")
     .gte("venue_count", MIN_VENUES_FOR_CITY_PAGE)
     .order("venue_count", { ascending: false });
+
+  console.log("[date-spots] getCitiesWithVenues — count:", data?.length ?? 0);
 
   if (error) {
     console.error("[date-spots] getCitiesWithVenues failed:", error.message);
@@ -146,15 +154,20 @@ export async function getCitiesWithVenues(): Promise<
   return data ?? [];
 }
 
-export async function getCityBySlug(
-  citySlug: string,
-): Promise<{ city: string; city_slug: string; venue_count: number } | null> {
+export async function getCityBySlug(citySlug: string): Promise<CityRow | null> {
   const { data, error } = await supabaseServer
     .from("cities_with_venue_counts")
     .select("city, city_slug, venue_count")
     .eq("city_slug", citySlug)
     .gte("venue_count", MIN_VENUES_FOR_CITY_PAGE)
     .maybeSingle();
+
+  console.log(
+    "[date-spots] getCityBySlug — querying:",
+    citySlug,
+    "— got:",
+    data,
+  );
 
   if (error) {
     console.error("[date-spots] getCityBySlug failed:", error.message);
@@ -172,11 +185,18 @@ export async function getVenuesForCity(citySlug: string): Promise<Venue[]> {
     .order("date_friendliness_score", { ascending: false })
     .limit(VENUES_PER_CITY_PAGE);
 
+  console.log("[date-spots] getVenuesForCity — querying:", citySlug);
+  console.log("[date-spots] getVenuesForCity — error:", error);
+  console.log("[date-spots] getVenuesForCity — count:", data?.length ?? 0);
+
   if (error) {
     console.error("[date-spots] getVenuesForCity failed:", error.message);
     return [];
   }
-  return ((data ?? []) as unknown as VenueRow[]).map(flattenVenue);
+
+  const baseRows = (data ?? []) as unknown as BaseVenueRow[];
+  const aggMap = await fetchAggregates(baseRows.map((r) => r.id));
+  return baseRows.map((row) => mergeVenue(row, aggMap.get(row.id)));
 }
 
 export async function getVenueBySlug(
@@ -195,7 +215,11 @@ export async function getVenueBySlug(
     return null;
   }
   if (!data) return null;
-  const venue = flattenVenue(data as unknown as VenueRow);
+
+  const row = data as unknown as BaseVenueRow;
+  const aggMap = await fetchAggregates([row.id]);
+  const venue = mergeVenue(row, aggMap.get(row.id));
+
   if ((venue.public_save_count ?? 0) < MIN_PUBLIC_SAVES_FOR_VENUE_PAGE) {
     return null;
   }
@@ -227,11 +251,14 @@ export async function getRelatedVenues(
     console.error("[date-spots] getRelatedVenues failed:", error.message);
     return [];
   }
-  return ((data ?? []) as unknown as VenueRow[]).map(flattenVenue);
+
+  const baseRows = (data ?? []) as unknown as BaseVenueRow[];
+  const aggMap = await fetchAggregates(baseRows.map((r) => r.id));
+  return baseRows.map((row) => mergeVenue(row, aggMap.get(row.id)));
 }
 
 export async function getAllPublishableVenuesForSitemap(): Promise<
-  Array<{ slug: string; city_slug: string; updated_at?: string }>
+  SitemapVenueRow[]
 > {
   const { data, error } = await supabaseServer
     .from("places_catalog")
@@ -244,45 +271,4 @@ export async function getAllPublishableVenuesForSitemap(): Promise<
     return [];
   }
   return data ?? [];
-}
-
-// ─── DISPLAY HELPERS ────────────────────────────────────────────────────────
-
-export function priceLevelLabel(level: number | null): string {
-  if (level == null) return "";
-  return "$".repeat(Math.max(1, Math.min(4, level)));
-}
-
-export function formatRating(rating: number | null): string {
-  if (rating == null) return "—";
-  return rating.toFixed(1);
-}
-
-export function vibeLabel(tag: string): string {
-  return tag.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-export function intentLabel(intent: string): string {
-  return intent.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-export function servesList(v: Venue): string[] {
-  const items: string[] = [];
-  if (v.serves_breakfast) items.push("Breakfast");
-  if (v.serves_brunch) items.push("Brunch");
-  if (v.serves_dinner) items.push("Dinner");
-  if (v.serves_cocktails) items.push("Cocktails");
-  if (v.serves_wine) items.push("Wine");
-  if (v.serves_beer) items.push("Beer");
-  return items;
-}
-
-export function amenityList(v: Venue): string[] {
-  const items: string[] = [];
-  if (v.outdoor_seating) items.push("Outdoor seating");
-  if (v.reservable) items.push("Reservations");
-  if (v.dine_in) items.push("Dine-in");
-  if (v.live_music) items.push("Live music");
-  if (v.good_for_groups) items.push("Good for groups");
-  return items;
 }

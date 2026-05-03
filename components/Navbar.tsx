@@ -43,6 +43,12 @@ export default function Navbar({
             Quizzes
           </a>
           <a
+            href={variant === "landing" ? "#the-list" : "/date-spots"}
+            className="hover:text-pink-500 transition"
+          >
+            The List
+          </a>
+          <a
             href="mailto:hello@meetmelly.com"
             className="hover:text-pink-500 transition"
           >

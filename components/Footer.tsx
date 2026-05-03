@@ -4,11 +4,19 @@ import MellyOrb from "@/components/MellyOrb";
 
 interface FooterProps {
   /** Which link to highlight as current (won't be rendered as a link) */
-  currentPage?: "privacy" | "terms" | "safety" | "safety-standards";
+  currentPage?:
+    | "quizzes"
+    | "date-spots"
+    | "privacy"
+    | "terms"
+    | "safety"
+    | "safety-standards";
 }
 
 export default function Footer({ currentPage }: FooterProps) {
   const links = [
+    { href: "/quizzes", label: "Quizzes", key: "quizzes" as const },
+    { href: "/date-spots", label: "The List", key: "date-spots" as const },
     { href: "/privacy", label: "Privacy", key: "privacy" as const },
     { href: "/terms", label: "Terms", key: "terms" as const },
     { href: "/safety", label: "Safety", key: "safety" as const },

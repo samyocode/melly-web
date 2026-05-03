@@ -13,16 +13,16 @@ import { SITE_NAME, absoluteUrl } from "@/lib/site";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: `Date Spots Near You | ${SITE_NAME}`,
+  title: `The Melly List | ${SITE_NAME}`,
   description:
-    "Curated date spots from real Melly users — restaurants, bars, and experiences scored on how well they actually work for dates.",
+    "A standing list of venues vetted for date energy. Restaurants, bars, and experiences scored on how they actually work for dates — by atmosphere, vibe, and what real people save them for.",
   alternates: { canonical: absoluteUrl("/date-spots") },
   openGraph: {
     type: "website",
     url: absoluteUrl("/date-spots"),
-    title: `Date Spots Near You | ${SITE_NAME}`,
+    title: `The Melly List | ${SITE_NAME}`,
     description:
-      "Curated date spots from real Melly users — restaurants, bars, and experiences scored on how well they actually work for dates.",
+      "A standing list of venues vetted for date energy — atmosphere, vibe, and what real people save them for. No paid placements.",
   },
 };
 
@@ -33,17 +33,21 @@ export default async function DateSpotsIndexPage() {
     <div className="min-h-screen flex flex-col bg-stone-50 text-gray-900">
       <Navbar />
       <main className="flex-1 max-w-5xl w-full mx-auto px-5 sm:px-8 py-10 sm:py-16">
-        <header className="mb-10">
-          <p className="text-xs font-bold text-pink-500 tracking-[0.15em] uppercase mb-2">
-            Real spots, real saves
+        <header className="mb-10 sm:mb-14">
+          <p className="text-xs font-bold text-pink-500 tracking-[0.2em] uppercase mb-3">
+            The Melly List
           </p>
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
-            Date spots, picked by people who actually date
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4 leading-[1.05]">
+            The places dating actually happens
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl leading-relaxed">
-            Every venue here is scored on date-friendliness and ranked by how
-            often Melly users save it. No paid placements, no listicle filler.
-            Pick a city to see what&apos;s working.
+          <p className="text-base sm:text-lg text-gray-500 max-w-2xl leading-relaxed mb-6">
+            A standing list of venues vetted for date energy — atmosphere,
+            conversation acoustics, and what real people save them for. Every
+            spot earns its place by Melly Score and community signal. No paid
+            placements. No listicle filler.
+          </p>
+          <p className="text-xs text-gray-400 max-w-2xl">
+            Updated weekly. Cities ordered by how active The List is in each.
           </p>
         </header>
 

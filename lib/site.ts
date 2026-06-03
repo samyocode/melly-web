@@ -9,7 +9,8 @@ export const SITE_URL =
 
 export const SITE_NAME = "Melly";
 
-export const SITE_TAGLINE = "Where Singles Mingle";
+// Intentionally blank during the placeholder phase (no public positioning yet).
+export const SITE_TAGLINE = "";
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/icon.png`;
 

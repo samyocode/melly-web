@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SITE_URL, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,11 +18,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} – ${SITE_TAGLINE}`,
+    default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "Stop swiping on faces. Start connecting on what matters. Take deep-dive quizzes to find your compatibility DNA.",
+  description: SITE_NAME,
   openGraph: {
     type: "website",
     siteName: SITE_NAME,

@@ -123,9 +123,7 @@ export default async function SharedListPage({ params, searchParams }: PageProps
           </p>
         )}
 
-        <DownloadCTA
-          context={`Save these ${count > 0 ? count + " " : ""}places, add your own, and plan something with friends — all in ${SITE_NAME}.`}
-        />
+        <DownloadCTA />
       </main>
 
       <Footer />

@@ -17,7 +17,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { DownloadCTA } from "@/components/share/DownloadCTA";
 import { Unavailable } from "@/components/share/Unavailable";
-import { SEGMENT_TO_TYPE, shareNoun, readToken, resolveShareToken } from "@/lib/share";
+import { SEGMENT_TO_TYPE, readToken, resolveShareToken } from "@/lib/share";
 import { SITE_NAME } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -31,10 +31,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { seg } = await params;
   const type = SEGMENT_TO_TYPE[seg];
   if (!type) return {};
-  const noun = shareNoun(type);
   return {
-    title: `Shared ${noun}`,
-    description: `Open this ${noun} in ${SITE_NAME}.`,
+    title: SITE_NAME,
+    description: SITE_NAME,
   };
 }
 
@@ -43,7 +42,6 @@ export default async function GenericSharePage({ params, searchParams }: PagePro
   const type = SEGMENT_TO_TYPE[seg];
   if (!type) notFound();
 
-  const noun = shareNoun(type);
   const token = readToken(await searchParams);
 
   // Best-effort validation: if a token is present, confirm it resolves. A
@@ -64,17 +62,10 @@ export default async function GenericSharePage({ params, searchParams }: PagePro
     <div className="min-h-screen bg-pink-50/30">
       <Navbar position="sticky" variant="inner" />
       <main className="mx-auto max-w-2xl px-4 py-16 text-center sm:py-24">
-        <p className="text-sm font-semibold text-pink-500">Shared {noun}</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
-          Open this {noun} in {SITE_NAME}
+          Open in {SITE_NAME}
         </h1>
-        <p className="mx-auto mt-3 max-w-md text-gray-500">
-          {SITE_NAME} brings this {noun} to life — with everyone, everything, and
-          every plan attached. Get the app to see it.
-        </p>
-        <DownloadCTA
-          context={`See this ${noun} and do something about it — in ${SITE_NAME}.`}
-        />
+        <DownloadCTA />
       </main>
       <Footer />
     </div>

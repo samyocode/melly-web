@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "BXZ83UF5CK.com.escondidollc.meetmelly",
+        "paths": [
+          "/list/*",
+          "/place/*",
+          "/plan/*",
+          "/u/*",
+          "/event/*",
+          "/ranked/*",
+          "/post/*"
+        ]
+      }
+    ]
+  }
+}

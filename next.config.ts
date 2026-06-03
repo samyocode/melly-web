@@ -25,6 +25,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    // The universal-links association files must serve as application/json with
+    // no redirect at the link host (see SHARE_SYSTEM_SPEC.md). They live in
+    // public/.well-known/; the AASA file is extensionless, so force the type.
+    return [
+      {
+        source: "/.well-known/apple-app-site-association",
+        headers: [{ key: "Content-Type", value: "application/json" }],
+      },
+      {
+        source: "/.well-known/assetlinks.json",
+        headers: [{ key: "Content-Type", value: "application/json" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

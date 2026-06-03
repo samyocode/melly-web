@@ -14,9 +14,9 @@ interface FooterProps {
 }
 
 export default function Footer({ currentPage }: FooterProps) {
+  // Marketing links (Quizzes / The List) removed during the placeholder phase;
+  // legal links kept. Restore from git history when marketing returns.
   const links = [
-    { href: "/quizzes", label: "Quizzes", key: "quizzes" as const },
-    { href: "/date-spots", label: "The List", key: "date-spots" as const },
     { href: "/privacy", label: "Privacy", key: "privacy" as const },
     { href: "/terms", label: "Terms", key: "terms" as const },
     { href: "/safety", label: "Safety", key: "safety" as const },

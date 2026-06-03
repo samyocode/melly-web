@@ -1,19 +1,22 @@
 // components/Navbar.tsx
+//
+// Minimal nav for the placeholder phase: logo + legal links only. The marketing
+// links (Quizzes / The List / waitlist / download) were removed while the site
+// is a placeholder — restore from git history when marketing returns. The
+// `variant` prop is retained for call-site compatibility but no longer changes
+// the rendered links.
 
 import Link from "next/link";
 import MellyOrb from "@/components/MellyOrb";
 
 interface NavbarProps {
-  /** Use "fixed" on the landing page, "sticky" on inner pages */
+  /** Use "fixed" on full-bleed pages, "sticky" on inner/content pages */
   position?: "fixed" | "sticky";
-  /** Show waitlist CTA (landing) vs download CTA (inner pages) */
+  /** Retained for compatibility; no longer affects rendering. */
   variant?: "landing" | "inner";
 }
 
-export default function Navbar({
-  position = "sticky",
-  variant = "inner",
-}: NavbarProps) {
+export default function Navbar({ position = "sticky" }: NavbarProps) {
   return (
     <nav
       className={`${position} top-0 left-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-pink-100`}
@@ -26,53 +29,14 @@ export default function Navbar({
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-          {variant === "inner" ? (
-            <Link href="/" className="hover:text-pink-500 transition">
-              Home
-            </Link>
-          ) : (
-            <a href="#meet-melly" className="hover:text-pink-500 transition">
-              Meet Melly
-            </a>
-          )}
-          <a
-            href={variant === "landing" ? "#quizzes" : "/#quizzes"}
-            className="hover:text-pink-500 transition"
-          >
-            Quizzes
-          </a>
-          <a
-            href={variant === "landing" ? "#the-list" : "/date-spots"}
-            className="hover:text-pink-500 transition"
-          >
-            The List
-          </a>
-          <a
-            href="mailto:hello@meetmelly.com"
-            className="hover:text-pink-500 transition"
-          >
-            Contact
-          </a>
+        <div className="flex items-center gap-5 sm:gap-6 text-sm font-medium text-gray-600">
+          <Link href="/privacy" className="hover:text-pink-500 transition">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-pink-500 transition">
+            Terms
+          </Link>
         </div>
-
-        {variant === "landing" ? (
-          <a
-            href="#waitlist"
-            className="px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-md shadow-pink-500/20"
-          >
-            Join Waitlist
-          </a>
-        ) : (
-          <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-600 hover:text-pink-500 transition">
-              Log in
-            </button>
-            <button className="px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-bold text-white rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-md shadow-pink-500/20">
-              Download
-            </button>
-          </div>
-        )}
       </div>
     </nav>
   );

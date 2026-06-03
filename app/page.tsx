@@ -13,7 +13,7 @@ import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: SITE_NAME,
-  description: "Melly — do things with people you trust. Coming soon.",
+  description: "Melly. Coming soon.",
 };
 
 export default function Home() {

@@ -11,7 +11,8 @@
 // link opens the matching native screen and the web fallback renders the
 // matching page.
 
-import { supabaseServer } from "./supabase-server";
+// Share reads target the social-app Supabase project (NOT the date-spots one).
+import { supabaseShare, SHARE_SUPABASE_URL } from "./supabase-share";
 
 export type ShareableType =
   | "list"
@@ -72,9 +73,10 @@ export function readToken(
 export function mediaUrl(path: string | null | undefined): string | null {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
-  if (!base) return null;
-  return `${base}/storage/v1/object/public/user-media/${path}`;
+  // Avatars live in the social-app project's user-media bucket — resolve against
+  // the SHARE project URL, not the primary (date-spots) one.
+  if (!SHARE_SUPABASE_URL) return null;
+  return `${SHARE_SUPABASE_URL}/storage/v1/object/public/user-media/${path}`;
 }
 
 // ─── Payload types (mirror 20260621000800_share_tokens.sql in social-app) ─────
@@ -115,11 +117,15 @@ export type SharedList = {
 
 /** Read a shared list by token. Null for an invalid/expired/non-list token. */
 export async function getSharedList(token: string): Promise<SharedList | null> {
-  const { data, error } = await supabaseServer.rpc("get_shared_list", {
+  const { data, error } = await supabaseShare.rpc("get_shared_list", {
     p_token: token,
   });
   if (error) {
-    console.error("get_shared_list failed:", error.message);
+    // Surface the code: PGRST202 = function not found (wrong project / migration
+    // not applied); other codes = SQL error. A plain null (no error) = bad token.
+    console.error(
+      `get_shared_list failed [${error.code}]: ${error.message} (project: ${SHARE_SUPABASE_URL})`,
+    );
     return null;
   }
   return (data as SharedList | null) ?? null;
@@ -129,11 +135,13 @@ export async function getSharedList(token: string): Promise<SharedList | null> {
 export async function resolveShareToken(
   token: string,
 ): Promise<{ entity_type: ShareableType; entity_id: string } | null> {
-  const { data, error } = await supabaseServer.rpc("resolve_share_token", {
+  const { data, error } = await supabaseShare.rpc("resolve_share_token", {
     p_token: token,
   });
   if (error) {
-    console.error("resolve_share_token failed:", error.message);
+    console.error(
+      `resolve_share_token failed [${error.code}]: ${error.message} (project: ${SHARE_SUPABASE_URL})`,
+    );
     return null;
   }
   const row = Array.isArray(data) ? data[0] : data;

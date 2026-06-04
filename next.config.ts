@@ -25,6 +25,17 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    // Take the legacy dating-quiz marketing pages offline while the site is a
+    // placeholder. Reversible: the page code stays in the repo — remove these
+    // redirects to bring them back. Temporary (307), not permanent.
+    return [
+      { source: "/quizzes", destination: "/", permanent: false },
+      { source: "/quiz/:slug*", destination: "/", permanent: false },
+      { source: "/date-spots", destination: "/", permanent: false },
+      { source: "/date-spots/:path*", destination: "/", permanent: false },
+    ];
+  },
   async headers() {
     // The universal-links association files must serve as application/json with
     // no redirect at the link host (see SHARE_SYSTEM_SPEC.md). They live in

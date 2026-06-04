@@ -9,7 +9,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/delete-account", "/admin", "/admin-ax7k2/login"],
+        // Legacy marketing pages are offline (redirect to home); keep crawlers off them.
+        disallow: [
+          "/delete-account",
+          "/admin",
+          "/admin-ax7k2/login",
+          "/quizzes",
+          "/quiz",
+          "/date-spots",
+        ],
       },
     ],
     sitemap: absoluteUrl("/sitemap.xml"),

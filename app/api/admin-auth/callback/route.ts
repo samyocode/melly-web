@@ -10,7 +10,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { isAllowedAdminEmail, setAdminCookie } from "@/lib/admin-session";
+import { setAdminCookie } from "@/lib/admin-session";
+import { resolveOrProvisionAdmin, logAdminAction } from "@/lib/admin-authz";
 
 export async function GET(req: NextRequest) {
   const url = req.nextUrl;
@@ -31,7 +32,6 @@ export async function GET(req: NextRequest) {
   // verifyOtp with token_hash works with the supabase-js v2 admin client
   // even though it doesn't store a session for us — we just need the
   // user identity, not the Supabase session.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await admin.auth.verifyOtp({
     type: type as "email",
     token_hash,
@@ -44,14 +44,27 @@ export async function GET(req: NextRequest) {
 
   const email = data.user.email.toLowerCase();
 
-  // Belt and suspenders: even if Supabase verified, re-check the
-  // allowlist before issuing our admin cookie. This prevents anyone
-  // who happens to have a Supabase auth account from gaining admin.
-  if (!isAllowedAdminEmail(email)) {
+  // Belt and suspenders: even if Supabase verified, re-check authorization
+  // against the REAL admins table (with bootstrap-allowlist provisioning)
+  // before issuing our admin cookie. This prevents anyone who happens to
+  // have a Supabase auth account from gaining admin, AND binds the session
+  // to a concrete admins.id + role for downstream gating + audit logging.
+  const adminRecord = await resolveOrProvisionAdmin(email);
+  if (!adminRecord) {
     return notFound();
   }
 
-  await setAdminCookie(email);
+  await setAdminCookie({
+    email: adminRecord.email,
+    adminId: adminRecord.id,
+    role: adminRecord.role,
+  });
+
+  await logAdminAction({
+    adminId: adminRecord.id,
+    action: "admin.login",
+    details: { email: adminRecord.email },
+  });
 
   // Best-effort: revoke the Supabase auth session that verifyOtp just
   // created. We don't want admin login to leave behind a consumer-app

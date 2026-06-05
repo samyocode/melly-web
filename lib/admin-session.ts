@@ -66,14 +66,25 @@ function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
+export type AdminRole = "super_admin" | "t_and_s" | "support" | "ops";
+
 export interface AdminSession {
   email: string;
+  // The admins.id this session is bound to. Lets downstream handlers write
+  // admin_audit_log without re-querying. Always present post-login (the
+  // callback provisions/loads an admins row before signing the cookie).
+  adminId: string;
+  role: AdminRole;
   exp: number;
 }
 
-export async function signSession(email: string): Promise<string> {
+export async function signSession(
+  data: Pick<AdminSession, "email" | "adminId" | "role">,
+): Promise<string> {
   const payload: AdminSession = {
-    email: email.toLowerCase(),
+    email: data.email.toLowerCase(),
+    adminId: data.adminId,
+    role: data.role,
     exp: Math.floor(Date.now() / 1000) + SESSION_TTL_HOURS * 3600,
   };
   const payloadB64 = b64urlEncode(JSON.stringify(payload));
@@ -110,8 +121,10 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 }
 
 // Route handlers: set/clear cookie
-export async function setAdminCookie(email: string): Promise<void> {
-  const token = await signSession(email);
+export async function setAdminCookie(
+  data: Pick<AdminSession, "email" | "adminId" | "role">,
+): Promise<void> {
+  const token = await signSession(data);
   const store = await cookies();
   store.set(COOKIE_NAME, token, {
     httpOnly: true,

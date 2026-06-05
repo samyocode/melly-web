@@ -12,7 +12,7 @@
 //         then set our own admin cookie and redirect into /admin.
 
 import { getSupabaseAdmin } from "./supabase-admin";
-import { isAllowedAdminEmail } from "./admin-session";
+import { isKnownAdminEmail } from "./admin-authz";
 
 interface RequestLinkResult {
   ok: boolean;
@@ -37,12 +37,13 @@ export async function requestAdminLoginLink(
     return generic;
   }
 
-  // Allowlist check happens server-side BEFORE we touch Supabase.
-  // Strangers don't trigger any email, don't burn rate limits, and
-  // can't enumerate which addresses are valid.
-  if (!isAllowedAdminEmail(trimmed)) {
+  // Authorization check happens server-side BEFORE we touch Supabase.
+  // Known = an active admins row OR the bootstrap allowlist. Strangers don't
+  // trigger any email, don't burn rate limits, and can't enumerate which
+  // addresses are valid.
+  if (!(await isKnownAdminEmail(trimmed))) {
     // Constant time-ish: do a small delay so the response timing doesn't
-    // leak whether allowlist matched. (Not bulletproof but cheap.)
+    // leak whether the address matched. (Not bulletproof but cheap.)
     await new Promise((r) => setTimeout(r, 250));
     return generic;
   }

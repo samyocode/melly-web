@@ -1,19 +1,16 @@
 // lib/supabase-share.ts
 //
-// SECOND Supabase client, used ONLY by the share feature (lib/share.ts).
+// The anon Supabase client for the public share/entity pages (lib/share.ts).
 //
-// Why a separate client: this site's primary client (lib/supabase-server.ts)
-// points at the marketing/date-spots Supabase project. But the share RPCs
-// (get_shared_list / resolve_share_token) and the app tables they read
-// (place_lists, places, users, user_media) + the share tokens themselves live
-// in the *social-app* project — a different Supabase project. So share reads
-// MUST target that project, not the date-spots one.
+// The share + SEO RPCs (get_shared_list / resolve_share_token / seo_get_place /
+// seo_get_event) and the app tables they read (place_lists, places, events,
+// users, user_media) + the share tokens all live in the *social-app* Supabase
+// project, so these reads target that project.
 //
 // Config: NEXT_PUBLIC_SHARE_SUPABASE_URL / NEXT_PUBLIC_SHARE_SUPABASE_ANON_KEY
-// (the social-app project's URL + anon/publishable key). Falls back to the
-// primary NEXT_PUBLIC_SUPABASE_* if unset, so local dev keeps working when the
-// primary already points at social-app — but PRODUCTION MUST set the SHARE_*
-// vars (its primary points at the date-spots project, where share would 404).
+// (the social-app project's URL + anon/publishable key). Falls back to
+// NEXT_PUBLIC_SUPABASE_* if unset — PRODUCTION should set the SHARE_* vars (or
+// point the base vars at social-app), else every entity page 404s.
 
 import { createClient } from "@supabase/supabase-js";
 

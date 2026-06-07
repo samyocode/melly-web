@@ -1,9 +1,9 @@
 // app/sitemap.ts
 //
-// Placeholder-phase sitemap: home + legal pages only. The quizzes / date-spots
-// marketing pages are offline (redirected to home in next.config.ts), so they're
-// intentionally omitted here. Restore the fuller sitemap from git history when
-// the marketing site comes back.
+// Placeholder-phase sitemap: home + legal pages only. The legacy quizzes /
+// date-spots marketing pages were removed (see git history). Token/share entity
+// pages (/list, /place, /event) are intentionally omitted — they're per-link,
+// not part of the discoverable site.
 
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site";

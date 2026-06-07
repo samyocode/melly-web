@@ -1,29 +1,10 @@
 // components/share/PlaceCard.tsx
 
-import type { SharedItem } from "@/lib/share";
+import { categoryLabel, type SharedItem } from "@/lib/share";
 import { AvatarStack } from "@/components/share/Avatar";
 
-// The app's 13 internal category buckets → display labels.
-const CATEGORY_LABEL: Record<string, string> = {
-  restaurant: "Restaurant",
-  cafe: "Café",
-  bar: "Bar",
-  dessert: "Dessert",
-  market: "Market",
-  park: "Park",
-  active: "Active",
-  wellness: "Wellness",
-  museum: "Museum",
-  gallery: "Gallery",
-  bookstore: "Bookstore",
-  shop: "Shop",
-  attraction: "Attraction",
-  other: "Place",
-};
-
 function metaLine(item: SharedItem): string {
-  const cat = item.category ? CATEGORY_LABEL[item.category] ?? item.category : null;
-  return [item.city, cat].filter(Boolean).join(" · ");
+  return [item.city, categoryLabel(item.category)].filter(Boolean).join(" · ");
 }
 
 export function PlaceCard({ item }: { item: SharedItem }) {

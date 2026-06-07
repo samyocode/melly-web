@@ -1,14 +1,15 @@
 // app/[seg]/[id]/page.tsx
 //
 // Generic share fallback for every entity type whose dedicated web page isn't
-// built yet (place / plan / u / event / ranked / post). Two jobs:
+// built yet (plan / u / ranked / post — list, place, and event have their own
+// routes that take precedence over this dynamic segment). Two jobs:
 //   1. Keep universal links resolving — every AASA path has a web landing so
 //      not-installed taps don't 404.
 //   2. Validate the token (best-effort) and convert to a download.
 // As each `get_shared_*` RPC + page ships, add an explicit route (like /list)
 // and this stops being hit for that type.
 //
-// Static routes (/date-spots, /privacy, /list, …) take precedence over this
+// Static routes (/list, /place, /event, /privacy, …) take precedence over this
 // dynamic segment; unknown segments fall through to notFound().
 
 import type { Metadata } from "next";

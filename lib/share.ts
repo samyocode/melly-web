@@ -113,6 +113,111 @@ export type SharedList = {
   items: SharedItem[];
 };
 
+// ─── Public entity reads (by uuid) ────────────────────────────────────────────
+//
+// Places and events are public-by-construction (places: all; events:
+// moderation-cleared only), so their web pages read by entity uuid via the
+// anon-granted `seo_get_*` RPCs — NOT token-gated like lists (which can be
+// private). A share link is `/<seg>/<id>?t=<token>`; `<id>` is the entity uuid
+// (see the app's buildShareUrl), so the same URL serves both a share-link tap
+// and a direct/SEO visit. The token is carried for the canonical URL only.
+
+/** The 13 internal category buckets → display labels (shared with PlaceCard). */
+export const CATEGORY_LABEL: Record<string, string> = {
+  restaurant: "Restaurant",
+  cafe: "Café",
+  bar: "Bar",
+  dessert: "Dessert",
+  market: "Market",
+  park: "Park",
+  active: "Active",
+  wellness: "Wellness",
+  museum: "Museum",
+  gallery: "Gallery",
+  bookstore: "Bookstore",
+  shop: "Shop",
+  attraction: "Attraction",
+  other: "Place",
+};
+
+export function categoryLabel(category: string | null | undefined): string | null {
+  if (!category) return null;
+  return CATEGORY_LABEL[category] ?? category;
+}
+
+export type SharedPlace = {
+  id: string;
+  name: string;
+  description: string | null;
+  category: string | null;
+  address: string | null;
+  city: string | null;
+  country_code: string | null;
+  lat: number | null;
+  lng: number | null;
+  photo_url: string | null;
+  is_curated: boolean;
+  rating_count: number;
+  loved_count: number;
+};
+
+export type SharedEventPlace = {
+  id: string;
+  name: string;
+  address: string | null;
+  city: string | null;
+  photo_url: string | null;
+  lat: number | null;
+  lng: number | null;
+};
+
+export type SharedEvent = {
+  id: string;
+  label: string;
+  host_name: string | null;
+  host_url: string | null;
+  source_url: string | null;
+  source_platform: string | null;
+  category: string | null;
+  is_dating_friendly: boolean;
+  starts_at: string;
+  ends_at: string | null;
+  city: string | null;
+  country_code: string | null;
+  lat: number | null;
+  lng: number | null;
+  is_past: boolean;
+  place: SharedEventPlace | null;
+};
+
+/** Read a public place by uuid. Null for a missing place. */
+export async function getSharedPlace(id: string): Promise<SharedPlace | null> {
+  const { data, error } = await supabaseShare.rpc("seo_get_place", {
+    p_place_id: id,
+  });
+  if (error) {
+    console.error(
+      `seo_get_place failed [${error.code}]: ${error.message} (project: ${SHARE_SUPABASE_URL})`,
+    );
+    return null;
+  }
+  return (data as SharedPlace | null) ?? null;
+}
+
+/** Read a public event by uuid. Null when missing or not moderation-cleared. */
+export async function getSharedEvent(id: string): Promise<SharedEvent | null> {
+  const { data, error } = await supabaseShare.rpc("seo_get_event", {
+    p_event_id: id,
+  });
+  if (error) {
+    console.error(
+      `seo_get_event failed [${error.code}]: ${error.message} (project: ${SHARE_SUPABASE_URL})`,
+    );
+    return null;
+  }
+  return (data as SharedEvent | null) ?? null;
+}
+
 // ─── Token-gated reads ────────────────────────────────────────────────────────
 
 /** Read a shared list by token. Null for an invalid/expired/non-list token. */

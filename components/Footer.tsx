@@ -4,13 +4,7 @@ import MellyOrb from "@/components/MellyOrb";
 
 interface FooterProps {
   /** Which link to highlight as current (won't be rendered as a link) */
-  currentPage?:
-    | "quizzes"
-    | "date-spots"
-    | "privacy"
-    | "terms"
-    | "safety"
-    | "safety-standards";
+  currentPage?: "privacy" | "terms" | "safety" | "safety-standards";
 }
 
 export default function Footer({ currentPage }: FooterProps) {
